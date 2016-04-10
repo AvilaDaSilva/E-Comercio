@@ -1,0 +1,219 @@
+<style>
+    .active-floatlabel{
+        padding-top: 13px !important;
+    }
+</style>
+<?php
+$classError = 'has-error has-feedback';
+$errorIcon = '<span class="fa fa-times fa-lg form-control-feedback"></span>';
+if (isset($this->breadcrumbs))
+    if ($this->breadcrumbs) {
+        $keys = array_keys($this->breadcrumbs);
+        $endKey = end($keys);
+        ?>
+        <ol class="breadcrumb">
+            <li>Você está aqui: </li>
+            <?php
+            foreach ($this->breadcrumbs as $chave => $breadcrumb) {
+                if ($breadcrumb['url'] == '#') {
+                    $urlBreadcrumb = '#';
+                }
+                else {
+                    $urlBreadcrumb = BASE_URL . $breadcrumb['url'];
+                }
+                ?>
+                <?php if ($endKey != $chave) { ?>
+                    <li><a href="<?php echo $urlBreadcrumb; ?>" title="<?php echo $breadcrumb['title']; ?>"><?php echo $breadcrumb['text']; ?></a></li>
+                <?php } else {  ?>
+                    <li class="active"><strong><?php echo $breadcrumb['text']; ?></strong></li>
+                    <?php
+                }
+            }
+            ?>
+        </ol>
+    <?php } ?>
+<div id="page-content">
+    <input id="demo-sw-checkstate" type="hidden">
+    <input id="demo-sw-checkstate-field"  type="hidden">
+    <div class="panel">
+        <div class="eq-height clearfix">
+            <!-- Main Form Wizard -->
+            <!--===================================================-->
+            <div id="demo-main-wz-clicavel">
+                <ul class="row wz-step wz-icon-bw wz-nav-on mar-top">
+                    <li id="etapa1" class="col-xs-4">
+                        <a data-toggle="tab" href="#demo-main-tab1">
+                            <span class="icon-wrap icon-wrap-xs bg-danger"><i class="glyphicon glyphicon-list-alt "></i></span>
+                            <p class="text-thin">Lotes comissão de Contador/Representante</p>
+                        </a>
+                    </li>
+                    <li id="etapa2" class="col-xs-4">
+                        <a data-toggle="tab" href="#demo-main-tab2">
+                            <span class="icon-wrap icon-wrap-xs bg-warning"><i class="fa fa-dollar"></i></span>
+                            <p class="text-thin">Comissões sobre títulos sobre Contador/Representante Comercial</p>
+                        </a>
+                    </li>
+                    <li id="etapa3" class="col-xs-4">
+                        <a data-toggle="tab" href="#demo-main-tab3">
+                            <span class="icon-wrap icon-wrap-xs bg-info"><i class="fa fa-barcode"></i></span>
+                            <p class="text-thin">Emissão de recibos de comissões</p>
+                        </a>
+                    </li>
+                </ul>
+                <!--progress bar-->
+                <div class="progress progress-xs">
+                    <div class="progress-bar progress-bar-primary"></div>
+                </div>
+
+                <!--form-->
+                <form class="form-horizontal">
+                    <?php
+                        if (isset($this->filter)) { ?>
+                            <div id="filter" style="margin-left:2%; margin-top: 1%;">
+                        <?php foreach ($this->filter as $f) { ?>
+                            <label class="form-checkbox form-icon form-text">
+                                <input name="<?php echo $f['name']; ?>[]" value="<?php echo $f['value']; ?>"
+                                       checked="<?= $f['check']; ?>" type="checkbox" onchange="<?php echo $f['funcao']; ?>"><?php echo $f['desc']; ?>
+                            </label>
+                        <?php } ?>
+                        </div>
+                    <?php } ?>
+                    <div class="panel-body">
+                        <div class="tab-content">
+                            <div id="demo-main-tab1" class="tab-pane">
+                                <table id="demo-table" class="table-striped" data-toolbar="#demo-custom-toolbar" data-pagination="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-click-to-select="true">
+                                    <thead id="cabecalho">
+                                        <tr>   
+                                            <?php
+                                            if (isset($this->tableInformation))
+                                                foreach ($this->tableInformation as $th) {
+                                                    if ($th['index'] == 'checkbox') {
+                                                        ?>
+                                                        <th data-align="center" data-sortable="false" data-checkbox="true"></th><?php } else { ?>
+                                                        <th data-field="<?php echo $th['index'] ?>" data-align="center" data-events="<?php
+                                                        if (isset($th['events'])) {
+                                                            echo $th['events'];
+                                                        }
+                                                        ?>" data-sortable="true" data-formatter="<?php echo $th['format'] ?>" ><?php echo $th['descricao'] ?></th>
+                                                            <?php
+                                                        }
+                                                    }
+                                                ?>
+                                        </tr>
+                                    </thead>
+                                </table>
+                                <input type="button" onclick="faturarSelecionados(0);" style="float:right; margin-left: 1%; margin-top: 1%; margin-bottom: -1%;" value="Calcular comissões dos lotes marcados" class="btn btn-lg btn-primary" id="faturar_selecionados"/>
+                                <input type="button" onclick="novoLote();" style="float:right; margin-top: 1%; margin-bottom: -1%;" value="Novo Lote" class="btn btn-lg btn-primary" id="novo_lote"/>
+                            </div>
+                            <div id="demo-main-tab2" class="tab-pane fade">
+                                <div id="header-info"></div>
+                                <table class="table table-condensed" id="table-segunda" style="border-collapse:collapse; border-spacing: 0em 0; border-collapse: separate; margin-left: 0em;">
+                                    <caption>Apuração de comissões</caption>
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>Lote</th>
+                                            <th>Beneficiário</th>
+                                            <th>Regime tributário</th>
+                                            <th>Tipo</th>
+                                            <th>Valor comissões (R$)</th>
+                                            <th>Previsão pagamento</th>
+                                            <th>Alertas</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div id="demo-main-tab3" class="tab-pane">
+                            </div>
+                        </div>
+                    </div>
+                    <!--Footer button-->
+                    <div class="pull-right pad-all">
+                        <button type="button" class="previous btn btn-danger">Anterior</button>
+                        <button type="button" class="next btn btn-primary">Próximo</button>
+                        <button type="button" class="finish btn btn-success" onclick="emitirBoletos()" disabled>Emitir relatório(s)</button>
+                    </div>
+                </form>
+            </div>
+            <!--===================================================-->
+            <!-- End of Main Form Wizard -->
+
+        </div>
+    </div>
+</div>
+<script src="<?php echo BASE_URL ?>/js/floatlabels.js" type="text/javascript"></script>   
+<script type="text/javascript">
+    $JQuery(function() {
+    $JQuery('[name="refresh"]').click(function() {
+        var aux = window.location.pathname;
+        $('#demo-table').bootstrapTable('refresh', {url: aux});
+    });
+    });
+
+    function gridFormatter(value, row){
+    if (value)
+            return '<a href="<?php echo $this->addIcon[0]['url']; ?>/table/' + row.table_name + '" class="btn-link" title="<?php echo $this->addIcon[0]['title']; ?>"> ' + value + '</a>';
+            return '-';
+    }
+    function nameFormatter(value, row) {
+    if (value)
+            return '<a href="<?php echo $this->addIcon[0]['url']; ?>/id/' + JSON.stringify(row.id) + '" class="btn-link" title="<?php echo $this->addIcon[0]['title']; ?>"> ' + value + '</a>';
+            return '-';
+    }
+    function nameFormatterTxt(value, row) {
+    if (value)
+            return '<a href="<?php echo $this->addIcon[0]['url']; ?>/txt/' + JSON.stringify(row.id) + '" class="btn-link" title="<?php echo $this->addIcon[0]['title']; ?>"> ' + value + '</a>';
+            return '-';
+    }
+    
+    function openModal(value, row) {
+    if (value)
+            return '<a href="#" class="btn-link" onclick="editLote(this)" title="<?php echo $this->addIcon[0]['title']; ?>"> ' + value + '</a>';
+            return '-';
+    }
+    
+    function operateFormatter(value, row, index) {
+        return [
+<?php if (isset($this->addIcon))
+    foreach ($this->addIcon as $item) { ?>
+        '<a class="<?php echo $item['classHref']; ?>" href="javascript:void(0)" title="<?php echo $item['title']; ?>"<?php if(isset($item['click'])){?> onclick="<?php echo $item['click']?>"<?php } ?>>',
+                '<i class="<?php echo $item['classButton']; ?>"></i>',
+                '</a>&nbsp;&nbsp;&nbsp;',
+<?php } ?>
+    ].join('');
+    }
+
+    window.operateEvents = {
+<?php
+if (isset($this->addIcon))
+    foreach ($this->addIcon as $item) {
+        if ($item['classHref'] == 'remove') {
+            ?>
+                'click .<?php echo $item['classHref']; ?>': function(e, value, row, index) {
+                if (confirm('Deseja deletar este registro?') == true){
+                window.location.assign("<?php echo $item['url']; ?>/id/" + JSON.stringify(row.id));
+                }
+                },
+        <?php } else if ($item['classHref'] == 'grid') { ?>
+    //            'click .<?php echo $item['classHref']; ?>': function(e, value, row, index) {
+    //            window.location.assign("<?php echo $item['url']; ?>/id/" + JSON.stringify(row.id) + '/tabela/' + JSON.stringify(row.tabela_alvo));
+    //                    console.log(value, row, index);
+    //            },
+        <?php } else if ($item['classHref'] == 'basedados') { ?>
+                'click .<?php echo $item['classHref']; ?>': function(e, value, row, index) {
+                window.location.assign("<?php echo $item['url']; ?>/table/" + JSON.stringify(row.table_name));
+                },
+        <?php } else if ($item['classHref'] == 'reg') { ?>
+                'click .<?php echo $item['classHref']; ?>': function(e, value, row, index) {
+                window.location.assign("<?php echo $item['url']; ?>/tipo/" + JSON.stringify(row.reg));
+                },
+        <?php } else { ?>
+                'click .<?php echo $item['classHref']; ?>': function(e, value, row, index) {
+                window.location.assign("<?php echo $item['url']; ?>/id/" + JSON.stringify(row.id));
+                },
+        <?php } ?>
+    <?php } ?>
+};
+</script>

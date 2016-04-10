@@ -1,0 +1,18 @@
+<?php
+$id_perfil = null;
+if ($id_perfil != 0) {
+	echo " Não existem selecionados ";exit;
+} else {
+	$msg = " Selecione um usuário";
+}
+
+echo '<label for="id_perfil">Perfis:*</label>';
+$this->partial('/partials/ajax/checkbox.phtml', array('dados' => $perfis,
+		'dados_selecionadas' => $selecionados,
+		'idColumnSelecionado' => 'id_perfil',
+		'idColumn' => 'id',
+		'name' => 'id_perfil',
+		'descColumn' => 'desc_perfil',
+		'msg' => $msg,
+));
+?>

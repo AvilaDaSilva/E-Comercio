@@ -1,0 +1,720 @@
+<style>
+    .active-floatlabel{
+        padding-top: 13px !important;
+    }
+</style>
+<!-- ##### CRIAÇÃO DOS BREADCRUMBS #####-->
+<?php
+$classError = 'has-error has-feedback';
+$errorIcon = '<span class="fa fa-times fa-lg form-control-feedback"></span>';
+if (isset($this->breadcrumbs))
+    if ($this->breadcrumbs) {
+        $keys = array_keys($this->breadcrumbs);
+        $endKey = end($keys);
+        ?>
+        <ol class="breadcrumb">
+            <li>Você está aqui: </li>
+            <?php
+            foreach ($this->breadcrumbs as $chave => $breadcrumb) {
+                if ($breadcrumb['url'] == '#')
+                    $urlBreadcrumb = '#';
+                else
+                    $urlBreadcrumb = BASE_URL . $breadcrumb['url'];
+                ?>
+                <?php if ($endKey != $chave) { ?>
+                    <li><a href="<?php echo $urlBreadcrumb; ?>" title="<?php echo $breadcrumb['title']; ?>"><?php echo $breadcrumb['text']; ?></a></li>
+                <?php } else { ?>
+                    <li class="active"><?php echo $breadcrumb['text']; ?></li>
+                <?php
+                }
+            }
+            ?>
+        </ol>
+    <?php } ?>
+<!-- ##### FIM DOS BREADCRUMBS #####-->
+
+<!-- ##### HEAD DA PAGINA #####-->
+<?php if (isset($this->head)) { ?>
+    <div id="page-title">
+        <h1 class="page-header text-overflow"><?php echo $this->head; ?>
+    </div>
+<?php } ?>
+<!-- ##### FIM DA HEAD #####-->
+
+<div id="page-content">
+ <div class="panel">
+    <!-- PAGE CONTENT Gambiarra para funcionar o select com busca-->
+    <!--===================================================-->
+    <input id="demo-sw-checkstate" type="hidden">
+    <input id="demo-sw-checkstate-field"  type="hidden">
+
+    <?php
+    echo $this->form()->openTag($this->form);
+    $messageError = $this->form->getMessages();
+    ?>
+    <div class="col-md-12 col-lg-12 eq-box-lg" style="background-color: white; border: solid #A3A3C2 1px; margin-top:-25px; padding-bottom: 5px;">
+        <div class="row">
+            <?php
+            $cont = 0;
+            foreach ($this->partialElements as $chave => $element) {
+                if (isset($element['id_div'])) {
+                    $idDiv = 'id="' . $element['id_div'] . '"';
+                } else {
+                    $idDiv = '';
+                }
+                if (isset($element['htmlElement'])) {
+                    $html = '<div>' . $element['htmlElement'] . '</div>';
+                } else {
+                    $html = '';
+                }
+                if (!isset($element['grupo'])) {//Verifica se os elementos são checkbox, para distribuílos em uma linha
+                    ?>
+                    <?php if ($cont == 0) { ?>
+                        <div <?php echo $idDiv ?> class="col-sm-<?php echo $this->colunas ?>" style="margin-top: 15px; max-height: 45px; margin-bottom: -15px;">
+                            <div <?php echo $idDiv ?> class="input-group mar-btm<?php if (isset($messageError[$element['name']])) echo $classError; ?>">
+                                <?php
+                                if (!isset($element['none'])) {
+                                    if (isset($element['label']) && !isset($element['icon'])) {
+                                        echo $element['label'];
+                                    } else {
+                                        if (isset($element['icon']) && isset($element['nome'])) {
+                                            ?>
+                                            <span class="input-group-addon" title="<?php echo $element['nome'] ?>">
+                                                <i class="<?php echo $element['icon']; ?>" ></i>
+                                            </span>
+                                        <?php
+                                        }
+                                    }
+                                }
+                                ?>
+                                <?php
+                                if (isset($element['calendario'])) {
+                                    ?>
+                                    <div id="demo-dp-txtinput">
+                                        <?php echo $element['input'] ?>
+                                    </div>
+                                <?php
+                                } else if (!isset($element['type'])) {
+                                    echo $element['input'];
+                                    if (isset($messageError[$element['name']])) {
+                                        $messageErrorExib = array_pop($messageError[$element['name']]);
+                                        echo $errorIcon;
+                                        echo '<label for="demo-oi-errinput" class="control-label">' . $messageErrorExib . '</label>';
+                                    }
+                                } else {
+                                    ?>
+                                    <br>
+                                    <span class="btn btn-default btn-file"> 
+                                        <?php
+                                        echo $element['label'];
+                                        echo $element['input'];
+                                        ?>
+                                    </span>
+                                <?php } ?>
+                                <span class="info clearfix">
+                                    <?php
+                                    if (isset($element['information']))
+                                        echo $element['information'];
+                                    else if (isset($element['information2']))
+                                        echo $element['information'];
+                                    ?>
+                                </span>
+                            </div>
+                        </div>
+                        <?php
+                        $cont = 1;
+                    } else {
+                        ?>
+                        <div class="col-sm-<?php echo $this->colunas ?>" style="margin-top: 15px; max-height: 45px; margin-bottom: -15px;">
+                            <div <?php echo $idDiv ?> class="input-group mar-btm <?php if (isset($messageError[$element['name']])) echo $classError; ?>">
+                                <?php
+                                if (!isset($element['none'])) {
+                                    if (isset($element['label']) && !isset($element['icon'])) {
+                                        echo $element['label'];
+                                    } else {
+                                        if (isset($element['icon']) && isset($element['nome'])) {
+                                            ?>
+                                            <span class="input-group-addon" title="<?php echo $element['nome'] ?>">
+                                                <i class="<?php echo $element['icon']; ?>" ></i>
+                                            </span>
+                                        <?php
+                                        }
+                                    }
+                                }
+                                ?>
+                                <?php
+                                if (isset($element['calendario'])) {
+                                    ?>
+                                    <div id="demo-dp-txtinput">
+                                        <?php echo $element['input'] ?>
+                                    </div>
+                                <?php
+                                } else if (!isset($element['type'])) {
+                                    echo $element['input'];
+                                    if (isset($messageError[$element['name']])) {
+                                        $messageErrorExib = array_pop($messageError[$element['name']]);
+                                        echo $errorIcon;
+                                        echo '<label for="demo-oi-errinput" class="control-label">' . $messageErrorExib . '</label>';
+                                    }
+                                } else {
+                                    ?>
+                                    <br>
+                                    <span class="btn btn-default btn-file"> 
+                                        <?php
+                                        echo $element['label'];
+                                        echo $element['input'];
+                                        ?>
+                                    </span>
+                                <?php } ?>
+                                <span class="info clearfix">
+                                    <?php
+                                    if (isset($element['information']))
+                                        echo $element['information'];
+                                    else if (isset($element['information2']))
+                                        echo $element['information'];
+                                    ?>
+                                </span>
+                            </div>
+                        </div>
+                        <?php
+                        $cont = 0;
+                    }
+                }
+            }
+            if (isset($checkbox)) {
+                foreach ($checkbox as $chave => $element) {
+                    if (isset($element['id_div'])) {
+                        $idDiv = 'id="' . $element['id_div'] . '"';
+                    } else {
+                        $idDiv = '';
+                    }
+                }
+                ?>
+                <div class="col-sm-6">
+                    <div <?php echo $idDiv ?> class="form-group">
+                        <label class="control-label" for="demo-hor-inputemail"><?php echo $element['label']; ?></label>
+                        <div class="checkbox">
+                            <!-- INLINE CHECKBOXES -->
+                            <!--===================================================-->
+                            <?php foreach ($element['values'] as $chaves => $elements) { ?>
+                                <label class="form-checkbox form-icon active">
+                                    <input  name="<?php echo $element['name']; ?>" id="<?php echo $element['id'] . '-' . $chaves; ?>" value="<?php echo $chaves; ?>" type="checkbox"><?php echo $elements; ?>
+                                </label>
+                                <!--===================================================-->
+                            <?php } ?>
+                            <?php
+                            if (isset($messageError[$element['name']])) {
+                                $messageErrorExib = array_pop($messageError[$element['name']]);
+                                echo '<label for="demo-oi-errinput" class="control-label">' . $messageErrorExib . '</label>';
+                            }
+                            ?>
+                        </div>
+                    </div>
+                </div>
+            <?php
+            }
+            ?>
+        </div>
+        <div class="text-right">
+            <?php if (isset($id) && $id > 0) { ?>
+                <button type="button" class="btn btn-primary" id="btncomissoes" onclick="modalComissoes();" style="margin-top:-35px;">Comissões</button>
+            <?php } ?>
+            <button type="submit" class="btn btn-info" id="submitbutton" style="margin-top:-35px;">Salvar</button>
+        </div>
+    </div>
+    </div>
+</div>
+<?php echo $this->form()->closeTag($this->form); ?>
+<div class="row">
+    <div class="eq-height" style="margin-left:25px; margin-right: 25px;">
+        <div class="col-md-12 col-lg-12" id="div_tabs">
+            <div class="tab-base">
+                <ul class="nav nav-tabs">
+                    <li id="1" class="active"><a data-toggle="tab" href="#demo-lft-tab-1">Parcelas Contrato</a></li>
+                    <li id="10"><a data-toggle="tab" href="#demo-lft-tab-10">Parcelas Comissões</a></li>
+<!--                    <li id="2"><a data-toggle="tab" href="#demo-lft-tab-2">Faturamento Compensado</a></li>-->
+<!--                    <li id="3"><a data-toggle="tab" href="#demo-lft-tab-3">Composição Crédito</a></li>-->
+<!--                    <li id="4"><a data-toggle="tab" href="#demo-lft-tab-4">Comissão Rep. Comercial</a></li>-->
+<!--                    <li id="5"><a data-toggle="tab" href="#demo-lft-tab-5">Comissão Contador</a></li>-->
+<!--                    <li id="6"><a data-toggle="tab" href="#demo-lft-tab-6">Custas</a></li>-->
+                    <li id="11"><a data-toggle="tab" href="#demo-lft-tab-11">Custas Processuais</a></li>
+                    <li id="7"><a data-toggle="tab" href="#demo-lft-tab-7">Observação</a></li>
+                    <li id="8"><a data-toggle="tab" href="#demo-lft-tab-8">Anexos</a></li>
+                </ul>
+                <div id="vanderlay" style="height: 400px">
+                <div  class="tab-content" style="width: 95.5%">
+                    <?php
+                    for ($i = 1; $i <= 11; $i++) {
+                        switch ($i) {
+                            case 1: $num = "demo-lft-tab-1";
+                                $grupo = "fixo";
+                                $nome = 'Parcelas Contrato';
+                                $acaoUrl = BASE_URL . '/contrato/contrato/fixo';
+                                $acao = 'fixo';
+                                break;
+                            case 2: $num = "demo-lft-tab-2";
+                                $grupo = "compensado";
+                                $nome = 'Faturamento Compensado';
+                                $acaoUrl = BASE_URL . '/contrato/contrato/compensado';
+                                $acao = 'compensado';
+                                break;
+                            case 3: $num = "demo-lft-tab-3";
+                                $grupo = "composicao";
+                                $nome = 'Composição Crédito';
+                                $acao = 'composicao';
+                                break;
+                            case 4: $num = "demo-lft-tab-4";
+                                $grupo = "repcomercial";
+                                $nome = 'Comissão Rep. Comercial';
+                                $acaoUrl = BASE_URL . '/contrato/contrato/repcomercial';
+                                $acao = 'repcomercial';
+                                break;
+                            case 5: $num = "demo-lft-tab-5";
+                                $grupo = "contador";
+                                $nome = 'Comissão Contador';
+                                $acaoUrl = BASE_URL . '/contrato/contrato/contador';
+                                $acao = 'contador';
+                                break;
+                            case 6: $num = "demo-lft-tab-6";
+                                $grupo = "custas";
+                                $nome = 'Custas';
+                                $acaoUrl = BASE_URL . '/contrato/contrato/custas';
+                                $acao = 'custas';
+                                break;
+                            case 7: $num = "demo-lft-tab-7";
+                                $grupo = "observacao";
+                                $nome = 'Observação';
+                                $acaoUrl = BASE_URL . '/contrato/contrato/observacao';
+                                $acao = 'observacao';
+                                break;
+                            case 8: $num = "demo-lft-tab-8";
+                                $grupo = "anexos";
+                                $nome = 'Anexos';
+                                $acaoUrl = BASE_URL . '/contrato/contrato/anexos/id/'.$id;
+                                $acao = 'anexos';
+                                break;
+                            case 9: $grupo = "comissao";
+                                $nome = "Comissões";
+                                $acaoUrl = BASE_URL . '/contrato/contrato/comissao/id/'.$id;
+                                $acao = 'comissao';
+                                break;
+                            case 10: $num = "demo-lft-tab-10";
+                                $grupo = "tab-comissao";
+                                $nome = 'Comissões';
+                                $acaoUrl = BASE_URL . '/contrato/contrato/anexos/id/'.$id;
+                                $acao = 'get-comissao';
+                                break;
+                            case 11: $num = "demo-lft-tab-11";
+                                $grupo = "custas-processuais";
+                                $nome = 'Custas Processuais';
+                                $acaoUrl = BASE_URL . '/contrato/contrato/custas-processuais/id/'.$id;
+                                $acao = 'custas-processuais';
+                                break;
+                        }
+                        $modal[$acao] = $nome;
+                        $modalUrl[$acao] = $acaoUrl;
+                        $class = $i == 1 ? "tab-pane fade active in" : "tab-pane fade";
+                        ?>
+                        <div id="<?= $num ?>" class="<?= $class ?>">
+                            <div class="panel">
+                                <?php if ($num != 5) { ?>
+                                    <div class="text-right" >
+                                        <button type="button" class="next btn btn-primary" onclick="abrirModal(<?php echo $i ?>);"><?php if($i == 4) {
+                                                echo "Comissão Rep. Comercial";
+                                            } elseif($i == 5) {
+                                                echo "Comissão Contador";
+                                            } else {
+                                                echo "Novo";
+                                            } ?>
+                                        </button>
+                                    </div>
+                                <?php } ?>
+
+                                <div id="append-<?= $i ?>" class="panel-body" style="margin-top: 0;" >
+                                    <?php if (isset($this->newButton)) { ?>
+                                        <div class="panel-footer text-left">
+                                            <a class="btn btn-lg btn-primary" href='<?php echo $this->newButton['href'] ?>'><?php echo $this->newButton['text'] ?></a>
+                                        </div>
+                                    <?php } ?>
+                                    <!--<table id="demo-table" class="table-striped" data-toolbar="#demo-custom-toolbar" data-sort-name="id" data-sort-order="desc" data-pagination="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1">-->
+                                    <table id="demo-table" class="table-striped" data-toolbar="" data-sort-name="id" data-sort-order="asc" data-pagination="true" data-show-refresh="" data-show-toggle="" data-show-columns="" data-search="" data-select-item-name="">
+                                        <thead>
+                                        <tr>
+                                            <?php foreach ($this->tableInformation as $th) { ?>
+                                                <th data-field="<?php echo $th['index'] ?>" data-align="center" data-events="<?php
+                                                if (isset($th['events'])) {
+                                                    echo $th['events'];
+                                                }
+                                                ?>" data-sortable="true" data-formatter="<?php echo $th['format'] ?>" ><?php echo $th['descricao'] ?></th>
+                                            <?php
+                                            }
+                                            ?>
+                                        </tr>
+                                        </thead>
+                                    </table>
+                                    <div class="panel-footer text-right">
+                                        <?php
+                                        //            echo $this->formButton($this->form->get('cancelar'));
+                                        ?>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    <?php
+                    }
+                    ?>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="<?php echo BASE_URL ?>/js/floatlabels.js" type="text/javascript"></script>
+    <script>
+        $JQuery('input.floatlabel').floatlabel();
+        $JQuery(function() {
+            $JQuery('[name="refresh"]').click(function() {
+                var aux = '<?php echo $this->breadcrumbs[0]['url'] . '/ajax/1'; ?>';
+                $('#demo-table').bootstrapTable('refresh', {url: aux});
+            });
+        });
+        function nameFormatter(value, row) {
+            if (value)
+                return '<a href="<?php echo $this->addIcon[0]['url']; ?>/id/' + JSON.stringify(row.id) + '" class="btn-link" title="<?php echo $this->addIcon[0]['title']; ?>"> ' + value + '</a>';
+            return '-';
+        }
+        function nameFormatterTxt(value, row) {
+            if (value)
+                return '<a href="<?php echo $this->addIcon[0]['url']; ?>/txt/' + JSON.stringify(row.id) + '" class="btn-link" title="<?php echo $this->addIcon[0]['title']; ?>"> ' + value + '</a>';
+            return '-';
+        }
+        function realFormatter(value, row) {
+            if (value)
+                return '<span>R$ sp' + number_format(value, 2, ',', '.') +'</span>';
+            return '-';
+        }
+        function operateFormatter(value, row, index) {
+            return [
+                <?php foreach ($this->addIcon as $item) { ?>
+                '<a class="<?php echo $item['classHref']; ?>" href="javascript:void(0)" onclick="<?php echo $item['onClick'] ?>" title="<?php echo $item['title']; ?>">',
+                '<i class="<?php echo $item['classButton']; ?>"></i>',
+                '</a>&nbsp;&nbsp;&nbsp;', <?php } ?>
+            ].join('');
+        }
+
+        window.operateEvents = {
+            <?php
+            foreach ($this->addIcon as $item) {
+                if ($item['classHref'] == 'remove') {
+                    ?>
+            'click .<?php echo $item['classHref']; ?>': function(e, value, row, index) {
+                if (confirm('Deseja deletar este registro?') == true){
+                    window.location.assign("<?php echo $item['url']; ?>/id/" + JSON.stringify(row.id));
+                    console.log(value, row, index);
+                }
+            },
+            <?php } else if ($item['classHref'] == 'grid') { ?>
+            //            'click .<?php echo $item['classHref']; ?>': function(e, value, row, index) {
+            //            window.location.assign("<?php echo $item['url']; ?>/id/" + JSON.stringify(row.id) + '/tabela/' + JSON.stringify(row.tabela_alvo));
+            //                    console.log(value, row, index);
+            //            },
+            <?php } else if ($item['classHref'] == 'basedados') { ?>
+            'click .<?php echo $item['classHref']; ?>': function(e, value, row, index) {
+                window.location.assign("<?php echo $item['url']; ?>/table/" + JSON.stringify(row.table_name));
+                console.log(value, row, index);
+            },
+            <?php } else if ($item['classHref'] == 'reg') { ?>
+            'click .<?php echo $item['classHref']; ?>': function(e, value, row, index) {
+                window.location.assign("<?php echo $item['url']; ?>/tipo/" + JSON.stringify(row.reg));
+                console.log(value, row, index);
+            },
+            <?php } else { ?>
+            'click .<?php echo $item['classHref']; ?>': function(e, value, row, index) {
+                window.location.assign("<?php echo $item['url']; ?>/id/" + JSON.stringify(row.id));
+                console.log(value, row, index);
+            },
+            <?php } ?>
+            <?php } ?>
+        };
+        function openModal(grupo){
+            $('#dialog-new' + grupo).modal('toggle');
+        }
+    </script>
+
+
+    <!-- ========================= MODAL DO PROCESSO ======================== -->
+    <?php
+    $contarino = 1;
+    foreach ($modal as $action => $nome) {
+    ?>
+    <div id="dialog-new-<?php echo $contarino ?>" class="bootbox modal fade in" role="dialog" tabindex="-1" style="display: none; padding-right: 13px;" aria-hidden="false">
+        <div class="modal-backdrop fade in"></div>
+        <div class="modal-dialog">
+            <div class="modal-content" style="<?php if($contarino==9){echo "width:180%; margin-left: -36%";}else{echo "width:63em";} ?>">
+                <div class="modal-header">
+                    <button id="fechar" class="bootbox-close-button close" aria-hidden="true" data-dismiss="modal" type="button">×</button>
+                    <h4 class="modal-title text-center" id="titulo-modal"><strong><?php echo $nome; ?></strong></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="bootbox-body">
+                        <div class="div-input-modal">
+                            <?php $cabecalho = $this->cabecalho; ?>
+                            <?php if(isset($cabecalho) && $cabecalho['existe'] == true) { ?>
+                            <div id="cabecalho" class="div-input-modal" style="border: 1px solid #000000; margin: 1%; background-color: #DCDCDC;">
+                                <table style="width: 100%">
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="2"><span style="margin-left: 1.3%"><strong>Contrato: <?= $cabecalho['id'].'-'.$cabecalho['cliente'] ?></strong></span></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2"><span style="margin-left: 1.3%"><strong>Descrição: </strong><?= $cabecalho['descricao']?></span></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2"><span style="margin-left: 1.3%"><strong>Empresa: </strong><?= $cabecalho['empresa'] ?></span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><span style="margin-left: 2.3%"><strong>Tipo Contrato: </strong><?= $cabecalho['tipoContrato'] ?></span></td>
+                                            <td><span style="margin-left: 3%"><strong>Tipo Serviço: </strong><?= $cabecalho['tipoServico'] ?></span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><span style="margin-left: 2.3%"><strong>Tipo Receita: </strong><?= $cabecalho['tipoReceita'] ?></span></td>
+                                            <td><span style="margin-left: 3%"><strong>Valor Crédito: </strong><?= $cabecalho['valorCredito'] ?></span></td>
+                                            <td><span style="margin-left: 5%"><strong>Status: </strong><?= $cabecalho['status']?></span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><span style="margin-left: 2.3%"><strong>Honorários: </strong><?= $cabecalho['percHonorarios'] ?></span></td>
+                                            <td><span style="margin-left: 3%"><strong>Valor Honorários: </strong><?= $cabecalho['valorHonorarios'] ?></span></td>
+                                            <td><span style="margin-left: 5%"><strong>Valor Hora: </strong><?= $cabecalho['valorHora'] ?></span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <?php } ?>
+                            <form id="<?= $action ?>" method="POST" action="<?= $modalUrl[$action] ?>" enctype='multipart/form-data'>
+                                <div class="row">
+                                    <?php if($contarino == 9) { ?>
+                                        <div class="radio col-sm-4">
+                                            <label class="form-radio form-icon active">
+                                                <input name="ident_comissao" id="cont" value="1" type="radio" onchange="ajaxGet('<?= BASE_URL ?>/contrato/contrato/comissao-acao/id/<?= $id ?>/pessoa/1', 'contador_representante_comissao'); reload();">
+                                                Contador
+                                            </label>
+                                            <label class="form-radio form-icon active">
+                                                <input name="ident_comissao" id="rep" value="2" type="radio" onchange="ajaxGet('<?= BASE_URL ?>/contrato/contrato/comissao-acao/id/<?= $id ?>/pessoa/2', 'contador_representante_comissao'); reload();">
+                                                Representante Comercial
+                                            </label>
+                                        </div>
+                                    <?php } elseif($contarino == 1) { ?>
+                                        <div class="col-sm-6">
+                                            <label class="form-radio form-icon active" style="margin-top: 6%; margin-left: 4%">
+                                                <input name="num_parcelas" id="uma" value="1" type="radio" onchange="verificaParcela(1)" checked="checked">
+                                                Faturamento compensado
+                                            </label>
+                                            <label class="form-radio form-icon active" style="margin-top: 6%">
+                                                <input name="num_parcelas" id="varias" value="2" onchange="verificaParcela(2)" type="radio">
+                                                Parcela(s) Fixa(s)
+                                            </label>
+                                        </div>
+                                    <?php }
+                                    $cont = 0;
+                                    foreach ($this->partialElements as $chave => $element) {
+                                        if (isset($element['id_div'])) {
+                                            $idDiv = 'id="' . $element['id_div'] . '"';
+                                        } else {
+                                            $idDiv = '';
+                                        }
+                                        if (isset($element['htmlElement'])) {
+                                            $html = '<div>' . $element['htmlElement'] . '</div>';
+                                        } else {
+                                            $html = '';
+                                        }
+                                        if (isset($element['grupo']) && $element['grupo'] == $action) {
+                                            ?>
+                                            <?php
+                                            if (isset($element['name']) && $element['name'] == 'tipo_titulo_receber') {
+                                                echo "<div class='col-sm-8'><hr style='width: 152%;'></div>";
+                                            }
+                                            ?>
+                                    
+                                            <?php if ($cont == 0) { ?>
+                                                <div class="col-sm-<?php if($contarino==9){echo "4";}else{echo "6";} ?>" style="margin-top: 10px;">
+                                                    <div <?php echo $idDiv ?> class="input-group mar-btm <?php if (isset($messageError[$element['name']])) echo $classError; ?>">
+                                                        <?php
+                                                        if (!isset($element['none'])) {
+                                                            if (isset($element['label']) && !isset($element['icon'])) {
+                                                                echo $element['label'];
+                                                            } else {
+                                                                if (isset($element['icon']) && isset($element['nome'])) {
+                                                                    ?>
+                                                                    <span class="input-group-addon" title="<?php echo $element['nome'] ?>">
+                                                                            <i class="<?php echo $element['icon']; ?>" ></i>
+                                                                        </span>
+                                                                <?php
+                                                                }
+                                                            }
+                                                        }
+                                                        ?>
+                                                        <?php
+                                                        if (isset($element['calendario'])) {
+                                                            ?>
+                                                            <div id="demo-dp-txtinput">
+                                                                <?php echo $element['input'] ?>
+                                                            </div>
+                                                        <?php
+                                                        } else if (!isset($element['type'])) {
+                                                            echo $element['input'];
+                                                            if (isset($messageError[$element['name']])) {
+                                                                $messageErrorExib = array_pop($messageError[$element['name']]);
+                                                                echo $errorIcon;
+                                                                echo '<label for="demo-oi-errinput" class="control-label">' . $messageErrorExib . '</label>';
+                                                            }
+                                                        } else {
+                                                            ?>
+                                                            <br>
+                                                            <span class="btn btn-default btn-file">
+                                                                    <?php
+                                                                    echo $element['label'];
+                                                                    echo $element['input'];
+                                                                    ?>
+                                                                </span>
+                                                        <?php } ?>
+                                                        <span class="info clearfix">
+                                                                <?php
+                                                                if (isset($element['information']))
+                                                                    echo $element['information'];
+                                                                else if (isset($element['information2']))
+                                                                    echo $element['information'];
+                                                                ?>
+                                                            </span>
+                                                    </div>
+                                                </div>
+                                                <?php
+                                                $cont = 1;
+                                            } else {
+                                                ?>
+                                                <div class="col-sm-<?php if($contarino==9){echo "4";}else{echo "6";} ?>" style="margin-top: 10px;">
+                                                    <div <?php echo $idDiv ?> class="input-group mar-btm <?php if (isset($messageError[$element['name']])) echo $classError; ?>">
+                                                        <?php
+                                                        if (!isset($element['none'])) {
+                                                            if (isset($element['label']) && !isset($element['icon'])) {
+                                                                echo $element['label'];
+                                                            } else {
+                                                                if (isset($element['icon']) && isset($element['nome'])) {
+                                                                    ?>
+                                                                    <span class="input-group-addon" title="<?php echo $element['nome'] ?>">
+                                                                            <i class="<?php echo $element['icon']; ?>" ></i>
+                                                                        </span>
+                                                                <?php
+                                                                }
+                                                            }
+                                                        }
+                                                        ?>
+                                                        <?php
+                                                        if (isset($element['calendario'])) {
+                                                            ?>
+                                                            <div id="demo-dp-txtinput">
+                                                                <?php echo $element['input'] ?>
+                                                            </div>
+                                                        <?php
+                                                        } else if (!isset($element['type'])) {
+                                                            echo $element['input'];
+
+                                                            if (isset($messageError[$element['name']])) {
+                                                                $messageErrorExib = array_pop($messageError[$element['name']]);
+                                                                echo $errorIcon;
+                                                                echo '<label for="demo-oi-errinput" class="control-label">' . $messageErrorExib . '</label>';
+                                                            }
+                                                        } else {
+                                                            ?>
+                                                            <br>
+
+                                                            <span class="btn btn-default btn-file">
+                                                                    <?php
+                                                                    echo $element['label'];
+                                                                    echo $element['input'];
+                                                                    ?>
+                                                                </span>
+                                                        <?php } ?>
+                                                        <span class="info clearfix">
+                                                                <?php
+                                                                if (isset($element['information']))
+                                                                    echo $element['information'];
+                                                                else if (isset($element['information2']))
+                                                                    echo $element['information'];
+                                                                ?>
+                                                            </span>
+
+                                                    </div>
+                                                    <?php echo $html; ?>
+                                                </div>
+                                                <?php
+                                                $cont = 0;
+                                            }
+                                        }
+                                    }
+                                    if ($contarino == 1) {
+                                            ?>
+                                            <div class="col-sm-7 div-periodicidade" style="margin-top: -5.6em; margin-left: 40%;">
+                                                    <label class="form-radio form-icon active" style="margin-top: -6%; margin-left: 20%">
+                                                        <input name="periodicidade" id="semanal" value="7" onclick="checkInputOutros(false)" type="radio">
+                                                        Semanal
+                                                    </label>
+                                                    <label class="form-radio form-icon active" style="margin-top: -6%">
+                                                        <input name="periodicidade" id="quinzenal" value="15" onclick="checkInputOutros(false)" type="radio">
+                                                        Quinzenal
+                                                    </label>
+                                                    <label class="form-radio form-icon active" style="margin-top: -6%">
+                                                        <input name="periodicidade" id="quinzenal" value="30" type="radio" onclick="checkInputOutros(false)" checked="checked">
+                                                        Mensal
+                                                    </label>
+                                                    <label class="form-radio form-icon active" style="margin-top: -6%">
+                                                        <input name="periodicidade" id="periodicidade-outro" onclick="checkInputOutros(true)" value="outro" type="radio">
+                                                        Outro
+                                                    </label>
+                                                </div>
+                                        <?php }
+                                        if($contarino == 9) { ?>
+                                        <div class="col-md-12 col-lg-12 eq-box-lg">
+                                            <div class="panel-body">
+                                                <div class="table-responsive">
+                                                    <table class="table table-striped">
+                                                        <thead style="font-weight: bold">
+                                                        <tr>
+                                                            <td>ID</td>
+                                                            <td>Nome</td>
+                                                            <td>% Comissão</td>
+                                                            <td>Cargo</td>
+                                                            <td>Status</td>
+                                                            <td>Operações</td>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+                                    <?php } ?>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="text-right" style="margin-top:5px;">
+                        <?php if ($contarino == 8) { ?>
+                            <button type="submit" class="btn btn-info" id="submitbutton">Salvar</button>
+                        <?php } else { ?>
+                            <button  type="button" class="next btn btn-primary" onclick="salvarContrato(<?php echo $contarino ?>);">Salvar</button>
+                        <?php } ?>
+                    </div>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+<?php
+$contarino++;
+}
+?>

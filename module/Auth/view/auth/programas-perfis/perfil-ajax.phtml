@@ -1,0 +1,20 @@
+<?php
+
+if ($id_programa) {
+    $msg = "testando";
+} else {
+    $msg = " Selecione uma filial e um programa para visualizar os perfis";
+}
+
+
+$this->partial('/partials/ajax/checkbox.phtml', array('dados' => $perfis,
+    'dados_selecionadas' => $perfis_selecionados,
+    'idColumnSelecionado' => 'id_perfil',
+    'idColumn' => 'id',
+    'name' => 'id_perfil',
+    'descColumn' => 'desc_perfil',
+    'id' => 'id_perfil',
+    'msg' => $msg,));
+
+
+?>

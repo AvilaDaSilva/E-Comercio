@@ -1,0 +1,102 @@
+<?php
+$help = 'Nesta tela é atribuído um perfil ao programa escolhido. Os campos com * são obrigatórios';
+
+$breadcrumbs[] = array(
+    'url' => BASE_URL.'/auth/programas-perfil/index',
+    'title' => 'Programa Perfil',
+    'text' => 'Programa Perfil',
+);
+$breadcrumbs[] = array(
+    'url' => BASE_URL.'/auth/programas-perfil/save',
+    'title' => 'Vincular programa perfil',
+    'text' => 'Vincular Programa perfil'
+);
+
+$partialElements[] = array(
+    'name' => 'id_filial',
+    'label' => $this->formLabel($form->get('id_filial')->setLabelAttributes(array('for' => 'Filial'))),
+    'input' => $this->formSelect($form->get('id_filial'))
+);
+$partialElements[] = array(
+    'name' => 'id_programa',
+    'label' => $this->formLabel($form->get('id_programa')->setLabelAttributes(array('for' => 'Programa'))),
+    'input' => $this->formSelect($form->get('id_programa'))
+);
+
+$checkbox = $form->checkbox;
+$partialElements[] = array(
+    'name' => 'id',
+    'input' => $this->formHidden($form->get('id'))
+);
+
+echo $this->partial('partials/form/template.phtml', array('breadcrumbs' => $breadcrumbs,
+    'titlePage' => 'Vincular Programa Perfil',
+    'partialElements' => $partialElements,
+    'form' => $form,
+    'help' => $help,
+    'checkbox' => $checkbox));
+?>
+
+<script type="text/javascript">
+    function reload() {
+        setTimeout(function () { // quando o timer for disparado...
+            $("#id_programa").trigger("chosen:updated");
+        }, 400);
+
+    }
+    function change(){
+        var id = $JQuery('#id_filial').val();
+        if (id > 0) {
+            $.ajax({
+                type: 'POST',
+                url: '<?php echo BASE_URL ?>/auth/programasperfis/programas-perfil/id/'+ id,
+                async : false,
+                success: function(a){
+                    var d = JSON.parse(a);
+                    if(d && d.length > 0){
+                        var html = '';
+                        for(var i = 0; i < d.length; i++){
+                            html += '<option value="' + d[i]['id'] + '-' + d[i]['desc_programa'] + '">' + d[i]['desc_programa'] + '</option>';
+                        }
+                        $JQuery("#id_programa").empty();
+                        $JQuery("#id_programa").append(html);
+                    } else {
+                        $JQuery("#id_programa").empty();
+                        alert("Contribuinte sem processos!");
+                    }
+                    setTimeout(function () {
+                        $("#id_programa").trigger("chosen:updated");
+                    }, 1000);
+                }
+            });
+        }
+    }
+
+    function checkbox() {
+        $("label.form-checkbox").each(function() {
+            $("label.form-checkbox").removeClass('active');
+        });
+        var aux = $('#id_programa').val();
+        var prog = aux.split('-')[0];
+        $.post('/auth/programasperfis/perfil-ajax',
+            {
+                programa: prog
+            }, function(d) {
+                var aux = d.split(":");
+                var inputs = document.getElementsByTagName('input');
+                var x=0;
+                for (var i = 1; i < aux.length; i++) {
+                    var n = aux[i].replace(/[^\d]+/g, '');
+                    for (x = 0; x < inputs.length; x++) {
+                        if(inputs[x].name=='id_perfil[]')
+                            if(inputs[x].value==n){
+                                inputs[x].checked=true;
+                                break;
+                            }
+                    }
+                    document.getElementById(n).className = 'form-checkbox form-icon active';
+                }
+            });
+    }
+
+</script>

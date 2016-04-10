@@ -1,0 +1,47 @@
+<?php
+
+$breadcrumbs[] = array(
+    'url' => BASE_URL . '/auth/usuarioperfil/index',
+    'title' => 'Vincular Usuário a Pefis',
+    'text' => 'Vincular Usuário a Perfis',
+);
+$newButton = array(
+    'title' => 'Vincular Usuário a Perfis',
+    'href' => BASE_URL . '/auth/usuarioperfil/save',
+    'text' => 'Vincular Usuário Perfis',
+);
+$addIcon[] = array(
+    'url' => BASE_URL . '/auth/usuarioperfil/delete',
+    'title' => 'Excluir',
+    'classButton' => 'glyphicon glyphicon-trash',
+    'classHref' => 'remove',
+);
+$tableInformation = array(
+    array('index' => 'id',
+        'format' => '',
+        'descricao' => 'Id',
+    ),
+    array('index' => 'nome',
+        'format' => '',
+        'descricao' => 'Usuário',
+    ),
+    array('index' => 'desc_perfil',
+        'format' => '',
+        'descricao' => 'Perfil',
+    ),
+    array('index' => 'operate',
+        'format' => 'operateFormatter',
+        'descricao' => 'Operações',
+        'events' => 'operateEvents'
+    ),
+);
+echo $this->partial('/partials/datatable/template.phtml', array(
+    'breadcrumbs' => $breadcrumbs,
+    'newButton' => $newButton,
+    'tableInformation' => $tableInformation,
+    'addIcon' => $addIcon,
+));
+?>
+
+
+

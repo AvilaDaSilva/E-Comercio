@@ -1,0 +1,36 @@
+<?php
+$breadcrumbs[]=	array(
+	'url' => BASE_URL.'/auth/perfis/index',
+	'title' => 'Perfis',
+	'text' => 'Perfis',
+);
+$breadcrumbs[]=	array(
+		'url' => BASE_URL.'/auth/perfis/save',
+		'title' => 'Save',
+		'text' => 'Novo Perfis',
+);
+$partialElements[] = array(
+    'name' => 'desc_perfil',
+    'information' => 'Este campo define o Perfil que será cadastrado',
+    'label' => $this->formLabel($form->get('desc_perfil')->setLabelAttributes(array('for' => 'desc_perfil'))),
+    'input' => $this->formInput($form->get('desc_perfil'))
+);
+$partialElements[] = array(
+		'name' => 'id_filial',
+		'information' => 'Este campo define a Filial que será cadastrada',
+		'label' => $this->formLabel($form->get('id_filial')->setLabelAttributes(array('for' => 'id_filial'))),
+		'input' => $this->formSelect($form->get('id_filial'))
+);
+$partialElements[] = array(
+		'name' => 'id',
+		'input' => $this->formHidden($form->get('id'))
+);  
+$help = 'Nesta tela cadastram-se os Perfis. Campos com * são obrigatórios!';
+echo $this->partial('partials/form/template.phtml', array(
+	'breadcrumbs' => $breadcrumbs, 
+	'titlePage' => 'Novo Perfil', 
+	'partialElements' => $partialElements,
+	'form' => $form,
+	'help' => $help
+));
+?>

@@ -1,0 +1,13 @@
+<?php
+$dados = $perfis;
+$opInicial = "SELECIONE UM PERFIL";
+$columnId = 'id';
+$columnDesc = 'desc_perfil';
+$msgNull = 'NÃO EXISTEM PERFIS PARA ESTA FILIAL';
+
+$this->partial('/partials/ajax/select.phtml', array('dados' => $dados, 
+    'opInicial' => $opInicial, 
+    'columnId' => $columnId, 
+    'columnDesc' => $columnDesc, 
+    'msgNull' => $msgNull));
+?>

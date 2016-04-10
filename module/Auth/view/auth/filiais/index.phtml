@@ -1,0 +1,68 @@
+<?php
+
+
+$breadcrumbs[] = array(
+    'url' => BASE_URL.'/auth/filiais/index',
+    'title' => 'Filiais',
+    'text' => 'Filiais'
+);
+
+$breadcrumbs[] = array(
+    'url' => BASE_URL.'/auth/filiais/index',
+    'title' => 'Filial',
+    'text' => 'Filial'
+);
+
+$head = 'Filial';
+
+$newButton = array(
+		'title' => 'Nova Filial',
+		'href' => BASE_URL.'/auth/filiais/save',
+		'text' => 'Nova Filial'
+);
+$addIcon[] = array(
+		'url' => BASE_URL.'/auth/filiais/save',
+		'title' => 'Editar',
+		'classButton' => 'glyphicon glyphicon-pencil',
+		'classHref' => 'edit',
+);
+$addIcon[] = array(
+		'url' => BASE_URL.'/auth/filiais/delete',
+		'title' => 'Excluir',
+		'classButton' => 'glyphicon glyphicon-trash',
+		'classHref' => 'remove',
+);
+
+$tableInformation = array(
+		array('index' => 'id',
+				'format' => '',
+				'descricao' => 'Id',
+		),
+		array('index' => 'nome_filial',
+				'format' => 'nameFormatter',
+				'descricao' => 'Filial',
+		),
+		array('index' => 'desc_modulo_filial',
+				'format' => '',
+				'descricao' => 'Módulo Filial',
+		),
+		array('index' => 'nome_empresa',
+				'format' => '',
+				'descricao' => 'Empresa',
+		),
+		array('index' => 'operate',
+				'format' => 'operateFormatter',
+				'descricao' => 'Operações',
+				'events' => 'operateEvents'
+		),
+);
+echo $this->partial('/partials/datatable/template.phtml', array(
+	'breadcrumbs' => $breadcrumbs,
+	'head' => $head,
+	'newButton' => $newButton,
+	'tableInformation' => $tableInformation,
+	'addIcon' => $addIcon,
+
+));
+
+?>

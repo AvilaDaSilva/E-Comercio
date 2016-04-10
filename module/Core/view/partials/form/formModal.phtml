@@ -1,0 +1,161 @@
+<div id="dialog-new-<?php echo $id ?>" class="bootbox modal fade in" role="dialog" tabindex="-1" style="display: none; padding-right: 13px;" aria-hidden="false">
+        <div class="modal-backdrop fade in"></div>
+        <div class="modal-dialog">
+            <div class="modal-content" style="width:63em">
+                <div class="modal-header">
+                    <button class="bootbox-close-button close" aria-hidden="true" data-dismiss="modal" type="button">×</button>
+                    <h4 class="modal-title text-center" id="titulo-modal"><strong><?php echo $nome ?></strong></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="bootbox-body">
+                        <div class="div-input-modal">
+                            <form id="<?= $form ?>" method="POST" action="<?= BASE_URL.$url ?>" enctype='multipart/form-data'>
+                                <div class="row">
+                                    <?php
+                                    $cont = 0;
+                                    foreach ($this->partialElements as $chave => $element) {
+                                        if (isset($element['id_div'])) {
+                                            $idDiv = 'id="' . $element['id_div'] . '"';
+                                        } else {
+                                            $idDiv = '';
+                                        }
+                                        if (isset($element['htmlElement'])) {
+                                            $html = '<div>' . $element['htmlElement'] . '</div>';
+                                        } else {
+                                            $html = '';
+                                        }
+                                        if (isset($element['grupo']) && $element['grupo'] == $action) {
+                                            ?>
+                                            <?php if ($cont == 0) { ?>
+                                                <div class="col-sm-6" style="margin-top: 10px;">
+                                                    <div <?php echo $idDiv ?> class="input-group mar-btm <?php if (isset($messageError[$element['name']])) echo $classError; ?>">
+                                                        <?php
+                                                        if (!isset($element['none'])) {
+                                                            if (isset($element['label']) && !isset($element['icon'])) {
+                                                                echo $element['label'];
+                                                            } else {
+                                                                if (isset($element['icon']) && isset($element['nome'])) {
+                                                                    ?>
+                                                                    <span class="input-group-addon" title="<?php echo $element['nome'] ?>">
+                                                                            <i class="<?php echo $element['icon']; ?>" ></i>
+                                                                        </span>
+                                                                <?php
+                                                                }
+                                                            }
+                                                        }
+                                                        ?>
+                                                        <?php
+                                                        if (isset($element['calendario'])) {
+                                                            ?>
+                                                            <div id="demo-dp-txtinput">
+                                                                <?php echo $element['input'] ?>
+                                                            </div>
+                                                        <?php
+                                                        } else if (!isset($element['type'])) {
+                                                            echo $element['input'];
+                                                            if (isset($messageError[$element['name']])) {
+                                                                $messageErrorExib = array_pop($messageError[$element['name']]);
+                                                                echo $errorIcon;
+                                                                echo '<label for="demo-oi-errinput" class="control-label">' . $messageErrorExib . '</label>';
+                                                            }
+                                                        } else {
+                                                            ?>
+                                                            <br>
+                                                            <span class="btn btn-default btn-file">
+                                                                    <?php
+                                                                    echo $element['label'];
+                                                                    echo $element['input'];
+                                                                    ?>
+                                                                </span>
+                                                        <?php } ?>
+                                                        <span class="info clearfix">
+                                                                <?php
+                                                                if (isset($element['information']))
+                                                                    echo $element['information'];
+                                                                else if (isset($element['information2']))
+                                                                    echo $element['information'];
+                                                                ?>
+                                                            </span>
+                                                    </div>
+                                                </div>
+                                                <?php
+                                                $cont = 1;
+                                            } else {
+                                                ?>
+                                                <div class="col-sm-6" style="margin-top: 10px;">
+                                                    <div <?php echo $idDiv ?> class="input-group mar-btm <?php if (isset($messageError[$element['name']])) echo $classError; ?>">
+                                                        <?php
+                                                        if (!isset($element['none'])) {
+                                                            if (isset($element['label']) && !isset($element['icon'])) {
+                                                                echo $element['label'];
+                                                            } else {
+                                                                if (isset($element['icon']) && isset($element['nome'])) {
+                                                                    ?>
+                                                                    <span class="input-group-addon" title="<?php echo $element['nome'] ?>">
+                                                                            <i class="<?php echo $element['icon']; ?>" ></i>
+                                                                        </span>
+                                                                <?php
+                                                                }
+                                                            }
+                                                        }
+                                                        ?>
+                                                        <?php
+                                                        if (isset($element['calendario'])) {
+                                                            ?>
+                                                            <div id="demo-dp-txtinput">
+                                                                <?php echo $element['input'] ?>
+                                                            </div>
+                                                        <?php
+                                                        } else if (!isset($element['type'])) {
+                                                            echo $element['input'];
+
+                                                            if (isset($messageError[$element['name']])) {
+                                                                $messageErrorExib = array_pop($messageError[$element['name']]);
+                                                                echo $errorIcon;
+                                                                echo '<label for="demo-oi-errinput" class="control-label">' . $messageErrorExib . '</label>';
+                                                            }
+                                                        } else {
+                                                            ?>
+                                                            <br>
+
+                                                            <span class="btn btn-default btn-file">
+                                                                    <?php
+                                                                    echo $element['label'];
+                                                                    echo $element['input'];
+                                                                    ?>
+                                                                </span>
+                                                        <?php } ?>
+                                                        <span class="info clearfix">
+                                                                <?php
+                                                                if (isset($element['information']))
+                                                                    echo $element['information'];
+                                                                else if (isset($element['information2']))
+                                                                    echo $element['information'];
+                                                                ?>
+                                                            </span>
+
+                                                    </div>
+                                                    <?php echo $html; ?>
+                                                </div>
+                                                <?php
+                                                $cont = 0;
+                                            }
+                                        }
+                                    }
+                                    ?>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="text-right" style="margin-top:5px;">
+                        <?php if (!isset($onclick)) { ?>
+                            <button type="submit" class="btn btn-info" id="submitbutton">Salvar</button>
+                        <?php } else { ?>
+                            <button type="button" class="next btn btn-primary" onclick="<?=$onclick?>">Salvar</button>
+                        <?php } ?>
+                    </div>
+                </form>
+            </div>
+        </div>  
+</div>

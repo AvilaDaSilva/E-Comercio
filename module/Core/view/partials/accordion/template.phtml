@@ -1,0 +1,686 @@
+<style>
+    .breadcrumb{
+        font-size: 20px;
+        color:#000;
+    }
+</style>
+<!-- ##### CRIAÇÃO DOS BREADCRUMBS #####-->
+<?php
+if (isset($this->breadcrumbs))
+    if ($this->breadcrumbs) {
+        $keys = array_keys($this->breadcrumbs);
+        $endKey = end($keys);
+        ?>
+        <ol class="breadcrumb">
+            <li>Você está aqui: </li>
+            <?php
+            foreach ($this->breadcrumbs as $chave => $breadcrumb) {
+                if ($breadcrumb['url'] == '#')
+                    $urlBreadcrumb = '#';
+                else
+                    $urlBreadcrumb = BASE_URL . $breadcrumb['url'];
+                ?>
+                <?php if ($endKey != $chave) { ?>
+                    <li><a href="<?php echo $urlBreadcrumb; ?>" title="<?php echo $breadcrumb['title']; ?>"><?php echo $breadcrumb['text']; ?></a></li>
+                <?php } else { ?>
+                    <li><strong><?php echo $breadcrumb['text']; ?></strong></li>
+                    <?php
+                }
+            }
+            ?>
+        </ol>
+    <?php } ?>
+<!-- ##### FIM DOS BREADCRUMBS #####-->
+
+<!-- ##### HEAD DA PAGINA #####-->
+    <link href="/css/jquery.treemenu.css" rel="stylesheet" type="text/css"/>
+<!-- ##### FIM DA HEAD #####-->
+
+<div id="page-content">
+    <div class="panel">
+        <?php if (isset($this->help)) { ?>
+            <div class="panel-heading">
+                <h3 class="panel-title"><?php echo $this->help ?></h3>
+            </div>
+        <?php } ?>
+        <div class="panel-heading">
+            <br>
+            <div class="row">
+                <div class="col-md-12 col-lg-12">
+
+                    <!--Default Accordion-->
+                    <!--===================================================-->
+                    <div class="panel">
+                        <ul class="tree">
+                            <!-- ##### MENU EM ARVORE APURAÇÃO SPED CONTRIBUIÇÕES --> 
+                            <?php switch ($this->tipo) {
+                                case 1:
+                                    ?>
+                                    <li><a href=''>Apuração ST - EFD CONTRIBUIÇÕES</a>
+                                        <ul>
+                                            <li><a onclick="grid('st_reg_0000');">0000</a>
+                                                <ul>
+                                                    <li><a onclick="grid('st_reg_0001');">0001</a>
+                                                        <ul>
+                                                            <li><a onclick="grid('st_reg_0100');">0100</a></li>
+                                                            <li><a onclick="grid('st_reg_0110');">0110</a>
+                                                                <ul>
+                                                                    <li><a onclick="grid('st_reg_0111');">0111</a></li>
+                                                                </ul>
+                                                            </li>
+                                                            <li><a onclick="grid('st_reg_0140');">0140</a>
+                                                                <ul>
+                                                                    <li><a onclick="grid('st_reg_0150');">0150</a></li>
+                                                                    <li><a onclick="grid('st_reg_0190');">0190</a></li>
+                                                                    <li><a onclick="grid('st_reg_0200');">0200</a>
+                                                                        <ul>
+                                                                            <li><a onclick="grid('st_reg_0205');">0205</a></li>
+                                                                            <li><a onclick="grid('st_reg_0206');">0206</a></li>
+                                                                        </ul>
+                                                                    </li>
+                                                                    <li><a onclick="grid('st_reg_0400');">0400</a></li>
+                                                                    <li><a onclick="grid('st_reg_0450');">0450</a></li>
+                                                                </ul>
+                                                            </li>
+                                                            <li><a onclick="grid('st_reg_0500');">0500</a></li>
+                                                        </ul>
+                                                    </li>
+                                                    <li><a onclick="grid('st_reg_0120');">0120</a></li>
+                                                    <li><a onclick="grid('st_reg_0145');">0145</a></li>
+                                                    <li><a onclick="grid('st_reg_0208');">0208</a></li>
+                                                    <li><a onclick="grid('st_reg_0600');">0600</a></li>
+                                                    <li><a onclick="grid('st_reg_0990');">0990</a></li>
+                                                    <li><a onclick="grid('st_reg_1001');">1001</a></li>
+                                                    <li><a onclick="grid('st_reg_1010');">1010</a></li>
+                                                    <li><a onclick="grid('st_reg_1020');">1020</a></li>
+                                                    <li><a onclick="grid('st_reg_1100');">1100</a></li>
+                                                    <li><a onclick="grid('st_reg_1300');">1300</a></li>
+                                                    <li><a onclick="grid('st_reg_1500');">1500</a></li>
+                                                    <li><a onclick="grid('st_reg_1700');">1700</a></li>
+                                                    <li><a onclick="grid('st_reg_1800');">1800</a></li>
+                                                    <li><a onclick="grid('st_reg_1900');">1900</a></li>
+                                                    <li><a onclick="grid('st_reg_1990');">1990</a></li>
+                                                    <li><a onclick="grid('st_reg_a001');">A001</a></li>
+                                                    <li><a onclick="grid('st_reg_a010');">A010</a>
+                                                        <ul>
+                                                            <li><a onclick="grid('st_reg_a100');">A100</a>
+                                                                <ul>
+                                                                    <li><a onclick="grid('st_reg_a110');">A110</a></li>
+                                                                    <li><a onclick="grid('st_reg_a111');">A111</a></li>
+                                                                    <li><a onclick="grid('st_reg_a170');">A170</a></li>
+                                                                </ul>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                    <li><a onclick="grid('st_reg_a120');">A120</a></li>
+                                                    <li><a onclick="grid('st_reg_a990');">A990</a></li>
+                                                    <li><a onclick="grid('st_reg_c001');">C001</a>
+                                                        <ul>
+                                                            <li><a onclick="grid('st_reg_c010');">C010</a>
+                                                                <ul>
+                                                                    <li><a onclick="grid('st_reg_c100');">C100</a>
+                                                                        <ul>
+                                                                            <li><a onclick="grid('st_reg_c110');">C110</a></li>
+                                                                            <li><a onclick="grid('st_reg_c111');">C111</a></li>
+                                                                            <li><a onclick="grid('st_reg_c120');">C120</a></li>
+                                                                            <li><a onclick="grid('st_reg_c170');">C170</a></li>
+                                                                        </ul>
+                                                                    </li>
+                                                                    <li><a onclick="grid('st_reg_c395');">C395</a>
+                                                                        <ul>
+                                                                            <li><a onclick="grid('st_reg_c396');">C396</a></li>
+                                                                        </ul>
+                                                                    </li>
+                                                                </ul>
+                                                            </li>
+                                                            <li><a onclick="grid('st_reg_c500');">C500</a>
+                                                                <ul>
+                                                                    <li><a onclick="grid('st_reg_c501');">C501</a></li>
+                                                                    <li><a onclick="grid('st_reg_c505');">C505</a></li>
+                                                                </ul>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                    <li><a onclick="grid('st_reg_c180');">C180</a></li>
+                                                    <li><a onclick="grid('st_reg_c181');">C181</a></li>
+                                                    <li><a onclick="grid('st_reg_c185');">C185</a></li>
+                                                    <li><a onclick="grid('st_reg_c188');">C188</a></li>
+                                                    <li><a onclick="grid('st_reg_c190');">C190</a></li>
+                                                    <li><a onclick="grid('st_reg_c191');">C191</a></li>
+                                                    <li><a onclick="grid('st_reg_c195');">C195</a></li>
+                                                    <li><a onclick="grid('st_reg_c198');">C198</a></li>
+                                                    <li><a onclick="grid('st_reg_c199');">C199</a></li>
+                                                    <li><a onclick="grid('st_reg_c380');">C380</a></li>
+                                                    <li><a onclick="grid('st_reg_c381');">C381</a></li>
+                                                    <li><a onclick="grid('st_reg_c385');">C385</a></li>
+                                                    <li><a onclick="grid('st_reg_c400');">C400</a></li>
+                                                    <li><a onclick="grid('st_reg_c405');">C405</a></li>
+                                                    <li><a onclick="grid('st_reg_c481');">C481</a></li>
+                                                    <li><a onclick="grid('st_reg_c485');">C485</a></li>
+                                                    <li><a onclick="grid('st_reg_c489');">C489</a></li>
+                                                    <li><a onclick="grid('st_reg_c490');">C490</a></li>
+                                                    <li><a onclick="grid('st_reg_c491');">C491</a></li>
+                                                    <li><a onclick="grid('st_reg_c495');">C495</a></li>
+                                                    <li><a onclick="grid('st_reg_c499');">C499</a></li>
+                                                    <li><a onclick="grid('st_reg_c509');">C509</a></li>
+                                                    <li><a onclick="grid('st_reg_c600');">C600</a></li>
+                                                    <li><a onclick="grid('st_reg_c601');">C601</a></li>
+                                                    <li><a onclick="grid('st_reg_c605');">C605</a></li>
+                                                    <li><a onclick="grid('st_reg_c609');">C609</a></li>
+                                                    <li><a onclick="grid('st_reg_c990');">C990</a></li>
+                                                    <li><a onclick="grid('st_reg_d001');">D001</a>
+                                                        <ul>
+                                                            <li><a onclick="grid('st_reg_d010');">D010</a>
+                                                                <ul>
+                                                                    <li><a onclick="grid('st_reg_d100');">D100</a>
+                                                                        <ul>
+                                                                            <li><a onclick="grid('st_reg_d101');">D101</a></li>
+                                                                            <li><a onclick="grid('st_reg_d105');">D105</a></li>
+                                                                            <li><a onclick="grid('st_reg_d111');">D111</a></li>
+                                                                            <li><a onclick="grid('st_reg_d200');">D200</a>
+                                                                                <ul>
+                                                                                    <li><a onclick="grid('st_reg_d201');">D201</a></li>
+                                                                                    <li><a onclick="grid('st_reg_d205');">D205</a></li>
+                                                                                    <li><a onclick="grid('st_reg_d209');">D209</a></li>
+                                                                                </ul>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </li>
+                                                                </ul>
+                                                            </li>
+                                                            <li><a onclick="grid('st_reg_d500');">D500</a>
+                                                                <ul>
+                                                                    <li><a onclick="grid('st_reg_d501');">D501</a></li>
+                                                                    <li><a onclick="grid('st_reg_d505');">D505</a></li>
+                                                                    <li><a onclick="grid('st_reg_d509');">D509</a></li>
+                                                                </ul>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                    <li><a onclick="grid('st_reg_d300');">D300</a></li>
+                                                    <li><a onclick="grid('st_reg_d309');">D309</a></li>
+                                                    <li><a onclick="grid('st_reg_d350');">D350</a></li>
+                                                    <li><a onclick="grid('st_reg_d359');">D359</a></li>
+                                                    <li><a onclick="grid('st_reg_d600');">D600</a></li>
+                                                    <li><a onclick="grid('st_reg_d601');">D601</a></li>
+                                                    <li><a onclick="grid('st_reg_d605');">D605</a></li>
+                                                    <li><a onclick="grid('st_reg_d609');">D609</a></li>
+                                                    <li><a onclick="grid('st_reg_d990');">D990</a></li>
+                                                    <li><a onclick="grid('st_reg_f001');">F001</a>
+                                                        <ul>
+                                                            <li><a onclick="grid('st_reg_f010');">F010</a>
+                                                                <ul>
+                                                                    <li><a onclick="grid('st_reg_f100');">F100</a>
+                                                                        <ul>
+                                                                            <li><a onclick="grid('st_reg_f111');">F111</a></li>
+                                                                        </ul>
+                                                                    </li>
+                                                                    <li><a onclick="grid('st_reg_f120');">F120</a>
+                                                                        <ul>
+                                                                            <li><a onclick="grid('st_reg_f129');">F129</a></li>
+                                                                        </ul>
+                                                                    </li>
+                                                                    <li><a onclick="grid('st_reg_f130');">F130</a></li>
+                                                                </ul>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                    <li><a onclick="grid('st_reg_f139');">F139</a></li>
+                                                    <li><a onclick="grid('st_reg_f150');">F150</a></li>
+                                                    <li><a onclick="grid('st_reg_f200');">F200</a></li>
+                                                    <li><a onclick="grid('st_reg_f205');">F205</a></li>
+                                                    <li><a onclick="grid('st_reg_f210');">F210</a></li>
+                                                    <li><a onclick="grid('st_reg_f211');">F211</a></li>
+                                                    <li><a onclick="grid('st_reg_f500');">F500</a></li>
+                                                    <li><a onclick="grid('st_reg_f509');">F509</a></li>
+                                                    <li><a onclick="grid('st_reg_f510');">F510</a></li>
+                                                    <li><a onclick="grid('st_reg_f519');">F519</a></li>
+                                                    <li><a onclick="grid('st_reg_f525');">F525</a></li>
+                                                    <li><a onclick="grid('st_reg_f550');">F550</a></li>
+                                                    <li><a onclick="grid('st_reg_f559');">F559</a></li>
+                                                    <li><a onclick="grid('st_reg_f560');">F560</a></li>
+                                                    <li><a onclick="grid('st_reg_f569');">F569</a></li>
+                                                    <li><a onclick="grid('st_reg_f600');">F600</a></li>
+                                                    <li><a onclick="grid('st_reg_f700');">F700</a></li>
+                                                    <li><a onclick="grid('st_reg_f800');">F800</a></li>
+                                                    <li><a onclick="grid('st_reg_f990');">F990</a></li>
+                                                    <li><a onclick="grid('st_reg_i001');">I001</a></li>
+                                                    <li><a onclick="grid('st_reg_i010');">I010</a></li>
+                                                    <li><a onclick="grid('st_reg_i100');">I100</a></li>
+                                                    <li><a onclick="grid('st_reg_i200');">I200</a></li>
+                                                    <li><a onclick="grid('st_reg_i990');">I990</a></li>
+                                                    <li><a onclick="grid('st_reg_m001');">M001</a>
+                                                        <ul>
+                                                            <li><a onclick="grid('st_reg_m100');">M100</a>
+                                                                <ul>
+                                                                    <li><a onclick="grid('st_reg_m105');">M105</a></li>
+                                                                    <li><a onclick="grid('st_reg_m505');">M505</a></li>
+                                                                </ul>
+                                                            </li>
+                                                            <li><a onclick="grid('st_reg_m200');">M200</a>
+                                                                <ul>
+                                                                    <li><a onclick="grid('st_reg_m210');">M210</a></li>
+                                                                    <li><a onclick="grid('st_reg_m610');">M610</a></li>
+                                                                </ul>
+                                                            </li>
+                                                            <li><a onclick="grid('st_reg_m400');">M400</a>
+                                                                <ul>
+                                                                    <li><a onclick="grid('st_reg_m410');">M410</a></li>
+                                                                    <li><a onclick="grid('st_reg_m810');">M810</a></li>
+                                                                </ul>
+                                                            </li>
+                                                            <li><a onclick="grid('st_reg_m500');">M500</a></li>
+                                                            <li><a onclick="grid('st_reg_m600');">M600</a></li>
+                                                            <li><a onclick="grid('st_reg_m800');">M800</a></li>
+                                                        </ul>
+                                                    </li>
+                                                    <li><a onclick="grid('st_reg_m110');">M110</a></li>
+                                                    <li><a onclick="grid('st_reg_m211');">M211</a></li>
+                                                    <li><a onclick="grid('st_reg_m220');">M220</a></li>
+                                                    <li><a onclick="grid('st_reg_m230');">M230</a></li>
+                                                    <li><a onclick="grid('st_reg_m300');">M300</a></li>
+                                                    <li><a onclick="grid('st_reg_m350');">M350</a></li>
+                                                    <li><a onclick="grid('st_reg_m505');">M505</a></li>
+                                                    <li><a onclick="grid('st_reg_m510');">M510</a></li>
+                                                    <li><a onclick="grid('st_reg_m611');">M611</a></li>
+                                                    <li><a onclick="grid('st_reg_m620');">M620</a></li>
+                                                    <li><a onclick="grid('st_reg_m630');">M630</a></li>
+                                                    <li><a onclick="grid('st_reg_m610');">M700</a></li>
+                                                    <li><a onclick="grid('st_reg_m990');">M990</a></li>
+                                                    <li><a onclick="grid('st_reg_p001');">P001</a></li>
+                                                    <li><a onclick="grid('st_reg_p010');">P010</a></li>
+                                                    <li><a onclick="grid('st_reg_p100');">P100</a></li>
+                                                    <li><a onclick="grid('st_reg_p110');">P110</a></li>
+                                                    <li><a onclick="grid('st_reg_p199');">P199</a></li>
+                                                    <li><a onclick="grid('st_reg_p200');">P200</a></li>
+                                                    <li><a onclick="grid('st_reg_p210');">P210</a></li>
+                                                    <li><a onclick="grid('st_reg_p990');">P990</a></li>
+                                                    <li><a onclick="grid('st_reg_9001');">9001</a></li>
+                                                    <li><a onclick="grid('st_reg_9900');">9900</a></li>
+                                                    <li><a onclick="grid('st_reg_9990');">9990</a></li>
+                                                    <li><a onclick="grid('st_reg_9999');">9999</a></li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <?php break;
+                                case 2:
+                                    ?>
+                                    <!-- ##### MENU EM ARVORE APURAÇÃO SPED FISCAL --> 
+                                    <li><a href=''>Apuração SF - EFD ICMS/IPI FISCAL</a>
+                                        <ul>
+                                            <li><a onclick="grid('sf_reg_0000');">0000</a>
+                                                <ul>
+                                                    <li><a onclick="grid('sf_reg_0001');">0001</a>
+                                                        <ul>
+                                                            <li><a onclick="grid('sf_reg_0005');">0005</a></li>
+                                                            <li><a onclick="grid('sf_reg_0015');">0015</a></li>
+                                                            <li><a onclick="grid('sf_reg_0100');">0100</a></li>
+                                                            <li><a onclick="grid('sf_reg_0150');">0150</a>
+                                                                <ul>
+                                                                    <li><a onclick="grid('sf_reg_0175');">0175</a></li>
+                                                                </ul>
+                                                            </li>
+                                                            <li><a onclick="grid('sf_reg_0190');">0190</a></li>
+                                                            <li><a onclick="grid('sf_reg_0200');">0200</a>
+                                                                <ul>
+                                                                    <li><a onclick="grid('sf_reg_0205');">0205</a></li>
+                                                                    <li><a onclick="grid('sf_reg_0206');">0206</a></li>
+                                                                    <li><a onclick="grid('sf_reg_0220');">0220</a></li>
+                                                                </ul>
+                                                            </li>
+                                                            <li><a onclick="grid('sf_reg_0300');">0300</a>
+                                                                <ul>
+                                                                    <li><a onclick="grid('sf_reg_1350');">1350</a></li>
+                                                                </ul>
+                                                            </li>
+                                                            <li><a onclick="grid('sf_reg_0450');">0450</a></li>
+                                                            <li><a onclick="grid('sf_reg_0460');">0460</a></li>
+                                                            <li><a onclick="grid('sf_reg_1500');">1500</a></li>
+                                                        </ul>
+                                                    </li>
+                                                    <li><a onclick="grid('sf_reg_0305');">0305</a></li>
+                                                    <li><a onclick="grid('sf_reg_0400');">0400</a></li>
+                                                    <li><a onclick="grid('sf_reg_0500');">0500</a></li>
+                                                    <li><a onclick="grid('sf_reg_0600');">0600</a></li>
+                                                    <li><a onclick="grid('sf_reg_0990');">0990</a></li>
+                                                    <li><a onclick="grid('sf_reg_1001');">1001</a>
+                                                        <ul>
+                                                            <li><a onclick="grid('sf_reg_1010');">1010</a></li>
+                                                            <li><a onclick="grid('sf_reg_1400');">1400</a></li>
+                                                            <li><a onclick="grid('sf_reg_1700');">1700</a>
+                                                                <ul>
+                                                                    <li><a onclick="grid('sf_reg_1710');">1710</a></li>
+                                                                </ul>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                    <li><a onclick="grid('sf_reg_1100');">1100</a></li>
+                                                    <li><a onclick="grid('sf_reg_1105');">1105</a></li>
+                                                    <li><a onclick="grid('sf_reg_1110');">1110</a></li>
+                                                    <li><a onclick="grid('sf_reg_1200');">1200</a></li>
+                                                    <li><a onclick="grid('sf_reg_1210');">1210</a></li>
+                                                    <li><a onclick="grid('sf_reg_1300');">1300</a></li>
+                                                    <li><a onclick="grid('sf_reg_1310');">1310</a></li>
+                                                    <li><a onclick="grid('sf_reg_1320');">1320</a></li>
+                                                    <li><a onclick="grid('sf_reg_1360');">1360</a></li>
+                                                    <li><a onclick="grid('sf_reg_1370');">1370</a></li>
+                                                    <li><a onclick="grid('sf_reg_1390');">1390</a></li>
+                                                    <li><a onclick="grid('sf_reg_1391');">1391</a></li>
+                                                    <li><a onclick="grid('sf_reg_1500');">1500</a></li>
+                                                    <li><a onclick="grid('sf_reg_1510');">1510</a></li>
+                                                    <li><a onclick="grid('sf_reg_1600');">1600</a></li>
+                                                    <li><a onclick="grid('sf_reg_1800');">1800</a></li>
+                                                    <li><a onclick="grid('sf_reg_1900');">1900</a></li>
+                                                    <li><a onclick="grid('sf_reg_1910');">1910</a></li>
+                                                    <li><a onclick="grid('sf_reg_1920');">1920</a></li>
+                                                    <li><a onclick="grid('sf_reg_1921');">1921</a></li>
+                                                    <li><a onclick="grid('sf_reg_1922');">1922</a></li>
+                                                    <li><a onclick="grid('sf_reg_1923');">1923</a></li>
+                                                    <li><a onclick="grid('sf_reg_1925');">1925</a></li>
+                                                    <li><a onclick="grid('sf_reg_1926');">1926</a></li>
+                                                    <li><a onclick="grid('sf_reg_1990');">1990</a></li>
+                                                    <li><a onclick="grid('sf_reg_c001');">C001</a>
+                                                        <ul>
+                                                            <li><a onclick="grid('sf_reg_c100');">C100</a>
+                                                                <ul>
+                                                                    <li><a onclick="grid('sf_reg_c110');">C110</a>
+                                                                        <ul>
+                                                                            <li><a onclick="grid('sf_reg_c111');">C111</a></li>
+                                                                            <li><a onclick="grid('sf_reg_c112');">C112</a></li>
+                                                                            <li><a onclick="grid('sf_reg_c113');">C113</a></li>
+                                                                            <li><a onclick="grid('sf_reg_c115');">C115</a></li>                   
+                                                                        </ul>
+                                                                    </li>
+                                                                    <li><a onclick="grid('sf_reg_c140');">C140</a>
+                                                                        <ul>
+                                                                            <li><a onclick="grid('sf_reg_c141');">C141</a></li>               
+                                                                        </ul>
+                                                                    </li>
+                                                                    <li><a onclick="grid('sf_reg_c160');">C160</a>
+                                                                        <ul>
+                                                                            <li><a onclick="grid('sf_reg_c165');">C165</a></li>               
+                                                                        </ul>
+                                                                    </li>
+                                                                    <li><a onclick="grid('sf_reg_c170');">C170</a>
+                                                                        <ul>
+                                                                            <li><a onclick="grid('sf_reg_c176');">C176</a></li>               
+                                                                        </ul>
+                                                                    </li>
+                                                                    <li><a onclick="grid('sf_reg_c190');">C190</a></li>
+                                                                    <li><a onclick="grid('sf_reg_c195');">C195</a></li>
+                                                                </ul>
+                                                            </li>
+                                                            <li><a onclick="grid('sf_reg_c500');">C500</a></li>
+                                                        </ul>
+                                                    </li>
+                                                    <li><a onclick="grid('sf_reg_c105');">C105</a></li>
+                                                    <li><a onclick="grid('sf_reg_c114');">C114</a></li>
+                                                    <li><a onclick="grid('sf_reg_c116');">C116</a></li>
+                                                    <li><a onclick="grid('sf_reg_c120');">C120</a></li>
+                                                    <li><a onclick="grid('sf_reg_c130');">C130</a></li>
+                                                    <li><a onclick="grid('sf_reg_c171');">C171</a></li>
+                                                    <li><a onclick="grid('sf_reg_c172');">C172</a></li>
+                                                    <li><a onclick="grid('sf_reg_c173');">C173</a></li>
+                                                    <li><a onclick="grid('sf_reg_c174');">C174</a></li>
+                                                    <li><a onclick="grid('sf_reg_c175');">C175</a></li>
+                                                    <li><a onclick="grid('sf_reg_c177');">C177</a></li>
+                                                    <li><a onclick="grid('sf_reg_c178');">C178</a></li>
+                                                    <li><a onclick="grid('sf_reg_c179');">C179</a></li>
+                                                    <li><a onclick="grid('sf_reg_c197');">C197</a></li>
+                                                    <li><a onclick="grid('sf_reg_c300');">C300</a></li>
+                                                    <li><a onclick="grid('sf_reg_c310');">C310</a></li>
+                                                    <li><a onclick="grid('sf_reg_c320');">C320</a></li>
+                                                    <li><a onclick="grid('sf_reg_c321');">C321</a></li>
+                                                    <li><a onclick="grid('sf_reg_c350');">C350</a></li>
+                                                    <li><a onclick="grid('sf_reg_c370');">C370</a></li>
+                                                    <li><a onclick="grid('sf_reg_c390');">C390</a></li>
+                                                    <li><a onclick="grid('sf_reg_c400');">C400</a></li>
+                                                    <li><a onclick="grid('sf_reg_c405');">C405</a></li>
+                                                    <li><a onclick="grid('sf_reg_c410');">C410</a></li>
+                                                    <li><a onclick="grid('sf_reg_c420');">C420</a></li>
+                                                    <li><a onclick="grid('sf_reg_c425');">C425</a></li>
+                                                    <li><a onclick="grid('sf_reg_c460');">C460</a></li>
+                                                    <li><a onclick="grid('sf_reg_c465');">C465</a></li>
+                                                    <li><a onclick="grid('sf_reg_c470');">C470</a></li>
+                                                    <li><a onclick="grid('sf_reg_c490');">C490</a></li>
+                                                    <li><a onclick="grid('sf_reg_c510');">C510</a></li>
+                                                    <li><a onclick="grid('sf_reg_c590');">C590</a></li>
+                                                    <li><a onclick="grid('sf_reg_c600');">C600</a></li>
+                                                    <li><a onclick="grid('sf_reg_c601');">C601</a></li>
+                                                    <li><a onclick="grid('sf_reg_c610');">C610</a></li>
+                                                    <li><a onclick="grid('sf_reg_c690');">C690</a></li>
+                                                    <li><a onclick="grid('sf_reg_c700');">C700</a></li>
+                                                    <li><a onclick="grid('sf_reg_c790');">C790</a></li>
+                                                    <li><a onclick="grid('sf_reg_c791');">C791</a></li>
+                                                    <li><a onclick="grid('sf_reg_c800');">C800</a></li>
+                                                    <li><a onclick="grid('sf_reg_c850');">C850</a></li>
+                                                    <li><a onclick="grid('sf_reg_c860');">C860</a></li>
+                                                    <li><a onclick="grid('sf_reg_c890');">C890</a></li>
+                                                    <li><a onclick="grid('sf_reg_c990');">C990</a></li>
+                                                    <li><a onclick="grid('sf_reg_d001');">D001</a>
+                                                        <ul>
+                                                            <li><a onclick="grid('sf_reg_D100');">D100</a>
+                                                                <ul>
+                                                                    <li><a onclick="grid('sf_reg_D110');">D110</a>
+                                                                        <ul>
+                                                                            <li><a onclick="grid('sf_reg_D120');">D120</a></li>
+                                                                        </ul>
+                                                                    </li>
+                                                                    <li><a onclick="grid('sf_reg_D130');">D130</a></li>
+                                                                    <li><a onclick="grid('sf_reg_D160');">D160</a>
+                                                                        <ul>
+                                                                            <li><a onclick="grid('sf_reg_D161');">D161</a></li>
+                                                                            <li><a onclick="grid('sf_reg_D162');">D162</a></li>
+                                                                        </ul>
+                                                                    </li>
+                                                                    <li><a onclick="grid('sf_reg_D190');">D190</a></li>
+                                                                </ul>
+                                                            </li>
+                                                            <li><a onclick="grid('sf_reg_D500');">D500</a>
+                                                                <ul>
+                                                                    <li><a onclick="grid('sf_reg_D590');">D590</a></li>
+                                                                </ul>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                    <li><a onclick="grid('sf_reg_d140');">D140</a></li>
+                                                    <li><a onclick="grid('sf_reg_d150');">D150</a></li>
+                                                    <li><a onclick="grid('sf_reg_d170');">D170</a></li>
+                                                    <li><a onclick="grid('sf_reg_d180');">D180</a></li>
+                                                    <li><a onclick="grid('sf_reg_d195');">D195</a></li>
+                                                    <li><a onclick="grid('sf_reg_d197');">D197</a></li>
+                                                    <li><a onclick="grid('sf_reg_d300');">D300</a></li>
+                                                    <li><a onclick="grid('sf_reg_d301');">D301</a></li>
+                                                    <li><a onclick="grid('sf_reg_d310');">D310</a></li>
+                                                    <li><a onclick="grid('sf_reg_d350');">D350</a></li>
+                                                    <li><a onclick="grid('sf_reg_d355');">D355</a></li>
+                                                    <li><a onclick="grid('sf_reg_d360');">D360</a></li>
+                                                    <li><a onclick="grid('sf_reg_d365');">D365</a></li>
+                                                    <li><a onclick="grid('sf_reg_d370');">D370</a></li>
+                                                    <li><a onclick="grid('sf_reg_d390');">D390</a></li>
+                                                    <li><a onclick="grid('sf_reg_d400');">D400</a></li>
+                                                    <li><a onclick="grid('sf_reg_d410');">D410</a></li>
+                                                    <li><a onclick="grid('sf_reg_d411');">D411</a></li>
+                                                    <li><a onclick="grid('sf_reg_d420');">D420</a></li>
+                                                    <li><a onclick="grid('sf_reg_d510');">D510</a></li>
+                                                    <li><a onclick="grid('sf_reg_d530');">D530</a></li>
+                                                    <li><a onclick="grid('sf_reg_d600');">D600</a></li>
+                                                    <li><a onclick="grid('sf_reg_d610');">D610</a></li>
+                                                    <li><a onclick="grid('sf_reg_d690');">D690</a></li>
+                                                    <li><a onclick="grid('sf_reg_d695');">D695</a></li>
+                                                    <li><a onclick="grid('sf_reg_d696');">D696</a></li>
+                                                    <li><a onclick="grid('sf_reg_d697');">D697</a></li>
+                                                    <li><a onclick="grid('sf_reg_d990');">D990</a></li>
+                                                    <li><a onclick="grid('sf_reg_e001');">E001</a>
+                                                        <ul>
+                                                            <li><a onclick="grid('sf_reg_e100');">E100</a></li>
+                                                            <li><a onclick="grid('sf_reg_e110');">E110</a>
+                                                                <ul>
+                                                                    <li><a onclick="grid('sf_reg_e111');">E111</a></li>
+                                                                    <li><a onclick="grid('sf_reg_e116');">E116</a></li>
+                                                                </ul>
+                                                            </li>
+                                                            <li><a onclick="grid('sf_reg_e200');">E200</a>
+                                                                <ul>
+                                                                    <li><a onclick="grid('sf_reg_e210');">E210</a>
+                                                                        <ul>
+                                                                            <li><a onclick="grid('sf_reg_e220');">E220</a></li>
+                                                                            <li><a onclick="grid('sf_reg_e250');">E250</a></li>
+                                                                        </ul>
+                                                                    </li>
+                                                                </ul>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                    <li><a onclick="grid('sf_reg_e112');">E112</a></li>
+                                                    <li><a onclick="grid('sf_reg_e113');">E113</a></li>
+                                                    <li><a onclick="grid('sf_reg_e115');">E115</a></li>
+                                                    <li><a onclick="grid('sf_reg_e230');">E230</a></li>
+                                                    <li><a onclick="grid('sf_reg_e240');">E240</a></li>
+                                                    <li><a onclick="grid('sf_reg_e500');">E500</a></li>
+                                                    <li><a onclick="grid('sf_reg_e510');">E510</a></li>
+                                                    <li><a onclick="grid('sf_reg_e520');">E520</a></li>
+                                                    <li><a onclick="grid('sf_reg_e530');">E530</a></li>
+                                                    <li><a onclick="grid('sf_reg_e990');">E990</a></li>
+                                                    <li><a onclick="grid('sf_reg_g001');">G001</a>
+                                                        <ul>
+                                                            <li><a onclick="grid('sf_reg_g110');">G110</a></li>
+                                                            <li><a onclick="grid('sf_reg_g125');">G125</a>
+                                                                <ul>
+                                                                    <li><a onclick="grid('sf_reg_g130');">G130</a>
+                                                                        <ul>
+                                                                            <li><a onclick="grid('sf_reg_g140');">G140</a></li>
+                                                                        </ul>
+                                                                    </li>
+                                                                </ul>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                    <li><a onclick="grid('sf_reg_g126');">G126</a></li>
+                                                    <li><a onclick="grid('sf_reg_g990');">G990</a></li>
+                                                    <li><a onclick="grid('sf_reg_h001');">H001</a>
+                                                        <ul>
+                                                            <li><a onclick="grid('sf_reg_h005');">H005</a>
+                                                                <ul>
+                                                                    <li><a onclick="grid('sf_reg_h010');">H010</a></li>
+                                                                </ul>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                    <li><a onclick="grid('sf_reg_h020');">H020</a></li>
+                                                    <li><a onclick="grid('sf_reg_h990');">H990</a></li>
+                                                    <li><a onclick="grid('sf_reg_9001');">9001</a></li>
+                                                    <li><a onclick="grid('sf_reg_9900');">9900</a></li>
+                                                    <li><a onclick="grid('sf_reg_9990');">0990</a></li>
+                                                    <li><a onclick="grid('sf_reg_9999');">9999</a></li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <?php break;
+                                            case 3:
+                                    ?>
+                                    <li><a href=''>Apuração SC - EFC CONTÁBIL</a>
+                                        <ul>
+                                            <li><a onclick="grid('sc_reg_0000');">0000</a>
+                                                <ul>
+                                                    <li><a onclick="grid('sc_reg_0001');">0001</a>
+                                                        <ul>
+                                                            <li><a onclick="grid('sc_reg_0007');">0007</a></li>
+                                                            <li><a onclick="grid('sc_reg_0020');">0020</a></li>
+                                                        </ul>
+                                                    </li>
+                                                    <li><a onclick="grid('sc_reg_0150');">0150</a>
+                                                        <ul>
+                                                            <li><a onclick="grid('sc_reg_0007');">0180</a></li>
+                                                        </ul>
+                                                    </li>
+                                                    <li><a onclick="grid('sc_reg_0990');">0990</a></li>
+                                                    <li><a onclick="grid('sc_reg_i001');">i001</a>
+                                                        <ul>
+                                                            <li><a onclick="grid('sc_reg_i010');">i010</a>
+                                                                <ul>
+                                                                    <li><a onclick="grid('sc_reg_i030');">i030</a></li>
+                                                                    <li><a onclick="grid('sc_reg_i050');">i050</a>
+                                                                        <ul>
+                                                                            <li><a onclick="grid('sc_reg_i051');">i051</a></li>
+                                                                            <li><a onclick="grid('sc_reg_i052');">i052</a></li>
+                                                                        </ul>
+                                                                    </li>
+                                                                    <li><a onclick="grid('sc_reg_i150');">i150</a>
+                                                                        <ul>
+                                                                            <li><a onclick="grid('sc_reg_i155');">i155</a></li>
+                                                                        </ul>
+                                                                    </li>
+                                                                    <li><a onclick="grid('sc_reg_i200');">i200</a>
+                                                                        <ul>
+                                                                            <li><a onclick="grid('sc_reg_i250');">i250</a></li>
+                                                                        </ul>
+                                                                    </li>
+                                                                    <li><a onclick="grid('sc_reg_i350');">i350</a>
+                                                                        <ul>
+                                                                            <li><a onclick="grid('sc_reg_i355');">i355</a></li>
+                                                                        </ul>
+                                                                    </li>
+                                                                </ul>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                    <li><a onclick="grid('sc_reg_i012');">i012</a></li>
+                                                    <li><a onclick="grid('sc_reg_i015');">i015</a></li>
+                                                    <li><a onclick="grid('sc_reg_i020');">i020</a></li>
+                                                    <li><a onclick="grid('sc_reg_i075');">i075</a></li>
+                                                    <li><a onclick="grid('sc_reg_i100');">i100</a></li>
+                                                    <li><a onclick="grid('sc_reg_i151');">i151</a></li>
+                                                    <li><a onclick="grid('sc_reg_i157');">i157</a></li>
+                                                    <li><a onclick="grid('sc_reg_i300');">i300</a></li>
+                                                    <li><a onclick="grid('sc_reg_i310');">i310</a></li>
+                                                    <li><a onclick="grid('sc_reg_i500');">i500</a></li>
+                                                    <li><a onclick="grid('sc_reg_i510');">i510</a></li>
+                                                    <li><a onclick="grid('sc_reg_i550');">i550</a></li>
+                                                    <li><a onclick="grid('sc_reg_i555');">i555</a></li>
+                                                    <li><a onclick="grid('sc_reg_i990');">i990</a></li>
+                                                    <li><a onclick="grid('sc_reg_j001');">j001</a>
+                                                        <ul>
+                                                            <li><a onclick="grid('sc_reg_j005');">j005</a>
+                                                                <ul>
+                                                                    <li><a onclick="grid('sc_reg_j100');">j100</a></li>
+                                                                    <li><a onclick="grid('sc_reg_j150');">j150</a></li>
+                                                                </ul>
+                                                            </li>
+                                                            <li><a onclick="grid('sc_reg_j900');">j900</a></li>
+                                                            <li><a onclick="grid('sc_reg_j930');">j930</a></li>
+                                                        </ul>
+                                                    </li>
+                                                    <li><a onclick="grid('sc_reg_j200');">j200</a></li>
+                                                    <li><a onclick="grid('sc_reg_j210');">j210</a></li>
+                                                    <li><a onclick="grid('sc_reg_j215');">j215</a></li>
+                                                    <li><a onclick="grid('sc_reg_j800');">j800</a></li>
+                                                    <li><a onclick="grid('sc_reg_j990');">j990</a></li> 
+                                                    <li><a onclick="grid('sc_reg_9001');">9001</a></li> 
+                                                    <li><a onclick="grid('sc_reg_9900');">9900</a></li> 
+                                                    <li><a onclick="grid('sc_reg_9990');">9990</a></li> 
+                                                    <li><a onclick="grid('sc_reg_9999');">9999</a></li> 
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                            <?php break;
+                                        }
+                                        ?>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/js/jquery.treemenu.js" type="text/javascript"></script>
+<script type="text/javascript">
+
+    $JQuery(document).ready(function () {
+        $JQuery(".tree").treemenu({delay: 100});
+    });
+
+</script>

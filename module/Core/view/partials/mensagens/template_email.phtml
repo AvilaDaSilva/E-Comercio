@@ -1,0 +1,241 @@
+<style> #box {width:80em; border: solid 1px; border-color: #c9c9c9; border-radius: 4px; margin-left: 15px;}</style>
+<!-- ##### CRIAÇÃO DOS BREADCRUMBS #####-->
+<?php
+if (isset($this->breadcrumbs))
+    if ($this->breadcrumbs) {
+        $keys = array_keys($this->breadcrumbs);
+        $endKey = end($keys);
+        ?>
+        <ol class="breadcrumb">
+            <li>Você está aqui: </li>
+            <?php
+            foreach ($this->breadcrumbs as $chave => $breadcrumb) {
+                if ($breadcrumb['url'] == '#')
+                    $urlBreadcrumb = '#';
+                else
+                    $urlBreadcrumb = BASE_URL . $breadcrumb['url'];
+                ?>
+                <?php if ($endKey != $chave) { ?>
+                    <li><a href="<?php echo $urlBreadcrumb; ?>" title="<?php echo $breadcrumb['title']; ?>"><?php echo $breadcrumb['text']; ?></a></li>
+                    <?php
+                } else {
+                    if (isset($modal)) {
+                        ?>
+                        <li><a href="#" title="Opções" onclick="mostrarModals();"><?php echo $modal; ?></a></li>
+                    <?php } ?>
+                    <li class="active"><strong><?php echo $breadcrumb['text']; ?></strong></li>
+                    <?php
+                }
+            }
+            ?>
+        </ol>
+    <?php } ?>
+
+<!--Page Title-->
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+<div id="page-title">
+    <h1 class="page-header text-overflow" >Mensagens</h1>
+
+    <!--Searchbox-->
+    <div class="searchbox">
+        <div class="input-group custom-search-form">
+            <!--<input type="text" class="form-control" style='background-color: white' placeholder="Buscar..">-->
+<!--            <span class="input-group-btn">
+                <button class="text-muted" type="button"><i class="fa fa-search"></i></button>
+            </span>-->
+        </div>
+    </div>
+</div>
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+<!--End page title-->
+
+<!--Page content-->
+<!--===================================================-->
+<div id="page-content">
+
+    <!-- MAIL INBOX -->
+    <!--===================================================-->
+    <div class="panel panel-default panel-left">
+        <div id="demo-email-list" class="panel-body">
+            <div class="row">
+                <div class="col-sm-7">
+
+                    <!-- Mail toolbar -->
+                    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+                    <!--Split button dropdowns-->
+                    <div class="btn-group">
+                        <div id="demo-checked-all-mail" class="btn btn-default">
+                            <label id='checkall' class="form-checkbox form-normal form-primary">
+                                <input class="form-input" type="checkbox" name="mail-list">
+                            </label>
+                        </div>
+                        <button data-toggle="dropdown" class="btn btn-default dropdown-toggle dropdown-toggle-icon"><i class="dropdown-caret fa fa-caret-down"></i></button>
+                        <ul class="dropdown-menu">
+                            <li><a href="javascript:select(1)" id="demo-select-all-list">Todas</a></li>
+                            <li><a href="javascript:select(0)" id="demo-select-none-list">Nenhuma</a></li>
+                            <li class="divider"></li>
+                            <li><a href="javascript:select(2)" id="demo-select-read-list">Lidas</a></li>
+                            <li><a href="javascript:select(3)" id="demo-select-unread-list">Não-lidas</a></li>
+                            <li><a href="javascript:select(4)" id="demo-select-starred-list">Com estrela</a></li>
+                        </ul>
+                    </div>
+
+                    <!--Refresh button-->
+                    <button id="demo-mail-ref-btn" data-toggle="panel-overlay" data-target="#demo-email-list" class="btn btn-default" type="button">
+                        <i class="fa fa-refresh"></i>
+                    </button>
+
+                    <!--Dropdown button (More Action)-->
+                    <div class="btn-group">
+                        <button data-toggle="dropdown" class="btn btn-default dropdown-toggle" type="button">
+                            Mais <i class="dropdown-caret fa fa-caret-down"></i>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a onclick="marcar(1);" href="#">Marcar como lida</a></li>
+                            <li><a onclick="marcar(2);" href="#">Marcar como não lida</a></li>
+                            <li class="divider"></li>
+                            <li><a onclick="marcar(3);" href="#">Estrela</a></li>
+                            <li><a onclick="marcar(4);" href="#">Limpar estrela</a></li>
+                            <li class="divider"></li>
+                            <?php if($enviadas !=''){?>
+                                <li><a onclick="apagar('enviadas');" href="#">Apagar</a></li>
+                            <?php } else {?>
+                                <li><a onclick="apagar();" href="#">Apagar</a></li>
+                            <?php } ?>
+                        </ul>
+                    </div>
+                </div>
+                <hr class="hr-sm visible-xs">
+                <div class="col-sm-5 clearfix">
+                    <div class="pull-right">
+
+                        Mostrando
+                        <?php $total = count($mensagens); ?>
+                        <span class="text-muted">
+                            <strong>1-<?= $total ?></strong>
+                            de
+                            <strong><?php echo $total ?></strong>
+                        </span>
+                        <div class="btn-group btn-group">
+                            <button class="btn btn-default" type="button">
+                                <span class="fa fa-chevron-left"></span>
+                            </button>
+                            <button class="btn btn-default" type="button">
+                                <span class="fa fa-chevron-right"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr class="hr-sm">
+            <div class="panel-body">
+                <!--Mail list group-->
+                <ul id="demo-mail-list" class="mail-list">
+
+                    <!--Mail list item-->
+
+                    <?php
+                    $cont = 0;
+                   if(empty($mensagens) == true){?>
+                    <div class="pad-ver">
+                        <span class='badge badge-danger'>
+                            <i class='fa fa-close'></i>  
+                        </span>
+                        <strong>Sua caixa de mensagens está vazia! </strong>
+                    </div>
+                 <?php  } else { 
+                    foreach ($mensagens as $key => $mensagem) {
+
+                        if ($mensagem['status'] == 0) {
+                            $classe_list = 'mail-list-unread';
+                            if (isset($mensagem['favorito']) && $mensagem['favorito'] == 1) {
+                                $classe_list .= ' mail-starred';
+                            }
+                            if (isset($mensagem['anexo']) && $mensagem['anexo'] > 0) {
+                                $classe_list .= ' mail-attach';
+                            }
+                        } else {
+                            $classe_list = 'mail-list';
+                            if (isset($mensagem['favorito']) && $mensagem['favorito'] == 1) {
+                                $classe_list .= ' mail-starred';
+                            }
+                            if (isset($mensagem['anexo']) && $mensagem['anexo'] > 0) {
+                                $classe_list .= ' mail-attach';
+                            }
+                        }
+                        ?>
+
+                        <li id='<?= $key ?>' class="<?= $classe_list ?>">            
+                            <div class="mail-control">
+                                <label class="demo-cb-mail form-checkbox form-normal form-primary">
+                                    <input type="checkbox">
+                                    <input id='id' type="hidden" value="<?php echo $mensagem['id'] ?>">
+                                </label>
+                            </div>
+                            <div class="mail-star"><a onclick="marcarEstrela(<?php echo $mensagem['id'] ?>);" href="#"></a></div>
+                            <div class="mail-from"><a href="<?php echo BASE_URL . "/auth/mensagens/mensagem/id/" . $mensagem['id'] ?>">De: <?php echo $mensagem['autor'] ?></a></div>
+                            <div class="mail-time"><?php echo $mensagem['data_criacao']->format('d-m-Y H:i:s'); ?></div>
+                            <div class="mail-attach-icon"><a onclick="downloadAnexo()" href="#"></a></div>
+                            <div class="mail-subject">
+                                <a href="<?php echo BASE_URL . "/auth/mensagens/mensagem/id/" . $mensagem['id'] ?>">
+                                    <?php if ($mensagem['tipo_mensagem'] == 'Notificação') { ?>
+                                        <span class="label label-success">Notificação</span>
+                                    <?php } else if ($mensagem['tipo_mensagem'] == 'Alerta') { ?>
+                                        <span class="label label-danger">Alerta </span>
+                                    <?php } else if ($mensagem['tipo_mensagem'] == 'Mensagem') { ?>
+                                        <span class="label label-primary">Mensagem</span>
+                                    <?php } else if ($mensagem['tipo_mensagem'] == 'Solicitação') { ?>
+                                        <span class="label label-warning">Solicitação </span>
+                                    <?php } ?>
+                                    Assunto: <?php echo $mensagem['assunto'] ?></a>
+                            </div>
+                        </li>
+                        <?php
+                    }
+                 }
+                    ?>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!--ASIDE-->
+<!--===================================================-->
+<aside id="aside-container">
+    <div id="aside">
+        <div class="nano">
+            <div class="nano-content" id='menu_email'>
+
+                <div class="pad-hor">
+                    <h4 class="text-thin">Mensagens</h4>
+                    <a href="<?php echo BASE_URL . "/auth/mensagens/save" ?>" class="btn btn-block btn-info">
+                        Nova mensagem
+                    </a>
+                </div>
+                <hr>
+                <div class="list-group bg-trans bord-no">
+                    <a href="<?php echo BASE_URL . "/auth/mensagens/index" ?>" class="list-group-item">
+                        <span class="badge badge-primary pull-right"><?php if ($totais['todas'] != 0) echo $totais['todas'] ?></span><i class="fa fa-inbox fa-fw"></i> Caixa de entrada
+                    </a>
+                    <a href="<?php echo BASE_URL . "/auth/mensagens/index/unread/1" ?>" class="list-group-item">
+                        <span class="badge badge-success pull-right"><?php if ($totais['nao_lidas'] != 0) echo $totais['nao_lidas'] ?></span><i class="fa fa-envelope-o fa-fw"></i> Não lidas
+                    </a>
+                    <a href="<?php echo BASE_URL . "/auth/mensagens/index/read/1" ?>" class="list-group-item">
+                        <span class="badge badge-info pull-right"><?php if ($totais['lidas'] != 0) echo $totais['lidas'] ?></span><i class="fa fa-envelope fa-fw"></i> Lidas
+                    </a>
+                    <a href="<?php echo BASE_URL . "/auth/mensagens/index/starred/1" ?>" class="list-group-item">
+                        <span class="badge badge-warning pull-right"><?php if ($totais['estrelas'] != 0) echo $totais['estrelas'] ?></span><i class="fa fa-star fa-fw"></i> Com estrela
+                    </a>                   
+                    <a href="<?php echo BASE_URL . "/auth/mensagens/index/sent/1" ?>" class="list-group-item"><span class="badge badge-danger pull-right"><?php if ($totais['enviadas'] != 0) echo $totais['enviadas'] ?></span><i class="fa fa-send fa-fw"></i> Enviados</a>
+                </div>
+                <hr>                                                  
+            </div>
+        </div>
+    </div>
+</aside>
+
+</div>
+
+<script type='text/javascript' src="js/demo/mail.js"></script>

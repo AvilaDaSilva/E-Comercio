@@ -1,0 +1,212 @@
+<?php
+$help = '<strong>Caixa de entrada: </strong>';
+
+$newButton = array(
+    'title' => 'Nova Mensagem',
+    'href' => BASE_URL . '/auth/mensagens/save',
+    'text' => 'Nova Mensagem'
+);
+$breadcrumbs[] = array(
+    'url' => '/auth/mensagens',
+    'title' => 'Mensagens',
+    'text' => 'Mensagens'
+);
+$addIcon[] = array(
+    'url' => BASE_URL . '/auth/mensagens/mensagem',
+    'title' => 'Visualizar mensagem',
+    'classButton' => 'glyphicon glyphicon-envelope',
+    'classHref' => 'assunto',
+);
+$addIcon[] = array(
+    'url' => BASE_URL . '/auth/mensagens/mensagem/marcar/1',
+    'title' => 'Marcar lida',
+    'classButton' => 'glyphicon glyphicon-check',
+    'classHref' => 'marcar',
+);
+$addIcon[] = array(
+    'url' => BASE_URL . '/auth/mensagens/delete',
+    'title' => 'Excluir mensagem',
+    'classButton' => 'glyphicon glyphicon-trash',
+    'classHref' => 'remove',
+);
+$tableInformation = array(
+    array(
+        'index' => 'checkbox',
+        'format' => '',
+        'descricao' => ''
+    ),
+    array(
+        'index' => 'id',
+        'format' => '',
+        'descricao' => 'Id',
+    ),
+    array(
+        'index' => 'status',
+        'format' => 'statusMensagem',
+        'descricao' => 'Status',
+    ),
+    array(
+        'index' => 'assunto',
+        'format' => 'nameFormatter',
+        'descricao' => 'Assunto',
+    ),
+    array(
+        'index' => 'data_criacao',
+        'format' => 'dateFormatter',
+        'descricao' => 'Data de criação',
+    ),
+    array(
+        'index' => 'tipo_mensagem',
+        'format' => '',
+        'descricao' => 'Tipo da mensagem',
+    ),
+    array('index' => 'operate',
+        'format' => 'operateFormatter',
+        'descricao' => 'Operações',
+        'events' => 'operateEvents'
+    ),
+);
+
+echo $this->partial('/partials/mensagens/template_email.phtml', array(
+    'mensagens' => $json,
+    'tableInformation' => $tableInformation,
+    'addIcon' => $addIcon,
+    'totais' => $totais,
+    'enviadas' => $enviadas,
+));
+?>
+
+<script type="text/javascript">
+//    $JQuery('div.panel-body').append('<input type="button" class="btn btn-danger" style="float: left; margin-top: 0.5%;" value="Voltar" id="ignorar" onclick="voltar();"/>');
+//    $JQuery('div.panel-body').append('<input type="button" class="btn btn-danger" style="float: left; margin-left:5px; margin-top: 0.5%;" value="Apagar mensagens selecionadas" id="apagar" onclick="apagar();"/>');
+    function voltar() {
+        window.history.go(-1);
+    }
+
+    $JQuery('#checkall').on('change', function () {
+        if ($JQuery('#checkall').hasClass('active')) {
+            select(1);
+        } else {
+            select(0);
+        }
+    });
+
+    function select(a) {
+        if (a == 1) {
+            $JQuery('li .mail-control label').each(function (a, b) {
+                $JQuery(b).addClass('active');
+            });
+        } else if (a == 0) {
+            $JQuery('li .mail-control label').each(function (a, b) {
+                $JQuery(b).removeClass('active');
+            });
+        } else if (a == 2) {
+            $JQuery('li .mail-control label').each(function (a, b) {
+                $JQuery(b).removeClass('active');
+            });
+            $JQuery('li.mail-list .mail-control label').each(function (a, b) {
+                $JQuery(b).addClass('active');
+            });
+        } else if (a == 3) {
+            $JQuery('li .mail-control label').each(function (a, b) {
+                $JQuery(b).removeClass('active');
+            });
+            $JQuery('li.mail-list-unread .mail-control label').each(function (a, b) {
+                $JQuery(b).addClass('active');
+            });
+        } else if (a == 4) {
+            $JQuery('li .mail-control label').each(function (a, b) {
+                $JQuery(b).removeClass('active');
+            });
+            $JQuery('li.mail-starred .mail-control label').each(function (a, b) {
+                $JQuery(b).addClass('active');
+            });
+        }
+    }
+
+    function marcar(opt) {
+        var ids = Array();
+        $JQuery('li .mail-control label.active #id').each(function (a, b) {
+            ids.push($(b).attr('value'));
+        });
+        $.ajax({
+            type: "POST",
+            url: "<?php echo BASE_URL ?>/auth/mensagens/marcar/opt/" + opt,
+            data: {
+                'ids': ids
+            },
+            async: true,
+            success: function (d) {
+                if (d == 'true') {
+                    window.location.assign('<?= BASE_URL; ?>' + '/auth/mensagens/index');
+                } else {
+                    alert('Erro ao alterar o status das mensagens.');
+                }
+            }
+
+        });
+    }
+    function marcarEstrela(id) {
+        $.ajax({
+            type: "POST",
+            url: "<?php echo BASE_URL ?>/auth/mensagens/marcar/opt/5",
+            data: {
+                'id': id
+            },
+            async: true,
+            success: function (d) {
+                if (d == 'true') {
+                    window.location.assign('<?= BASE_URL; ?>' + '/auth/mensagens/index');
+                } else {
+                    alert('Erro ao alterar o status das mensagens.');
+                }
+            }
+
+        });
+    }
+
+    function apagar(env) {
+        if (confirm("Deseja realmente apagar as mensagens selecionadas?") == true) {
+            var select = Array();
+            $JQuery('body').plainOverlay('show');
+            $JQuery('li .mail-control label.active #id').each(function (a, b) {
+                select.push($(b).attr('value'));
+            });
+            if (isset(env)) {
+                $.ajax({
+                    type: "POST",
+                    url: "<?php echo BASE_URL ?>/auth/mensagens/apagar/enviadas/1",
+                    data: {
+                        'mensagens': select
+                    },
+                    async: true,
+                    success: function (d) {
+                        if (d === 'true') {
+                            alert('Mensagens deletadas com sucesso');
+                            location.href = "<?php echo BASE_URL ?>/auth/mensagens";
+                        } else {
+                            alert("Não foi possivel apagar as mensagens, tente novamente mais tarde");
+                            location.href = "<?php echo BASE_URL ?>/auth/mensagens";
+                        }
+                    }});
+            } else {
+                $.ajax({
+                    type: "POST",
+                    url: "<?php echo BASE_URL ?>/auth/mensagens/apagar",
+                    data: {
+                        'mensagens': select
+                    },
+                    async: true,
+                    success: function (d) {
+                        if (d === 'true') {
+                            alert('Mensagens deletadas com sucesso');
+                            location.href = "<?php echo BASE_URL ?>/auth/mensagens";
+                        } else {
+                            alert("Não foi possivel apagar as mensagens, tente novamente mais tarde");
+                            location.href = "<?php echo BASE_URL ?>/auth/mensagens";
+                        }
+                    }});
+            }
+        }
+    }
+</script>

@@ -1,0 +1,350 @@
+<style> #box {width:80em; border: solid 1px; border-color: #c9c9c9; border-radius: 4px; margin-left: 15px;}</style>
+<!-- ##### CRIAÇÃO DOS BREADCRUMBS #####-->
+<?php
+if (isset($this->breadcrumbs))
+    if ($this->breadcrumbs) {
+        $keys = array_keys($this->breadcrumbs);
+        $endKey = end($keys);
+        ?>
+        <ol class="breadcrumb">
+            <li>Você está aqui: </li>
+            <?php
+            foreach ($this->breadcrumbs as $chave => $breadcrumb) {
+                if ($breadcrumb['url'] == '#')
+                    $urlBreadcrumb = '#';
+                else
+                    $urlBreadcrumb = BASE_URL . $breadcrumb['url'];
+                ?>
+                <?php if ($endKey != $chave) { ?>
+                    <li><a href="<?php echo $urlBreadcrumb; ?>" title="<?php echo $breadcrumb['title']; ?>"><?php echo $breadcrumb['text']; ?></a></li>
+                    <?php
+                } else {
+                    if (isset($modal)) {
+                        ?>
+                        <li><a href="#" title="Opções" onclick="mostrarModals();"><?php echo $modal; ?></a></li>
+                    <?php } ?>
+                    <li class="active"><strong><?php echo $breadcrumb['text']; ?></strong></li>
+                    <?php
+                }
+            }
+            ?>
+        </ol>
+    <?php } ?>
+<script type='text/javascript' src="js/demo/mail.js"></script>
+<script type='text/javascript' src="js/tag-it.js"></script>
+
+    <input id="demo-sw-checkstate" type="hidden">
+    <input id="demo-sw-checkstate-field"  type="hidden">
+    <div id="page-content">
+
+        <!-- COMPOSE EMAIL -->
+        <!--===================================================-->
+        <div class="panel panel-default panel-left">
+            <div id="page-title">
+
+                <h1 style='margin-left:25px;' class="page-header text-overflow"><span style='margin-right:25px;'><i class='fa fa-envelope'></i></span>Escrever nova mensagem</h1>
+            </div>
+            <div class="panel-body">
+                <hr>
+                <?php
+                echo $this->form()->openTag($this->form);
+                $messageError = $this->form->getMessages();
+                ?>
+                <div id="append" class="panel-body">
+                    <?php
+                    $cont = 0;
+                    if (isset($upperCheckbox)) {
+                        foreach ($upperCheckbox as $elementos) {
+                            foreach ($elementos as $chave => $element) {
+                                if (isset($element['id_div'])) {
+                                    $idDiv = 'id="' . $element['id_div'] . '"';
+                                } else {
+                                    $idDiv = '';
+                                }
+                                ?>
+
+                                <div <?php echo $idDiv ?> class="form-group">
+                                    <label class="control-label" for="demo-hor-inputemail"><?php echo $element['label']; ?></label>
+                                    <div class="checkbox">
+                                        <!-- INLINE CHECKBOXES -->
+                                        <!--===================================================-->
+                                        <?php foreach ($element['values'] as $chaves => $elements) { ?>
+                                            <?php if (isset($element['style'])) { ?>
+                                                <div>
+                                                <?php } ?>
+                                                <label id="<?php echo $chaves ?>" class="form-checkbox form-icon active">
+                                                    <input  name="<?php echo $element['name']; ?>" id="<?php echo $element['id']; ?>" value="<?php echo $chaves; ?>" type="checkbox"><?php echo $elements; ?>
+                                                </label>
+                                                <!--===================================================-->
+                                                <?php if (isset($element['style'])) { ?>
+                                                </div>
+                                            <?php } ?>
+                                        <?php } ?>
+                                        <?php
+                                        if (isset($messageError[$element['name']])) {
+                                            $messageErrorExib = array_pop($messageError[$element['name']]);
+                                            echo '<label for="demo-oi-errinput" class="control-label">' . $messageErrorExib . '</label>';
+                                        }
+                                        ?>
+                                    </div>
+                                </div>
+                                <?php
+                            }
+                        }
+                    }
+                    foreach ($this->partialElements as $chave => $element) {
+
+                        if (isset($element['id_div'])) {
+                            $idDiv = 'id="' . $element['id_div'] . '"';
+                            $idDivCol = 'id="' . $element['id_div'] . '_col"';
+                            $idDivRow = 'id="' . $element['id_div'] . '_row"';
+                        } else {
+                            $idDiv = '';
+                            $idDivCol = '';
+                            $idDivRow = '';
+                        }
+                        if (isset($element['htmlElement'])) {
+                            $html = '<div>' . $element['htmlElement'] . '</div>';
+                        } else {
+                            $html = '';
+                        }
+
+                        if ($element['name'] != 'perfis') {//Verifica se os elementos são checkbox, para distribuílos em uma linha
+                            ?>
+                            <?php if ($cont == 0) { ?>
+                                <div <?php echo $idDivRow ?> class="row">
+                                    <div <?php echo $idDivCol ?> class="col-sm-<?php echo $this->tamanho ?>">
+                                        <div <?php echo $idDiv ?> class="form-group <?php if (isset($messageError[$element['name']])) echo $classError; ?>">
+                                            <?php
+                                            if (isset($element['label'])) {
+                                                echo $element['label'];
+                                            }
+                                            if (isset($element['calendario'])) {
+                                                ?>
+                                                <div id="demo-dp-txtinput">
+                                                    <?php echo $element['input'] ?>
+                                                </div>
+                                                <?php
+                                            } else if (!isset($element['type'])) {
+                                                echo $element['input'];
+                                                if (isset($messageError[$element['name']])) {
+                                                    $messageErrorExib = array_pop($messageError[$element['name']]);
+                                                    echo $errorIcon;
+                                                    echo '<label for="demo-oi-errinput" class="control-label">' . $messageErrorExib . '</label>';
+                                                }
+                                            } else {
+                                                ?>
+                                                <br>
+                                                <span class="btn btn-default btn-file">
+                                                    <?php
+                                                    echo $element['label'];
+                                                    echo $element['input'];
+                                                    ?>
+                                                </span>
+                                            <?php } ?>
+                                            <span class="info clearfix">
+                                                <?php
+                                                if (isset($element['information']))
+                                                    echo $element['information'];
+                                                else if (isset($element['information2']))
+                                                    echo $element['information'];
+                                                ?>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <?php
+                                    $cont = 1;
+                                } else if ($cont == 1) {
+                                    ?>
+                                    <div <?php echo $idDivCol ?> class="col-sm-<?php echo $this->tamanho ?>">
+                                        <div <?php echo $idDiv ?> class="form-group <?php if (isset($messageError[$element['name']])) echo $classError; ?>">
+                                            <?php
+                                            if (isset($element['label'])) {
+                                                echo $element['label'];
+                                            }
+                                            if (isset($element['calendario'])) {
+                                                ?>
+                                                <div id="demo-dp-txtinput">
+                                                    <?php echo $element['input'] ?>
+                                                </div>
+                                                <?php
+                                            } else if (!isset($element['type'])) {
+                                                echo $element['input'];
+
+                                                if (isset($messageError[$element['name']])) {
+                                                    $messageErrorExib = array_pop($messageError[$element['name']]);
+                                                    echo $errorIcon;
+                                                    echo '<label for="demo-oi-errinput" class="control-label">' . $messageErrorExib . '</label>';
+                                                }
+                                            } else {
+                                                ?>
+                                                <br>
+
+                                                <span class="btn btn-default btn-file">
+                                                    <?php
+                                                    echo $element['label'];
+                                                    echo $element['input'];
+                                                    ?>
+                                                </span>
+                                            <?php } ?>
+                                            <span class="info clearfix">
+                                                <?php
+                                                if (isset($element['information']))
+                                                    echo $element['information'];
+                                                else if (isset($element['information2']))
+                                                    echo $element['information'];
+                                                ?>
+                                            </span>
+
+                                        </div>
+                                        <?php echo $html; ?>
+                                    </div>
+                                </div>
+                                <?php
+                                $cont = 0;
+                            }
+                        }
+                    }
+                    if (isset($checkbox)) {
+                        foreach ($checkbox as $chave => $element) {
+                            if (isset($element['id_div'])) {
+                                $idDiv = 'id="' . $element['id_div'] . '"';
+                            } else {
+                                $idDiv = '';
+                            }
+                            ?>
+
+                            <div <?php echo $idDiv ?> class="form-group">
+                                <label class="control-label" for="demo-hor-inputemail"><?php echo $element['label']; ?></label>
+                                <div class="checkbox">
+                                    <!-- INLINE CHECKBOXES -->
+                                    <!--===================================================-->
+                                    <?php foreach ($element['values'] as $chaves => $elements) { ?>
+                                        <?php if (isset($element['style'])) { ?>
+                                            <div>
+                                            <?php } ?>
+                                            <label id="<?php echo $chaves ?>" class="form-checkbox form-icon active">
+                                                <input  name="<?php echo $element['name']; ?>" id="<?php echo $element['id']; ?>" value="<?php echo $chaves; ?>" type="checkbox"><?php echo $elements; ?>
+                                            </label>
+                                            <!--===================================================-->
+                                            <?php if (isset($element['style'])) { ?>
+                                            </div>
+                                        <?php } ?>
+                                    <?php } ?>
+                                    <?php
+                                    if (isset($messageError[$element['name']])) {
+                                        $messageErrorExib = array_pop($messageError[$element['name']]);
+                                        echo '<label for="demo-oi-errinput" class="control-label">' . $messageErrorExib . '</label>';
+                                    }
+                                    ?>
+                                </div>
+                            </div>
+                            <?php
+                        }
+                    }
+                    if (isset($radio)) {
+                        foreach ($radio as $chave => $element) {
+                            if (isset($element['id_div'])) {
+                                $idDiv = 'id="' . $element['id_div'] . '"';
+                            } else {
+                                $idDiv = '';
+                            }
+                        }
+                        ?>
+                        <div <?php echo $idDiv ?> class="form-group">
+                            <label class="control-label" for="demo-hor-inputemail"><?php echo $element['label']; ?></label>
+                            <div class="radio">
+                                <!-- INLINE CHECKBOXES -->
+                                <!--===================================================-->
+                                <?php foreach ($element['values'] as $chaves => $elements) { ?>
+                                    <label class="form-radio form-icon active">
+                                        <input  name="<?php echo $element['name']; ?>" id="<?php echo $element['id']; ?>" value="<?php echo $chaves; ?>" type="radio"><?php echo $elements; ?>
+                                    </label>
+                                    <!--===================================================-->
+                                <?php } ?>
+                                <?php
+                                if (isset($messageError[$element['name']])) {
+                                    $messageErrorExib = array_pop($messageError[$element['name']]);
+                                    echo '<label for="demo-oi-errinput" class="control-label">' . $messageErrorExib . '</label>';
+                                }
+                                ?>
+                            </div>
+                        </div>
+                    <?php }
+                    ?>
+
+
+                    <?php if (!isset($this->ocultarSubmit)) { ?>
+                        <div class="panel-footer text-right">
+                            <?php
+                            if (array_key_exists('adicionar', $this->form->getElements()))
+                                echo $this->formRow($this->form->get('adicionar'));
+                            if (array_key_exists('cancelar2', $this->form->getElements()))
+                                echo $this->formRow($this->form->get('cancelar2'));
+                            ?>
+                            <?php $submitbutton = isset($this->btnSubmit) ? "$this->btnSubmit" : "Salvar" ?>
+                            <button id="submitbutton" type="submit" class="btn btn-primary"><?= $submitbutton; ?></button>
+                            <?php
+                            if (array_key_exists('botao2', $this->form->getElements()))
+                                echo $this->formRow($this->form->get('botao2'));
+                            if (array_key_exists('cancelar', $this->form->getElements()))
+                                echo $this->formButton($this->form->get('cancelar'));
+                            ?>
+                        </div>
+                        <?php if (isset($this->extraButtons)) { ?>
+                            <div class="panel-footer text-left">
+                                <?php
+                                if (array_key_exists('exportarpva', $this->form->getElements())) {
+                                    echo $this->formButton($this->form->get('exportarpva'));
+                                }
+                                if (array_key_exists('exportarnfe', $this->form->getElements())) {
+                                    echo $this->formButton($this->form->get('exportarnfe'));
+                                }
+                                ?>
+                            </div>
+                        <?php } ?>
+
+                    <?php } ?>
+                    <?php echo $this->form()->closeTag($this->form); ?>
+                   
+                </div>            
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<aside id="aside-container">
+        <div id="aside">
+            <div class="nano">
+                <div class="nano-content" id='menu_email'>
+
+                    <div class="pad-hor">
+                        <h4 class="text-thin">Mensagens</h4>
+                        <a href="<?php echo BASE_URL . "/auth/mensagens/save" ?>" class="btn btn-block btn-info">
+                            Nova mensagem
+                        </a>
+                    </div>
+                    <hr>
+                    <div class="list-group bg-trans bord-no">
+                        <a href="<?php echo BASE_URL . "/auth/mensagens/index" ?>" class="list-group-item">
+                            <span class="badge badge-primary pull-right"><?php if ($totais['todas'] != 0) echo $totais['todas'] ?></span><i class="fa fa-inbox fa-fw"></i> Caixa de entrada
+                        </a>
+                        <a href="<?php echo BASE_URL . "/auth/mensagens/index/unread/1" ?>" class="list-group-item">
+                            <span class="badge badge-success pull-right"><?php if ($totais['nao_lidas'] != 0) echo $totais['nao_lidas'] ?></span><i class="fa fa-envelope-o fa-fw"></i> Não lidas
+                        </a>
+                        <a href="<?php echo BASE_URL . "/auth/mensagens/index/read/1" ?>" class="list-group-item">
+                            <span class="badge badge-info pull-right"><?php if ($totais['lidas'] != 0) echo $totais['lidas'] ?></span><i class="fa fa-envelope fa-fw"></i> Lidas
+                        </a>
+                        <a href="<?php echo BASE_URL . "/auth/mensagens/index/starred/1" ?>" class="list-group-item">
+                            <span class="badge badge-warning pull-right"><?php if ($totais['estrelas'] != 0) echo $totais['estrelas'] ?></span><i class="fa fa-star fa-fw"></i> Com estrela
+                        </a>                   
+                        <a href="<?php echo BASE_URL . "/auth/mensagens/index/sent/1" ?>" class="list-group-item"><span class="badge badge-danger pull-right"><?php if ($totais['enviadas'] != 0) echo $totais['enviadas'] ?></span><i class="fa fa-send fa-fw"></i> Enviados</a>
+                    </div>
+                    <hr>                                                  
+                </div>
+            </div>
+        </div>
+    </aside>
+
+<script type="text/javascript">
+</script>

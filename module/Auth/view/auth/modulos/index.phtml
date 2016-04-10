@@ -1,0 +1,53 @@
+<?php
+
+$breadcrumbs[] = array(
+    'url' => BASE_URL.'/auth/modulos/index',
+    'title' => 'Módulos',
+    'text' => 'Módulos'
+);
+
+$newButton = array(
+    'title' => 'Novo Módulo',
+    'href' => BASE_URL.'/auth/modulos/save',
+    'text' => 'Novo Módulo'
+);
+
+$tableInformation = array(
+    array(
+        'index' => 'id',
+        'format' => '',
+        'descricao' => 'Id'
+    ), array(
+        'index' => 'desc_modulo',
+        'format' => 'nameFormatter',
+        'descricao' => 'Descrição'
+    ), array(
+        'index' => 'operate',
+        'format' => 'operateFormatter',
+        'descricao' => 'Operações',
+        'events' => 'operateEvents'
+    ),
+);
+$addIcon[] = array(
+		'url' => BASE_URL.'/auth/modulos/save',
+		'title' => 'Editar',
+		'classButton' => 'glyphicon glyphicon-pencil',
+		'classHref' => 'edit',
+);
+$addIcon[] = array(
+		'url' => BASE_URL.'/auth/modulos/delete',
+		'title' => 'Excluir',
+		'classButton' => 'glyphicon glyphicon-trash',
+		'classHref' => 'remove',
+);
+
+
+echo $this->partial('/partials/datatable/template.phtml', array('breadcrumbs' => $breadcrumbs,
+    'head' => 'Módulos',
+    'newButton' => $newButton,
+    'tableInformation' => $tableInformation,
+    'breadcrumbs' => $breadcrumbs,
+    'addIcon' => $addIcon
+
+));
+?>

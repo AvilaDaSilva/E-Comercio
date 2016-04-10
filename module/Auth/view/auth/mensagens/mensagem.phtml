@@ -1,0 +1,103 @@
+<?php
+$help = $assunto;
+
+$breadcrumbs[] = array(
+    'url' => '/auth/mensagens',
+    'title' => 'Todas as mensagens',
+    'text' => 'Todas as mensagens'
+);
+$breadcrumbs[] = array(
+    'url' => '/auth/mensagens/mensagens/id',
+    'title' => 'Mensagens',
+    'text' => 'Mensagens'
+);
+echo $this->partial('/partials/mensagens/mensagem.phtml', array(
+//    'breadcrumbs' => $breadcrumbs,
+    'help' => $help,
+    'mensagem' => $mensagem,
+    'solicitacao' => $solicitacao,
+    'totais' => $totais,
+    'anexos' => $anexos,
+    
+));
+?>
+<style>
+    #download_pva{
+        cursor: pointer;
+        font-weight:bold;
+    }
+</style>
+<script type="text/javascript">
+    function downloadAnexo(c){
+        if(c === null){
+            window.location.assign('<?= BASE_URL; ?>' + '/auth/mensagens/download/id/<?=$id?>');
+        } else {
+            window.location.assign('<?= BASE_URL; ?>' + '/auth/mensagens/download/anexo/'+c);
+        }
+    }
+    
+    function voltar() {
+        window.location.assign('<?=BASE_URL;?>'+'/auth/mensagens');
+    }
+    function permissao(val) {
+        $.ajax({
+            type: 'POST',
+            data: {pass: val},
+            url: '<?= BASE_URL ?>/auth/mensagens/autorizacao/id/<?=$id?>',
+            success: function (d) {
+                if (val == 1) {
+                    alert('Permissão concedida');
+                    window.location.assign('<?= BASE_URL ?>/auth/mensagens');
+                } else {
+                    alert('Permissão negada.');
+                    window.location.assign('<?= BASE_URL ?>/auth/mensagens');
+                }
+            }
+        })
+    }
+    function excluir(){
+        if (confirm("Deseja realmente excluir essa mensagem?") == true) {
+            $.ajax({
+            type: 'POST',
+            url: '<?= BASE_URL ?>/auth/mensagens/delete/id/<?=$id?>',
+            complete: function () {
+                window.location.assign('<?= BASE_URL ?>/auth/mensagens');
+                }
+            });
+        }
+    }
+    
+    function imprimir(){
+        window.print();
+    }
+    function responder(a){
+        $.ajax({
+            type: 'POST',
+            data: {resposta: a},
+            url: '<?= BASE_URL ?>/auth/mensagens/resposta/id/<?=$id?>',
+            success: function (d) {
+                if (d == 'true') {
+                    alert('Resposta enviada');
+                    window.location.assign('<?= BASE_URL ?>/auth/mensagens/mensagem/id/<?=$id?>');
+                } else {
+                    alert('Erro ao enviar a resposta');
+                    window.location.assign('<?= BASE_URL ?>/auth/mensagens/mensagem/id/<?=$id?>');
+                }
+            }
+        })
+    }
+
+    $JQuery('#download_pva').on('click', function(){
+        var link = $JQuery('#download_pva').attr('value');
+        $.ajax({
+            type: 'POST',
+            url: '<?= BASE_URL?>/exportacao/exportar-xls/download-arquivo/verifica/1/nome/'+link,
+            success: function (d) {
+                if(d!='false')
+                    window.location.assign('<?= BASE_URL ?>/exportacao/exportar-xls/download-arquivo/nome/'+link);
+                else
+                    alert('Arquivo não encontrado! Arquivo com mais de 30 dias ou ocorreram problemas na exportação.')
+            }
+        })
+    });
+</script>

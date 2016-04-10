@@ -1,0 +1,43 @@
+<?php
+
+$breadcrumbs[] = array(
+    'url' => BASE_URL . '/auth/noticias/index',
+    'title' => 'Notícias',
+    'text' => 'Notícias'
+);
+$head = 'Notícias';
+$newButton = array();
+$newButton['title'] = 'Visualizar no site da Receita';
+$newButton['href'] = "http://idg.receita.fazenda.gov.br/noticias";
+$newButton['text'] = "Visualizar no site da Receita";
+$addIcon[] = array(
+		'url' => BASE_URL .'/auth/usuarios/save',
+		'title' => 'Editar',
+		'classButton' => 'glyphicon glyphicon-pencil',
+		'classHref' => 'edit',
+);
+$tableInformation = array(
+    array(
+        'index' => 'text',
+        'format' => 'newsFormatter',
+        'descricao' => 'Texto'
+    ),
+    array(
+        'index' => 'subtitle',
+        'format' => '',
+        'descricao' => 'Título'
+    ),
+    array(
+        'index' => 'description',
+        'format' => '',
+        'descricao' => 'Descrição'
+    ),
+);
+echo $this->partial('/partials/datatable/template.phtml', array(
+    'newButton' => $newButton,
+    'breadcrumbs' => $breadcrumbs,
+    'head' => $head,
+    'addIcon' => $addIcon,
+    'tableInformation' => $tableInformation
+));
+?>

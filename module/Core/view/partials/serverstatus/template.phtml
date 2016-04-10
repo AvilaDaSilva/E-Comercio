@@ -1,0 +1,621 @@
+<!-- ##### CRIAÇÃO DOS BREADCRUMBS #####-->
+<?php
+if (isset($this->breadcrumbs))
+    if ($this->breadcrumbs) {
+        $keys = array_keys($this->breadcrumbs);
+        $endKey = end($keys);
+        ?>
+        <ol class="breadcrumb">
+            <li>Você está aqui:</li>
+            <?php
+            foreach ($this->breadcrumbs as $chave => $breadcrumb) {
+                if ($breadcrumb['url'] == '#')
+                    $urlBreadcrumb = '#';
+                else
+                    $urlBreadcrumb = BASE_URL . $breadcrumb['url'];
+                ?>
+                <?php if ($endKey != $chave) { ?>
+                    <li><a href="<?php echo $urlBreadcrumb; ?>"
+                           title="<?php echo $breadcrumb['title']; ?>"><?php echo $breadcrumb['text']; ?></a></li>
+                    <?php } else { ?>
+                    <li class="active"><?php echo $breadcrumb['text']; ?></li>
+                    <?php
+                }
+            }
+            ?>
+        </ol>
+    <?php } ?>
+<!-- ##### FIM DOS BREADCRUMBS #####-->
+
+<!-- ##### HEAD DA PAGINA #####-->
+<?php if (isset($this->head)) { ?>
+    <div id="page-title">
+        <h1 class="page-header text-overflow"><?php echo $this->head; ?>
+
+
+
+
+    </div>
+<?php } ?>
+<!-- ##### FIM DA HEAD #####-->
+
+<div id="page-content">
+    <div class="row">
+        <div class="eq-height">
+            <div class="col-md-12 col-lg-4 eq-box-lg">
+                <div class="panel">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><?php echo $sys->getMemPercentUsed(); ?>% da memória RAM em uso</h3>
+                    </div>
+                    <!-- GAUGE.JS -->
+                    <!--===================================================-->
+                    <div class="panel-body">
+                        <div class="text-center">
+                            <!--Gauge placeholder-->
+                            <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+                            <canvas id="chartMem" height="70" class="canvas-responsive"></canvas>
+                            <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+                            <p class="h4">
+                                <span id="char-mem-txt" class="label label-primary"></span>Mb
+                            </p>
+                        </div>
+                    </div>
+                    <!--===================================================-->
+                    <!-- END OF GAUGE.JS  -->
+                </div>
+            </div>
+            <div class="col-md-12 col-lg-4 eq-box-lg">
+                <div class="panel">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><?php echo $sys->getSwapPercentUsed(); ?>% da memória Swap em uso</h3>
+                    </div>
+                    <!-- GAUGE.JS -->
+                    <!--===================================================-->
+                    <div class="panel-body">
+                        <div class="text-center">
+                            <!--Gauge placeholder-->
+                            <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+                            <canvas id="chartSwap" height="70" class="canvas-responsive"></canvas>
+                            <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+                            <p class="h4">
+                                <span id="char-swap-txt" class="label label-primary"></span>Mb
+                            </p>
+                        </div>
+                    </div>
+                    <!--===================================================-->
+                    <!-- END OF GAUGE.JS  -->
+                </div>
+            </div>
+
+            <div class="col-md-12 col-lg-4 eq-box-lg">
+                <div class="panel">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Carga média do processador: <?php echo number_format($sys->getLoadPercent(), 2, '.', ','); ?>%</h3>
+                    </div>
+                    <!-- GAUGE.JS -->
+                    <!--===================================================-->
+                    <div class="panel-body">
+                        <div id="demo-morris-line" class="demo-morris"></div>
+                    </div>
+                    <!--===================================================-->
+                    <!-- END OF GAUGE.JS  -->
+                </div>
+            </div>
+        </div>
+        <div class="eq-height">
+            <div class="col-md-12 col-lg-4 eq-box-lg">
+                <div class="panel">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Filas de trabalhos</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div id="botoes">
+                        </div>
+                        <div class="bootstrap-table">
+                            <?php if (isset($this->newButton)) { ?>
+                                <div class="panel-footer text-left">
+                                    <a class="btn btn-lg btn-primary" href='<?php echo $this->newButton['href'] ?>'><?php echo $this->newButton['text'] ?></a>
+                                </div>
+                            <?php } ?>
+                            <table id="demo-table" class="table-striped" data-toolbar="#demo-custom-toolbar" data-sort-name="id" data-sort-order="desc" data-pagination="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1">
+                                <thead>
+                                    <tr>   
+                                        <?php
+                                        foreach ($this->tableInformation as $th) {
+                                            if ($th['index'] == 'checkbox') {
+                                                ?>
+                                                <th data-align="center" data-sortable="false" data-checkbox="true"></th><?php } else { ?>
+                                                <th data-field="<?php echo $th['index'] ?>" data-align="center" data-events="<?php
+                                                if (isset($th['events'])) {
+                                                    echo $th['events'];
+                                                }
+                                                ?>" data-sortable="true" data-formatter="<?php echo $th['format'] ?>" ><?php echo $th['descricao'] ?></th>
+                                                    <?php
+                                                }
+                                            }
+                                            ?>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="eq-height">
+            <div class="col-md-12 col-lg-4 eq-box-lg">
+                <!-- DEFAULT TAB : LEFT ALIGNED -->
+                <!--===================================================-->
+                <div class="tab-base">
+
+                    <!-- Nav tabs -->
+                    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a data-toggle="tab" href="#demo-lft-tab-1">Dados do sistema</a></li>
+                        <li><a data-toggle="tab" href="#demo-lft-tab-2">Processadores</a></li>
+                        <li><a data-toggle="tab" href="#demo-lft-tab-3">Sistema de arquivos</a></li>
+                        <li><a data-toggle="tab" href="#demo-lft-tab-4">Rede</a></li>
+                        <li><a data-toggle="tab" href="#demo-lft-tab-5">Memória</a></li>
+                    </ul>
+
+
+                    <!-- Tabs Content -->
+                    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+                    <div class="tab-content">
+
+                        <div id="demo-lft-tab-1" class="tab-pane fade active in">
+                            <div class="col-md-12 col-lg-4 eq-box-lg">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Dados do Sistema</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped">
+                                            <tbody>
+                                                <tr>
+                                                    <td>Host</td>
+                                                    <td><?php echo $sys->getHostname(); ?></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>IP</td>
+                                                    <td><?php echo $sys->getIp(); ?></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Kernel</td>
+                                                    <td><?php echo $sys->getKernel(); ?></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Distro</td>
+                                                    <td><?php echo $sys->getDistribution(); ?></td>
+                                                </tr>
+                                                <tr>
+                                                    <?php
+                                                    $uptime = $sys->getUptime();
+                                                    $days = floor($uptime / 60 / 60 / 24) . ' dias ';
+                                                    $hours = ($uptime / 60 / 60 % 24) . ':';
+                                                    $mins = ($uptime / 60 % 60) . ':';
+                                                    $secs = ($uptime % 60);
+                                                    ?>
+                                                    <td>UP Time</td>
+                                                    <td><?php echo $days . $hours . $mins . $secs; ?></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Usuários</td>
+                                                    <td><?php echo $sys->getUsers(); ?></td>
+                                                </tr>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                            <div class="col-md-12 col-lg-4 eq-box-lg">
+
+                                <div class="panel-heading"></div>
+                                <div class="panel-body">
+
+                                    <div class="table-responsive">
+                                        <table class="table table-striped">
+                                            <tbody>
+                                                <tr>
+                                                    <td>Carga</td>
+                                                    <td><?php echo $sys->getLoad(); ?></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Processos</td>
+                                                    <td><?php echo 'Rodando ' . ($sys->getProcesses()['R']) . ', dormindo ' . ($sys->getProcesses()['S']); ?></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Memória Total</td>
+                                                    <td><?php echo (round($sys->getMemTotal() / 1024 / 1024)); ?>Mb</td>
+                                                </tr>
+<?php foreach ($sys->getScsiDevices() as $key => $valor) { ?>
+                                                    <tr>
+                                                        <td>Dispositivo</td>
+                                                        <td><?php echo $valor->getName(); ?></td>
+                                                    </tr>
+<?php } ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="demo-lft-tab-2" class="tab-pane fade">
+                            <div class="col-md-12 col-lg-4 eq-box-lg">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title"><?php $qtde = sizeof($sys->getCpus());
+echo $qtde;
+?> Processadores</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped">
+                                            <tbody>
+                                                <?php
+                                                foreach ($sys->getCpus() as $key => $valor) {
+                                                    if ($key == (round($qtde / 2)))
+                                                        break;
+                                                    ?>
+                                                    <tr>
+                                                        <td><?php echo $valor->getModel() . ' - ' . $valor->getCpuSpeed() . ' MHz'; ?></td>
+                                                    </tr>
+<?php } ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 col-lg-4 eq-box-lg">
+
+                                <div class="panel-heading"></div>
+                                <div class="panel-body">
+
+                                    <div class="table-responsive">
+                                        <table class="table table-striped">
+                                            <tbody>
+<?php
+foreach ($sys->getCpus() as $key => $valor) {
+    if ($key >= (round($qtde / 2))) {
+        ?>
+                                                        <tr>
+                                                            <td><?php echo $valor->getModel() . ' - ' . $valor->getCpuSpeed() . ' MHz'; ?></td>
+                                                        </tr>
+    <?php }
+}
+?>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+
+
+
+
+                        </div>
+
+
+
+
+
+                        <div id="demo-lft-tab-3" class="tab-pane fade">
+                            <div class="col-md-12 col-lg-4 eq-box-lg">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Sistema de arquivos</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>Montagem</th>
+                                                    <th>Tipo</th>
+                                                    <th>Partição</th>
+                                                    <th>Uso</th>
+                                                    <th>Livre</th>
+                                                    <th>Utilizado</th>
+                                                    <th>Tamanho</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+<?php foreach ($sys->getDiskDevices() as $key => $valor) { ?>
+                                                    <tr>
+                                                        <td><?php echo $valor->getMountPoint(); ?></td>
+                                                        <td><?php echo $valor->getFsType(); ?></td>
+                                                        <td><?php echo $valor->getName(); ?></td>
+                                                        <td>
+                                                            <div class="progress progress-xl">
+                                                                <div style="width: <?php echo $valor->getPercentUsed(); ?>%;" class="progress-bar progress-bar-<?php
+                                                                     if ($valor->getPercentUsed() > 90)
+                                                                         echo 'danger';
+                                                                     else if ($valor->getPercentUsed() > 70)
+                                                                         echo 'warning';
+                                                                     else
+                                                                         echo 'success'
+                                                                         ?>">
+    <?php echo $valor->getPercentUsed() . '%'; ?>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td><?php echo number_format(((($valor->getFree() / 1024) / 1024) / 1024), 2, ',', '.'); ?> Gb</td>
+                                                        <td><?php echo number_format(((($valor->getUsed() / 1024) / 1024) / 1024), 2, ',', '.'); ?> Gb</td>
+                                                        <td><?php echo number_format(((($valor->getTotal() / 1024) / 1024) / 1024), 2, ',', '.'); ?> Gb</td>
+                                                    </tr>
+<?php } ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div id="demo-lft-tab-4" class="tab-pane fade">
+                            <div class="col-md-12 col-lg-4 eq-box-lg">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Rede</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>Dispositivo</th>
+                                                    <th>Recebidos</th>
+                                                    <th>Enviados</th>
+                                                    <th>Err/Drop</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+<?php foreach ($sys->getNetDevices() as $key => $valor) { ?>
+                                                    <tr>
+                                                        <td><?php echo $valor->getName(); ?></td>
+                                                        <td><?php echo number_format(($valor->getRxBytes() / 1024) / 1024, 2, ',', '.'); ?> Mb</td>
+                                                        <td><?php echo number_format(($valor->getTxBytes() / 1024) / 1024, 2, ',', '.'); ?> Mb</td>
+                                                        <td><?php echo $valor->getErrors() . '/' . $valor->getDrops(); ?></td>
+                                                    </tr>
+<?php } ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div id="demo-lft-tab-5" class="tab-pane fade">
+                            <div class="col-md-12 col-lg-4 eq-box-lg">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Uso detalhado de memória</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>Tipo</th>
+                                                    <th>Uso</th>
+                                                    <th>Livre</th>
+                                                    <th>Utilizado</th>
+                                                    <th>Tamanho</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Memória Física</td>
+                                                    <td>
+                                                        <div class="progress progress-xl">
+                                                            <div style="width: <?php echo $sys->getMemPercentUsed(); ?>%;" class="progress-bar progress-bar-<?php
+if ($sys->getMemPercentUsed() > 95)
+    echo 'danger';
+else if ($sys->getMemPercentUsed() > 70)
+    echo 'warning';
+else
+    echo 'success'
+    ?>">
+<?php echo $sys->getMemPercentUsed() . '%'; ?>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td><?php echo number_format((($sys->getMemFree() / 1024) / 1024) / 1024, 2, ',', '.'); ?> Gb</td>
+                                                    <td><?php echo number_format((($sys->getMemUsed() / 1024) / 1024) / 1024, 2, ',', '.'); ?> Gb</td>
+                                                    <td><?php echo number_format((($sys->getMemTotal() / 1024) / 1024) / 1024, 2, ',', '.'); ?> Gb</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Kernel e Aplicações</td>
+                                                    <td><?php echo $sys->getMemPercentApplication(); ?>%</td>
+                                                    <td></td>
+                                                    <td><?php echo number_format((($sys->getMemApplication() / 1024) / 1024) / 1024, 2, ',', '.'); ?> Gb</td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Buffers</td>
+                                                    <td><?php echo $sys->getMemPercentBuffer(); ?>%</td>
+                                                    <td></td>
+                                                    <td><?php echo number_format((($sys->getMemBuffer() / 1024) / 1024) / 1024, 2, ',', '.'); ?> Gb</td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Cached</td>
+                                                    <td><?php echo $sys->getMemPercentCache(); ?>%</td>
+                                                    <td></td>
+                                                    <td><?php echo number_format((($sys->getMemCache() / 1024) / 1024) / 1024, 2, ',', '.'); ?> Gb</td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Memória Swap</td>
+                                                    <td>
+                                                        <div class="progress progress-xl">
+                                                            <div style="width: <?php echo $sys->getSwapPercentUsed(); ?>%;" class="progress-bar progress-bar-<?php
+                                                                 if ($sys->getSwapPercentUsed() > 5)
+                                                                     echo 'danger';
+                                                                 else if ($sys->getSwapPercentUsed() > 3)
+                                                                     echo 'warning';
+                                                                 else
+                                                                     echo 'success'
+                                                                     ?>">
+<?php echo $sys->getSwapPercentUsed() . '%'; ?>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td><?php echo number_format((($sys->getSwapFree() / 1024) / 1024) / 1024, 2, ',', '.'); ?> Gb</td>
+                                                    <td><?php echo number_format((($sys->getSwapUsed() / 1024) / 1024) / 1024, 2, ',', '.'); ?> Gb</td>
+                                                    <td><?php echo number_format((($sys->getSwapTotal() / 1024) / 1024) / 1024, 2, ',', '.'); ?> Gb</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<?php //echo $sys->getUptime();  ?>
+<?php //echo $sys->getLoadPercent();  ?>
+
+<script type="text/javascript">
+    $JQuery(function() {
+    $JQuery('[name="refresh"]').click(function() {
+    var aux = window.location.pathname;
+            $('#demo-table').bootstrapTable('refresh', {url: aux});
+    });
+    });
+            function nameFormatter(value, row) {
+            if (value)
+                    return '<a href="<?php echo $this->addIcon[0]['url']; ?>/id/' + JSON.stringify(row.id) + '" class="btn-link" title="<?php echo $this->addIcon[0]['title']; ?>"> ' + value + '</a>';
+                    return '-';
+            }
+    function nameFormatterTxt(value, row) {
+    if (value)
+            return '<a href="<?php echo $this->addIcon[0]['url']; ?>/txt/' + JSON.stringify(row.id) + '" class="btn-link" title="<?php echo $this->addIcon[0]['title']; ?>"> ' + value + '</a>';
+            return '-';
+    }
+    function operateFormatter(value, row, index) {
+    return [
+<?php foreach ($this->addIcon as $item) { ?>
+        '<a class="<?php echo $item['classHref']; ?>" href="javascript:void(0)" title="<?php echo $item['title']; ?>">',
+                '<i class="<?php echo $item['classButton']; ?>"></i>',
+                '</a>&nbsp;&nbsp;&nbsp;',
+<?php } ?>
+    ].join('');
+    }
+
+    window.operateEvents = {
+<?php
+foreach ($this->addIcon as $item) {
+    if ($item['classHref'] == 'kill') {
+        ?>
+            'click .<?php echo $item['classHref']; ?>': function(e, value, row, index) {
+            if (confirm('Deseja matar esta fila?') == true){
+            window.location.assign("<?php echo $item['url']; ?>/pid/" + row.pid);
+            }
+            },
+        <?php
+    }
+    if ($item['classHref'] == 'queue') {
+        ?>
+            'click .<?php echo $item['classHref']; ?>': function(e, value, row, index) {
+            window.location.assign("<?php echo $item['url']; ?>/queue/" + row.fila);
+            },
+    <?php } ?>
+<?php } ?>
+    };</script>
+<script type="text/javascript">
+            $JQuery(document).ready(function() {
+// Gauge
+// =================================================================
+// Require GaugeJS
+// -----------------------------------------------------------------
+// http://bernii.github.io/gauge.js/
+// =================================================================
+    var opts = {
+    lines: 10, // The number of lines to draw
+            angle: 0, // The length of each line
+            lineWidth: 0.3, // The line thickness
+            pointer: {
+            length: 0.45, // The radius of the inner circle
+                    strokeWidth: 0.035, // The rotation offset
+//color: '#242d3c' // Fill color
+            },
+            limitMax: 'true', // If true, the pointer will not go past the end of the gauge
+            colorStart: '#177bbb', // Colors
+            colorStop: '#177bbb', // just experiment with them
+            strokeColor: '#ddd', // to see which ones work best for you
+            generateGradient: true
+    };
+<?php
+if ($sys->getMemPercentUsed() > 95)
+    echo "opts.colorStart = '#ff0000';";
+?>
+    var target = document.getElementById('chartMem'); // your canvas element
+            var gauge = new Gauge(target).setOptions(opts); // create sexy gauge!
+            gauge.maxValue = <?php echo ($sys->getMemTotal() / 1024) / 1024; ?>; // set max gauge value
+            gauge.animationSpeed = 32; // set animation speed (32 is default value)
+            gauge.set(<?php echo (($sys->getMemUsed()) / 1024) / 1024; ?>); // set actual value
+            gauge.setTextField(document.getElementById("char-mem-txt"));
+<?php
+if ($sys->getSwapPercentUsed() > 5)
+    echo "opts.colorStart = '#ff0000';";
+else
+    echo "opts.colorStart = '#177bbb';";
+?>
+    var targetswap = document.getElementById('chartSwap'); // your canvas element
+            var gaugeswap = new Gauge(targetswap).setOptions(opts); // create sexy gauge!
+            gaugeswap.maxValue = <?php echo ($sys->getSwapTotal() / 1024) / 1024; ?>; // set max gauge value
+            gaugeswap.animationSpeed = 32; // set animation speed (32 is default value)
+            gaugeswap.set(<?php if ($sys->getSwapUsed() > 0)
+    echo (($sys->getSwapUsed()) / 1024) / 1024;
+else
+    echo 0.1;
+?>); // set actual value
+            gaugeswap.setTextField(document.getElementById("char-swap-txt"));
+<?php $valor = explode(" ", $sys->getLoad()); ?>
+    var day_data = [
+    {"elapsed": "1 min", "value": <?php echo $valor[0]; ?>},
+    {"elapsed": "5 min", "value": <?php echo $valor[1]; ?>},
+    {"elapsed": "15 min", "value": <?php echo $valor[2]; ?>},
+    ];
+            Morris.Line({
+            element: 'demo-morris-line',
+                    data: day_data,
+                    xkey: 'elapsed',
+                    ykeys: ['value'],
+                    labels: ['valor'],
+                    gridEnabled: true,
+                    gridLineColor: '#128376',
+<?php
+$valmin = 0.7;
+$valmax = 1.5;
+if ($valor[0] < $valmin && $valor[1] < $valmin && $valor[2] < $valmin)
+    echo "lineColors: ['#2d4859',],";
+else if ($valor[0] > $valmax && $valor[1] > $valmax && $valor[2] > $valmax)
+    echo "lineColors: ['#fe7211',],";
+else
+    echo "lineColors: ['#ff0000',],";
+?>
+
+            lineWidth: 4,
+                    parseTime: false,
+                    resize:true,
+                    hideHover: 'auto'
+            });
+    });
+</script>

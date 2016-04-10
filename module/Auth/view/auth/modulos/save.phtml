@@ -1,0 +1,39 @@
+<?php
+  $breadcrumbs[] = array(
+      'url' => BASE_URL.'/auth/modulos/index',
+      'title' => 'Módulos',
+      'text' => 'Módulos'
+  );
+  $breadcrumbs[] = array(
+      'url' => BASE_URL.'/auth/modulos/save',
+      'title' => 'Novo Módulo',
+      'text' => 'Novo Módulo'
+  );
+    
+  $partialElements[] = array(
+      'name' => 'desc_modulo',
+      'label' => $this->formLabel($form->get('desc_modulo')->setLabelAttributes(array('for' => 'desc_modulo'))),
+      'information' => 'Este campo vai definir a descrição do modulo que será cadastrado',
+      'input' => $this->formInput($form->get('desc_modulo'))
+  );
+  
+  $partialElements[] = array(
+      'name' => 'url_modulo',
+      'label' => $this->formLabel($form->get('url_modulo')->setLabelAttributes(array('for' => 'url_modulo'))),
+      'information' => 'Este campo vai definir a URL do módulo que será cadastrado',
+      'input' => $this->formInput($form->get('url_modulo'))
+  );
+  
+  $partialElements[] = array(
+      'name' => 'id',
+      'input' => $this->formHidden($form->get('id'))
+  );
+  
+  $help = 'Nessa tela pode ser cadastrado um novo módulo pela sua descrição, campos com * são obrigatórios.';
+  
+  echo $this->partial('partials/form/template.phtml', array('breadcrumbs' => $breadcrumbs, 
+      'titlePage' => 'Novo Módulo', 
+      'partialElements' => $partialElements,
+      'form' => $form,
+      'help' => $help));
+ ?>  

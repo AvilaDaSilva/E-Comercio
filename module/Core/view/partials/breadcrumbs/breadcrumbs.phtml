@@ -1,0 +1,25 @@
+<?php if($this->breadcrumbs){ ?>
+<span class="breadcrumbs">
+    <a href="">Você está aqui: </a>
+    <!--Link de Breadcumbs-->
+
+    <?php
+    $keys = array_keys($this->breadcrumbs);
+    $endKey = end($keys);
+    foreach ($this->breadcrumbs as $chave => $breadcrumb) {
+        if ($breadcrumb['url'] == '#')
+            $urlBreadcrumb = '#';
+        else
+            $urlBreadcrumb = BASE_URL . $breadcrumb['url'];
+        ?>
+        <a href="<?php echo $urlBreadcrumb; ?>" title="<?php echo $breadcrumb['title']; ?>"><?php echo $breadcrumb['text']; ?></a>
+        <!--Divisor do Link de Breadcumbs-->
+        <?php if ($endKey != $chave) { ?>
+            <img src="<?php echo BASE_URL; ?>/images/breadcrumbs.png" width="6" height="9" alt=">" />
+            <?php
+        }
+    }
+    ?>
+</span>
+
+<?php } ?>

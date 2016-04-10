@@ -1,0 +1,388 @@
+<?php
+$classError = 'has-error has-feedback';
+$errorIcon = '<span class="fa fa-times fa-lg form-control-feedback"></span>';
+if (isset($this->breadcrumbs))
+    if ($this->breadcrumbs) {
+        $keys = array_keys($this->breadcrumbs);
+        $endKey = end($keys);
+        ?>
+        <ol class="breadcrumb">
+            <li>Você está aqui: </li>
+            <?php
+            foreach ($this->breadcrumbs as $chave => $breadcrumb) {
+                if ($breadcrumb['url'] == '#')
+                    $urlBreadcrumb = '#';
+                else
+                    $urlBreadcrumb = BASE_URL . $breadcrumb['url'];
+                ?>
+                <?php if ($endKey != $chave) { ?>
+                    <li><a href="<?php echo $urlBreadcrumb; ?>" title="<?php echo $breadcrumb['title']; ?>"><?php echo $breadcrumb['text']; ?></a></li>
+                <?php } else {  
+                    if (isset($modal)) {                
+                        ?>
+                        <li><a href="#" title="Opções" onclick="mostrarModals();"><?php echo $modal; ?></a></li>
+                    <?php } ?>
+                    <li class="active"><strong><?php echo $breadcrumb['text']; ?></strong></li>
+                    <?php
+                }
+            }
+            ?>
+        </ol>
+    <?php } ?>
+<div id="page-content">
+    <div class="panel">
+        <div class="eq-height clearfix">
+
+            <!-- Main Form Wizard -->
+            <!--===================================================-->
+            <div id="demo-main-wz">
+
+                <!--nav-->
+                <ul class="row wz-step wz-icon-bw wz-nav-off mar-top">
+                    <li id="etapa1" class="col-xs-3">
+                        <a data-toggle="tab" href="#demo-main-tab1">
+                            <span class="icon-wrap icon-wrap-xs bg-danger"><i class="glyphicon glyphicon-list-alt "></i></span>
+                            <p class="text-thin">Validação dos arquivos</p>
+                        </a>
+                    </li>
+                    <li id="etapa2" class="col-xs-3">
+                        <a data-toggle="tab" href="#demo-main-tab2">
+                            <span class="icon-wrap icon-wrap-xs bg-warning"><i class="fa fa-users"></i></span>
+                            <p class="text-thin">Rateio</p>
+                        </a>
+                    </li>
+                    <li id="etapa3" class="col-xs-3">
+                        <a data-toggle="tab" href="#demo-main-tab3">
+                            <span class="icon-wrap icon-wrap-xs bg-info"><i class="glyphicon glyphicon-ok "></i></span>
+                            <p class="text-thin">Validação entre IN's</p>
+                        </a>
+                    </li>
+                    <li id="etapa4" class="col-xs-3">
+                        <a data-toggle="tab" href="#demo-main-tab4">
+                            <span class="icon-wrap icon-wrap-xs bg-success"><i class="glyphicon glyphicon-align-justify"></i></span>
+                            <p class="text-thin">Conciliação</p>
+                        </a>
+                    </li>
+                </ul>
+
+                <!--progress bar-->
+                <div class="progress progress-xs">
+                    <div class="progress-bar progress-bar-primary"></div>
+                </div>
+
+
+                <!--form-->
+                <form class="form-horizontal">
+                    <div class="panel-body">
+                        <div class="tab-content">
+
+                            <!--First tab-->
+                            <div id="demo-main-tab1" class="tab-pane">
+                                <table id="demo-table" class="table-striped" data-toolbar="#demo-custom-toolbar" data-sort-name="id" data-sort-order="desc" data-pagination="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-click-to-select="true">
+                                    <thead id="cabecalho">
+                                        <tr>   
+                                            <?php
+                                            foreach ($this->tableInformation as $th) {
+                                                if ($th['index'] == 'checkbox') {
+                                                    ?>
+                                                    <th data-align="center" data-sortable="false" data-checkbox="true"></th><?php } else { ?>
+                                                    <th data-field="<?php echo $th['index'] ?>" data-align="center" data-events="<?php
+                                                    if (isset($th['events'])) {
+                                                        echo $th['events'];
+                                                    }
+                                                    ?>" data-sortable="true" data-formatter="<?php echo $th['format'] ?>" ><?php echo $th['descricao'] ?></th>
+                                                        <?php
+                                                    }
+                                                }
+                                                ?>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                            <!--Second tab-->
+                            <div id="demo-main-tab2" class="tab-pane fade">
+                                <button style="position: absolute; left: 50%" type="button" id="rateio" class="btn btn-lg btn-primary">Iniciar Rateio</button>
+                            </div>
+                            <!--Third tab-->
+                            <div id="demo-main-tab3" class="tab-pane">
+                                <button style="position: absolute; left: 50%" type="button" id="iniciarTerc" class="btn btn-lg btn-primary">Iniciar terceira Etapa</button>
+                            </div>
+                            <!--Fourth tab-->
+                            <div id="demo-main-tab4" class="tab-pane">
+                                <div id='botao'>
+                                <button style="position: absolute; left: 50%" type="button" id="iniciarQuar" class="btn btn-lg btn-primary">Iniciar quarta Etapa</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!--Footer button-->
+                    <div class="pull-right pad-all">
+                        <button type="button" id="iniciar" class="btn btn-primary">Iniciar</button>
+                        <button type="button" class="previous btn btn-primary">Anterior</button>
+                        <button type="button" class="next btn btn-primary">Próximo</button>
+                        <button type="button" class="finish btn btn-success" disabled>Finalizar</button>
+                    </div>
+                     <?php
+                        if (isset($this->filter)) { ?>
+                            <div id="filter" style="margin-left:1em;">
+                        <?php foreach ($this->filter as $f) { ?>
+                            <label class="form-checkbox form-icon form-text">
+                                <input name="<?php echo $f['name']; ?>[]" value="<?php echo $f['value']; ?>"
+                                       type="checkbox" onchange="<?php echo $f['funcao']; ?>"><?php echo $f['desc']; ?>
+                            </label>
+                        <?php } ?>
+                        </div>
+                    <?php } ?>
+                </form>
+            </div>
+            <!--===================================================-->
+            <!-- End of Main Form Wizard -->
+
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $JQuery(function() {
+    $JQuery('[name="refresh"]').click(function() {
+    var aux = window.location.pathname;
+            $('#demo-table').bootstrapTable('refresh', {url: aux});
+    });
+    });
+            function downloadExportFormatter(value, row) {
+            if (value)
+            {
+            if (value == "Em andamento...") {
+            return value;
+            }
+            else
+                    return '<a href="<?= BASE_URL; ?>/exportacao/exportar-xls/file/id/' + JSON.stringify(row.id) + '" class="btn-link"  title="Download do arquivo"> ' + value + '</a>';
+            }
+            return '-';
+            }
+
+    function statusRegra(value, row){
+        if (value === '1'){
+            return '<i class="fa fa-check fa-2x"></i> ';
+        } else {
+            return '<i class="fa fa-spin fa-spinner fa-pulse fa-2x"></i> ';
+        }
+    }
+
+    function gridFormatter(value, row){
+    if (value)
+            return '<a href="<?php echo $this->addIcon[0]['url']; ?>/table/' + row.table_name + '" class="btn-link" title="<?php echo $this->addIcon[0]['title']; ?>"> ' + value + '</a>';
+            return '-';
+    }
+    function nameFormatter(value, row) {
+    if (value)
+            return '<a href="<?php echo $this->addIcon[0]['url']; ?>/id/' + JSON.stringify(row.id) + '" class="btn-link" title="<?php echo $this->addIcon[0]['title']; ?>"> ' + value + '</a>';
+            return '-';
+    }
+    function nameFormatterTxt(value, row) {
+    if (value)
+            return '<a href="<?php echo $this->addIcon[0]['url']; ?>/txt/' + JSON.stringify(row.id) + '" class="btn-link" title="<?php echo $this->addIcon[0]['title']; ?>"> ' + value + '</a>';
+            return '-';
+    }
+    function newsFormatter(value, row) {
+    if (value)
+            console.log(row.href);
+            return '<a href="' + row.href + '" target="_blank" class="btn-link" title="<?php echo $this->addIcon[0]['title']; ?>"> ' + value + '</a>';
+            return '-';
+    }
+    function operateFormatter(value, row, index) {
+
+        return [
+<?php foreach ($this->addIcon as $item) { ?>
+        '<a class="<?php echo $item['classHref']; ?>" href="javascript:void(0)" title="<?php echo $item['title']; ?>"<?php if(isset($item['click'])){?> onclick="<?php echo $item['click']?>"<?php } ?>>',
+                '<i class="<?php echo $item['classButton']; ?>"></i>',
+                '</a>&nbsp;&nbsp;&nbsp;',
+<?php } ?>
+    ].join('');
+    }
+
+    window.operateEvents = {
+<?php
+foreach ($this->addIcon as $item) {
+    if ($item['classHref'] == 'remove') {
+        ?>
+            'click .<?php echo $item['classHref']; ?>': function(e, value, row, index) {
+            if (confirm('Deseja deletar este registro?') == true){
+            window.location.assign("<?php echo $item['url']; ?>/id/" + JSON.stringify(row.id));
+                    console.log(value, row, index);
+            }
+            },
+    <?php } else if ($item['classHref'] == 'grid') { ?>
+//            'click .<?php echo $item['classHref']; ?>': function(e, value, row, index) {
+//            window.location.assign("<?php echo $item['url']; ?>/id/" + JSON.stringify(row.id) + '/tabela/' + JSON.stringify(row.tabela_alvo));
+//                    console.log(value, row, index);
+//            },
+    <?php } else if ($item['classHref'] == 'basedados') { ?>
+            'click .<?php echo $item['classHref']; ?>': function(e, value, row, index) {
+            window.location.assign("<?php echo $item['url']; ?>/table/" + JSON.stringify(row.table_name));
+                    console.log(value, row, index);
+            },
+    <?php } else if ($item['classHref'] == 'reg') { ?>
+            'click .<?php echo $item['classHref']; ?>': function(e, value, row, index) {
+            window.location.assign("<?php echo $item['url']; ?>/tipo/" + JSON.stringify(row.reg));
+                    console.log(value, row, index);
+            },
+    <?php } else if ($item['classHref'] == 'regraquarta') { ?>
+            'click .<?php echo $item['classHref']; ?>': function(e, value, row, index) {
+            window.location.assign("<?php echo $item['url']; ?>/id/" + JSON.stringify(row.id));
+                    console.log(value, row, index);
+            },
+    <?php } else { ?>
+            'click .<?php echo $item['classHref']; ?>': function(e, value, row, index) {
+            window.location.assign("<?php echo $item['url']; ?>/id/" + JSON.stringify(row.id));
+                    console.log(value, row, index);
+            },
+    <?php } ?>
+<?php } ?>
+    };
+</script>
+
+<?php $id_processo = $this->session()->offsetGet('processo');?>
+<script type="text/javascript">
+    function mostrarModals() {
+        var processo;
+        var etapa;
+        $JQuery(function () {
+            $.ajax({
+                type: 'POST',
+                url: '<?php echo BASE_URL ?>/main/processo-apuracao/etapa-processo',
+                data: {'id': <?php echo $id_processo ?>},
+                dataType: 'JSON',
+                async: false,
+                success: function (d) {
+                    etapas(d);
+                }
+            });
+            $('#dialog-new').modal('toggle');
+            $JQuery("#titulo-modal").replaceWith('<h4 class="modal-title" id="titulo-modal"><b>Etapas do processo:</b> <?= $modal ?></h4>');
+        });
+    }
+    ;
+    function etapas(d) {
+        $JQuery('#importacao').removeClass();
+        $JQuery('#importacao').addClass(d.importacao.classe);
+        $JQuery('#importaxml').removeClass();
+        $JQuery('#importaxml').addClass(d.nfe.classe);
+        if (d.nfe.block !== '') {
+            $JQuery('#importaxml').css('pointer-events', 'none');
+        } else {
+            $JQuery('#importaxml').css('pointer-events', '');
+        }
+        $JQuery('#importacte').removeClass();
+        $JQuery('#importacte').addClass(d.cte.classe);
+        if (d.cte.block !== '') {
+            $JQuery('#importacte').css('pointer-events', '');
+            $JQuery('#importacte').css('pointer-events', 'none');
+        } else {
+            $JQuery('#importacte').css('pointer-events', '');
+        }
+        $JQuery('#conciliacao').removeClass();
+        $JQuery('#conciliacao').addClass(d.conciliacao.classe);
+        if (d.conciliacao.block !== '') {
+            $JQuery('#conciliacao').css('pointer-events', 'none');
+        } else {
+            $JQuery('#concilaicao').css('pointer-events', '');
+        }
+        $JQuery('#regras').removeClass();
+        $JQuery('#regras').addClass(d.regras.classe);
+        if (d.regras.block !== '') {
+            $JQuery('#regras').css('pointer-events', 'none');
+        } else {
+            $JQuery('#regras').css('pointer-events', '');
+        }
+        $JQuery('#apuracaosped').removeClass();
+        $JQuery('#apuracaosped').addClass(d.apuracao.classe);
+        if (d.apuracao.block !== '') {
+            $JQuery('#apuracao').css('pointer-events', 'none');
+        } else {
+            $JQuery('#apuracao').css('pointer-events', '');
+        }
+        $JQuery('#exportar').removeClass();
+        $JQuery('#exportar').addClass(d.exportacao.classe);
+        if (d.exportacao.block !== '') {
+            $JQuery('#exportar').css('pointer-events', 'none');
+        } else {
+            $JQuery('#exportar').css('pointer-events', '');
+        }
+    }
+
+    function importar() {
+        window.location.assign('<?= BASE_URL; ?>' + '/importacao/importar/save/id/<?php echo $id_processo ?>');
+    }
+    ;
+    function importaxml() {
+        window.location.assign('<?= BASE_URL; ?>' + '/importacao/importarxml/index/id/<?php echo $id_processo ?>');
+    }
+    ;
+    function importacte() {
+        window.location.assign('<?= BASE_URL; ?>' + '/importacao/importarcte/index/id/<?php echo $id_processo ?>');
+    }
+    ;
+    function apuracao() {
+        window.location.assign('<?= BASE_URL; ?>' + '/main/apuracao/index/id/<?php echo $id_processo ?>');
+    }
+    ;
+    function encerrar() {
+        if (confirm('Deseja deletar este processo e todas as suas informações?') === true) {
+            window.location.assign('<?= BASE_URL; ?>' + '/main/processo-apuracao/encerramento/id/<?php echo $id_processo ?>');
+        }
+    }
+    ;
+    function exportar() {
+        window.location.assign('<?= BASE_URL; ?>' + '/exportacao/exportar-xls/export/id/<?php echo $id_processo ?>');
+    }
+    ;
+    function regras() {
+        window.location.assign('<?= BASE_URL; ?>' + '/main/regrasprocesso/index/id/<?php echo $id_processo ?>');
+    }
+    ;
+    function remover() {
+        if (confirm('Deseja deletar este processo e todas as suas informações?') === true) {
+            window.location.assign('<?= BASE_URL; ?>' + '/main/processo-apuracao/delete/id/<?php echo $id_processo ?>');
+        }
+    }
+    ;
+    function conciliacao() {
+        window.location.assign('<?= BASE_URL; ?>' + '/main/conciliacao/index/id/<?php echo $id_processo ?>');
+    }
+    ;
+</script>
+
+<div id="dialog-new-solicitacao" class="bootbox modal fade in" role="dialog" tabindex="-1" style="display: none; padding-right: 13px;" aria-hidden="false">
+    <div class="modal-backdrop fade in"></div>
+    <div class="modal-dialog">
+        <div class="modal-content" style="width:80em; height: 24em;">
+            <div class="modal-header">
+                <button class="bootbox-close-button close" aria-hidden="true" data-dismiss="modal" type="button">×</button>
+                <h4 class="modal-title text-center"><strong>Solicitar autorização para passar de etapa</strong></h4>
+            </div>
+            <div class="modal-body">
+                <div class="bootbox-body">
+                    <div class="div-input-modal">
+                        <form id="solicitacao" method="POST" action="" enctype='multipart/form-data'>
+                            <div class="row">
+                                <div class='col-sm-6'>
+                                    <div class='form-group has-feedback'>
+                                        <label>Essa etapa da conciliação ainda contém erros. Insira uma justificativa para continuar.</label>
+                                        <textarea style="width: 76em;" rows="4" placeholder="Insira aqui sua justificativa..." id="justificativa" class='form-control demo-oi-errinput'></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="margin-top:65px;">
+                <div class="text-right" style="margin-top: 15px;">
+                    <button type="button" id="solicitar_acesso" class="next btn btn-primary" onclick="solicitarAcesso()">Solicitar</button>
+                </div>     
+            </div>
+        </div>  
+    </div>    
+</div>

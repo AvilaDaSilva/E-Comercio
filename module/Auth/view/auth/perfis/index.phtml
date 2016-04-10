@@ -1,0 +1,52 @@
+<?php
+$breadcrumbs[]=array(
+		'url' => BASE_URL.'/auth/perfis/index',
+		'title' => 'Perfil',
+		'text' => 'Perfil',
+);
+$head = 'Perfis';
+$newButton = array(
+	'title' => 'Novo Perfil',
+	'href' => BASE_URL.'/auth/perfis/save',
+	'text' => 'Novo Perfil',
+);
+//Passar ação padrão primeiro.
+$addIcon[] = array(
+		'url' => BASE_URL.'/auth/perfis/save',
+		'title' => 'Editar',
+		'classButton' => 'glyphicon glyphicon-pencil',
+		'classHref' => 'edit',
+);
+$addIcon[] = array(
+		'url' => BASE_URL.'/auth/perfis/delete',
+		'title' => 'Excluir',
+		'classButton' => 'glyphicon glyphicon-trash',
+		'classHref' => 'remove',
+);
+$tableInformation = array(
+		array('index' => 'id',
+				'format' => '',
+				'descricao' => 'Id',
+		),
+		array('index' => 'desc_perfil',
+				'format' => 'nameFormatter',
+				'descricao' => 'Perfis',
+		),
+		array('index' => 'nome_filial',
+				'format' => '',
+				'descricao' => 'Filiais',
+		),
+		array('index' => 'operate',
+				'format' => 'operateFormatter',
+				'descricao' => 'Operações',
+				'events' => 'operateEvents'
+		),
+);
+echo $this->partial('/partials/datatable/template.phtml', array(
+	'breadcrumbs' => $breadcrumbs,
+    'head' => $head,
+    'newButton' => $newButton,
+	'addIcon' => $addIcon,
+    'tableInformation' => $tableInformation,
+));
+?>

@@ -1,0 +1,37 @@
+	<!-- PASSWORD RESETTING FORM -->
+	<!--===================================================-->
+	<div class="cls-content">
+		<div class="cls-content-sm panel">
+			<div class="panel-body">
+				<p class="pad-btm">Informe seu login para recuperar sua senha.</p>
+				<?php echo $this->form()->openTag($form); ?>
+					<div class="form-group">
+						<div class="input-group">
+							<div class="input-group-addon"><i class="fa fa-envelope"></i></div>
+							<?php echo $this->formRow($form->get('login')); ?>
+						</div>
+					</div>
+
+					<div class="form-group text-right">
+					    <?php echo $this->formRow($form->get('Submit')); ?>
+            			<?php echo $this->formRow($form->get('cancelar')); ?>
+					</div>
+				<?php echo $this->form()->closeTag($form); ?>
+			</div>
+		</div>
+
+		<div class="pad-ver">
+			<a href="<?php echo BASE_URL; ?>/auth" class="btn-link mar-rgt">Voltar para Login</a>
+		</div>
+	</div>
+	<!--===================================================-->
+	<!-- END PASSWORD RESETTING FORM -->
+
+        <label class="msg">
+            <?php
+            if ($this->session()->offsetGet('error')) {
+                echo $this->session()->offsetGet('error');
+                $this->session()->offsetUnset('error');
+            }
+            ?>
+        </label>

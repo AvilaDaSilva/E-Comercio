@@ -1,0 +1,34 @@
+
+<?php
+
+$breadcrumbs[] = array(
+    'url' => BASE_URL.'/auth/empresas/index',
+    'title' => 'Empresas',
+    'text' => 'Empresas',
+);
+$breadcrumbs[] = array(
+    'url' => BASE_URL.'/auth/empresas/save',
+    'title' => 'Nova empresa',
+    'text' => 'Nova empresa'
+);
+
+$partialElements[] = array(
+    'name' => 'nome',
+    'information' => 'Este campo vai definir o nome da empresa que será cadastrada',
+    'label' => $this->formLabel($form->get('nome')->setLabelAttributes(array('for' => 'nome'))),
+    'input' => $this->formInput($form->get('nome')),
+);
+$partialElements[] = array(
+    'name' => 'id',
+        'input' => $this->formHidden($form->get('id')),
+);
+
+$help = 'Nessa tela é cadastrada uma nova empresa, que deve ser descrita pelo nome, campos com * são obrigatórios.';
+
+echo $this->partial('/partials/form/template.phtml', array(
+    'breadcrumbs' => $breadcrumbs,
+    'titlePage' => 'Nova Empresa',
+    'partialElements' => $partialElements,
+    'form' => $form,
+    'help' => $help));
+?>  

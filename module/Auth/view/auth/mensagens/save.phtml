@@ -1,0 +1,121 @@
+<?php
+
+$help = 'Nova mensagem';
+
+$breadcrumbs[] = array(
+    'url' => '/auth/mensagens',
+    'title' => 'Todas as mensagens',
+    'text' => 'Todas as mensagens'
+);
+$breadcrumbs[] = array(
+    'url' => '/auth/mensagens/save/id',
+    'title' => 'Nova mensagen',
+    'text' => 'Nova mensagen'
+);
+$partialElements[] = array(
+    'name' => 'usuario',
+    'label' => $this->formLabel($form->get('usuario')->setLabelAttributes(array('for' => 'usuario'))),
+    'input' => $this->formSelect($form->get('usuario'))
+);
+$partialElements[] = array(
+    'name' => 'tags',
+    'label' => $this->formLabel($form->get('tags')->setLabelAttributes(array('for' => 'tags'))),
+    'input' => $this->formInput($form->get('tags')),
+);
+$partialElements[] = array(
+    'name' => 'tipo_mensagem',
+    'label' => $this->formLabel($form->get('tipo_mensagem')->setLabelAttributes(array('for' => 'tipo_mensagem'))),
+    'input' => $this->formSelect($form->get('tipo_mensagem'))
+);
+$partialElements[] = array(
+    'name' => 'assunto',
+    'label' => $this->formLabel($form->get('assunto')->setLabelAttributes(array('for' => 'assunto'))),
+    'input' => $this->formInput($form->get('assunto')),
+);
+$partialElements[] = array(
+    'name' => 'id',
+    'input' => $this->formHidden($form->get('id')),
+);
+$partialElements[] = array(
+    'div_id' => 'mensagem',
+    'name' => 'mensagem',
+    'label' => $this->formLabel($form->get('mensagem')->setLabelAttributes(array('for' => 'mensagem'))),
+    'input' => $this->formTextarea($form->get('mensagem')),
+);
+$partialElements[] = array(
+    'id_div' => 'anexo',
+    'name' => 'anexo[]',
+    'label' => $this->formLabel($form->get('anexo[]')->setAttributes(array('for' => 'anexo'))),
+    'input' => $this->formInput($form->get('anexo[]')),
+    'type' => 'file',
+);
+
+echo $this->partial('partials/mensagens/template.phtml', array(
+    'help' => $help,
+    'form' => $form,
+    'nao_lidas' => '12',
+    'partialElements' => $partialElements,
+    'titlePage' => 'Nova mensagem',
+    'btnSubmit' => 'Enviar',
+    'totais' => $totais
+));
+?>
+
+<script>
+    
+    function tagar(a){
+        if(a.val() != 'SELECIONAR OU BUSCAR UM USUÁRIO'){
+            $('#tags').tagsinput('add', a.val());
+            $JQuery('#users').val('SELECIONAR OU BUSCAR UM USUÁRIO');
+            setTimeout(function () { // quando o timer for disparado...
+                $("#users").trigger("chosen:updated");
+            }, 100);
+        }
+    }
+    $JQuery('#tags').attr('readonly', 'readonly');
+</script>
+
+<style>
+     .ui-autocomplete-loading {
+        background: white url("<?php echo BASE_URL; ?>/images/ajax-loader.gif") right center no-repeat;
+    }
+    .ui-autocomplete {
+        background-color: #fff;
+        border: 1px solid #e1e5ea;
+        border-radius: 2px;
+        cursor: pointer;
+        display: block;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1.42857;
+        margin-bottom: 0;
+        overflow: hidden;
+        padding: 7px 12px;
+        position: relative;
+        text-decoration: none;
+        white-space: nowrap;
+        box-sizing: border-box;
+        max-height: 150px;
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding-right: 20px;
+        max-width: 615px;
+    }
+    .ui-autocomplete li{
+        list-style: none;
+        margin-rigth: 1000px;
+    }
+
+    .ui-autocomplete li:hover{
+        background-color: #4291fe;
+        text-decoration: none;
+    }
+    #mensagem {
+        height: 169px;
+        width: 100%;
+    }
+    .col-sm-6{
+        height: 100% !important;
+    }
+</style>
+    
