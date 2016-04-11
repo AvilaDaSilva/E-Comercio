@@ -116,4 +116,3 @@ it should look something like below:
     }
 
 Restart the nginx, now you should be ready to go!
-# faculdade-dev-frameworks-ecommerce-
