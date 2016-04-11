@@ -1,28 +1,39 @@
 <?php
+/**
+ * Zend Framework (http://framework.zend.com/)
+ *
+ * @link      http://github.com/zendframework/ZendSkeletonApplication for the canonical source repository
+ * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license   http://framework.zend.com/license/new-bsd New BSD License
+ */
+
+namespace Application;
 
 return array(
     'router' => array(
         'routes' => array(
             'home' => array(
-                'type' => 'Segment',
+                'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
-                    'route'    => '/[page/:page]',
+                    'route'    => '/',
                     'defaults' => array(
-                        'controller' => 'Auth\Controller\Auth',
+                        'controller' => 'Application\Controller\Index',
                         'action'     => 'index',
-                        'module'     => 'auth',
                     ),
                 ),
             ),
+            // The following is a route to simplify getting started creating
+            // new controllers and actions without needing to create a new
+            // module. Simply drop new controllers in, and you can access them
+            // using the path /application/:controller/:action
             'application' => array(
                 'type'    => 'Literal',
                 'options' => array(
                     'route'    => '/application',
                     'defaults' => array(
+                        '__NAMESPACE__' => 'Application\Controller',
                         'controller'    => 'Index',
                         'action'        => 'index',
-                        '__NAMESPACE__' => 'Application\Controller',
-                        'module'     => 'application'
                     ),
                 ),
                 'may_terminate' => true,
@@ -38,11 +49,6 @@ return array(
                             'defaults' => array(
                             ),
                         ),
-                        'child_routes' => array( //permite mandar dados pela url 
-                            'wildcard' => array(
-                                'type' => 'Wildcard'
-                            ),
-                        ),
                     ),
                 ),
             ),
@@ -53,8 +59,8 @@ return array(
             'Zend\Cache\Service\StorageCacheAbstractServiceFactory',
             'Zend\Log\LoggerAbstractServiceFactory',
         ),
-        'aliases' => array(
-            'translator' => 'MvcTranslator',
+        'factories' => array(
+            'translator' => 'Zend\Mvc\Service\TranslatorServiceFactory',
         ),
     ),
     'translator' => array(
@@ -69,7 +75,7 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'Application\Controller\Index' => 'Application\Controller\IndexController'
+            'Application\Controller\Index' => Controller\IndexController::class
         ),
     ),
     'view_manager' => array(
@@ -95,7 +101,4 @@ return array(
             ),
         ),
     ),
-    
-    
-    
 );
