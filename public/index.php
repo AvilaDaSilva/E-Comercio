@@ -14,6 +14,8 @@ if (php_sapi_name() === 'cli-server') {
     unset($path);
 }
 
+define("BASE_URL", "");
+
 // Setup autoloading
 require 'init_autoloader.php';
 

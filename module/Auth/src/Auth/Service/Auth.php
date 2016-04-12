@@ -31,7 +31,7 @@ class Auth extends Service {
         if (!$result->isValid()) {
             throw new \Exception("Login ou senha inválidos");
         }
-
+//
         //salva o usuário na sessão
 
         $session = $this->getServiceManager()->get('Session');
@@ -87,7 +87,7 @@ class Auth extends Service {
         $session->offsetUnset('programas');
         $session->offsetUnset('perfis');
         $session->offsetUnset('filiais');
-        setcookie('usuario', null, 0, '/');
+        setcookie('email', null, 0, '/');
         setcookie('senha', null, 0, '/');
         $Auth->clearIdentity();
         return true;
@@ -98,48 +98,48 @@ class Auth extends Service {
     }
     
     public function recuperaSenha($values){
-        $login = $values['login'];
-        $usuario = $this->getObjectManager()->getRepository('Auth\Model\Usuario')->findOneBy(array('login' => $login));
-        if(!$usuario)
-            throw new EntityException('Não existe um usuario com este e-mail');
-        $data = new \Datetime('now');
-        $aux = $usuario->nome.$data->format('d/m/Y');
-        $hash = md5($aux);
-        $usuario->hash_nova_senha = $hash;
-        $usuario->senha = md5(uniqid());
-        $this->getObjectManager()->persist($usuario);
-        $email = new Email();
-        $url = $_SERVER['HTTP_HOST'];
-        $texto = 'Acesse o link abaixo para alterar sua senha '."\r\n"
-                ."http://$url". BASE_URL.'/auth/auth/nova-senha/hash/'.$hash;
-        $from = "Sistema Interno";
-        $to['email'] = "$usuario->email";
-        $to['name'] = "$usuario->nome";
-        $titulo = "Nova Senha";
-        $email->send($texto, $from, $to, null, $titulo);
-        try{
-            $this->getObjectManager()->flush();
-        } catch (Exception $e) {
-            throw new EntityException('Não foi possivel iniciar o processo de alteração de senha');
-        }
+//        $login = $values['login'];
+//        $usuario = $this->getObjectManager()->getRepository('Auth\Model\Usuario')->findOneBy(array('login' => $login));
+//        if(!$usuario)
+//            throw new EntityException('Não existe um usuario com este e-mail');
+//        $data = new \Datetime('now');
+//        $aux = $usuario->nome.$data->format('d/m/Y');
+//        $hash = md5($aux);
+//        $usuario->hash_nova_senha = $hash;
+//        $usuario->senha = md5(uniqid());
+//        $this->getObjectManager()->persist($usuario);
+//        $email = new Email();
+//        $url = $_SERVER['HTTP_HOST'];
+//        $texto = 'Acesse o link abaixo para alterar sua senha '."\r\n"
+//                ."http://$url". BASE_URL.'/auth/auth/nova-senha/hash/'.$hash;
+//        $from = "Sistema Interno";
+//        $to['email'] = "$usuario->email";
+//        $to['name'] = "$usuario->nome";
+//        $titulo = "Nova Senha";
+//        $email->send($texto, $from, $to, null, $titulo);
+//        try{
+//            $this->getObjectManager()->flush();
+//        } catch (Exception $e) {
+//            throw new EntityException('Não foi possivel iniciar o processo de alteração de senha');
+//        }
         
     }
     
     public function novaSenha($values){
-        $login = $values['login'];
-        $usuario = $this->getObjectManager()->getRepository('Auth\Model\usuario')->findOneBy(array('login' => $login));
-        if(!$usuario){
-            throw new EntityException('Usuario não encontrado');
-        }
-        $senha = md5($values['senha']);
-        $usuario->senha = $senha;
-        $usuario->hash_nova_senha = '';
-        $this->getObjectManager()->persist($usuario);
-        try{
-            $this->getObjectManager()->flush();
-        } catch (Exception $e) {
-            throw new EntiryException("Não foi possivel alterar a senha");
-        }
+//        $login = $values['login'];
+//        $usuario = $this->getObjectManager()->getRepository('Auth\Model\usuario')->findOneBy(array('login' => $login));
+//        if(!$usuario){
+//            throw new EntityException('Usuario não encontrado');
+//        }
+//        $senha = md5($values['senha']);
+//        $usuario->senha = $senha;
+//        $usuario->hash_nova_senha = '';
+//        $this->getObjectManager()->persist($usuario);
+//        try{
+//            $this->getObjectManager()->flush();
+//        } catch (Exception $e) {
+//            throw new EntiryException("Não foi possivel alterar a senha");
+//        }
     }
 
 }

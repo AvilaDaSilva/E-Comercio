@@ -1,238 +1,119 @@
-<?php
+<?php 
 
 namespace Auth\Model;
 
 use Doctrine\ORM\Mapping as ORM;
-use Zend\InputFilter\Factory as InputFactory;
-use Zend\InputFilter\InputFilter;
-use Doctrine\Common\Collections\ArrayCollection;
+
+/** @ORM\MappedSuperclass */
 
 /**
- * @ORM\Entity @ORM\Table(name = "public.dm_usuario")
+ * @ORM\Entity
+ * @ORM\Table (name = "ecommerce.usuario")
+ *
  */
 class Usuario {
-
+      
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @ORM\Column(type = "integer")
+     * @ORM\Column(type="integer")
+     *
+     * @var integer
      */
-    protected $id;
-
-    /**
-     * @ORM\Column(type = "string")
-     */
-    protected $nome;
+    protected $id;    
     
-    /**
-     * @ORM\Column(type = "string", unique=true)
-     */
-    protected $login;
-    
-    /**
-     * @ORM\ManyToOne(targetEntity="StatusUsuario") 
-     * @ORM\JoinColumn(name="ativo", referencedColumnName="id")
-     */
-    protected $ativo;
-
-    /**
-     * @ORM\Column(type = "datetime")
-     */
-    protected $data_ativacao;
-
-    /**
-     * @ORM\Column(type = "datetime", nullable=true)
-     */
-    protected $data_desativacao;
-
-    /**
-     * @ORM\Column(type = "string")
-     */
-    protected $email;
-
-    /**
-     * @ORM\Column(type = "string")
-     */
+    /** @ORM\Column(length=140) */
     protected $senha;
+    
+    /** @ORM\Column(length=140) */
+    protected $email;
+    
+     /**
+     * @ORM\OneToOne(targetEntity="pessoa")
+     * @ORM\JoinColumn(name="pessoa_id", referencedColumnName="id")
+     */
+    protected $pessoa;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="perfil", mappedBy="id")
+     * @ORM\JoinColumn(name="perfil_id", referencedColumnName="id")
+     */
+    protected $perfil;
+    
+    
+    /**
+     * @return int $id
+     */
+    function getId() {
+        return $this->id;
+    }
 
     /**
-     * @ORM\Column(type = "string")
+     * @return string $senha
      */
-    protected $hash_nova_senha;
+    function getSenha() {
+        return $this->senha;
+    }
+    /**
+     * @return string $email
+     */
+    function getEmail() {
+        return $this->email;
+    }
 
     /**
-     * @ORM\Column( type="datetime", nullable=true)
+     * @return string $pessoa
      */
-    protected $data_utl_solicitacao_alteracao;
+    function getPessoa() {
+        return $this->pessoa;
+    }
 
     /**
-     * @ORM\OneToOne(targetEntity="Programa")
-     * @ORM\JoinColumn(name="programa", referencedColumnName="id")
+     * @return string $perfil
      */
-    protected $programa;
-    protected $inputFilter;
-
-    public function __construct() {
-        $this->perfil = new ArrayCollection();
+    function getPerfil() {
+        return $this->perfil;
+    }
+    
+    /**
+     * @param int $id
+     */
+    function setId($id) {
+        $this->id = $id;
     }
 
-    public function __set($key, $value) {
-        $this->$key = $value;
+    /**
+     * @param string $senha
+     */
+    function setSenha($senha) {
+        $this->senha = $senha;
     }
 
-    public function __get($key) {
-        return $this->$key;
+    /**
+     * @param string $email
+     */
+    function setEmail($email) {
+        $this->email = $email;
     }
 
-    public function getInputFilter() {
-        if (!$this->inputFilter) {
-            $inputFilter = new InputFilter();
-            $factory = new InputFactory();
-
-            $inputFilter->add($factory->createInput(array(
-                        'name' => 'id',
-                        'filters' => array(
-                            array('name' => 'Int'),
-                        ),
-            )));
-
-
-            $inputFilter->add($factory->createInput(array(
-                        'name' => 'nome',
-                        'required' => true,
-                        'filters' => array(
-                            array('name' => 'StripTags'),
-                            array('name' => 'StringTrim'),
-                            array('name' => 'StringToUpper',
-                                'options' => array('encoding' => 'UTF-8')
-                            ),
-                        ),
-                        'validators' => array(
-                            array(
-                                'name' => 'StringLength',
-                                'options' => array(
-                                    'encoding' => 'UTF-8',
-                                    'min' => 3,
-                                    'max' => 80,
-                                    'message' => 'O campo Nome deve ter mais que 3 caracteres e menos que 80',
-                                ),
-                            ),
-                            array(
-                                'name' => 'NotEmpty',
-                                'options' => array('message' => 'O campo Nome não pode estar vazio')
-                            )
-                        ),
-            )));
-            
-            $inputFilter->add($factory->createInput(array(
-                        'name' => 'login',
-                        'required' => true,
-                        'filters' => array(
-                            array('name' => 'StripTags'),
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            array(
-                                'name' => 'StringLength',
-                                'options' => array(
-                                    'encoding' => 'UTF-8',
-                                    'min' => 5,
-                                    'max' => 20,
-                                    'message' => 'O campo Login deve ter mais que 5 caracteres e menos que 80',
-                                ),
-                            ),
-                            array(
-                                'name' => 'NotEmpty',
-                                'options' => array('message' => 'O campo Login não pode estar vazio')
-                            )
-                        ),
-            )));
-
-
-            $inputFilter->add($factory->createInput(array(
-                        'name' => 'ativo',
-                        'required' => true,
-                        'filters' => array(
-                            array('name' => 'Int'),
-                        ),
-            )));
-
-            $inputFilter->add($factory->createInput(array(
-                        'name' => 'data_ativacao',
-                        'required' => false,
-            )));
-
-            $inputFilter->add($factory->createInput(array(
-                        'name' => 'data_desativacao',
-                        'required' => false,
-            )));
-
-            $inputFilter->add($factory->createInput(array(
-                        'name' => 'email',
-                        'required' => true,
-                        'filters' => array(
-                            array('name' => 'StripTags'),
-                            array('name' => 'StringTrim'),
-                            array('name' => 'StringToLower',
-                                'options' => array('encoding' => 'UTF-8')
-                            ),
-                        ),
-                        'validators' => array(
-                            array(
-                                'name' => 'StringLength',
-                                'options' => array(
-                                    'encoding' => 'UTF-8',
-                                    'min' => 3,
-                                    'max' => 80,
-                                    'message' => 'O campo E-mail deve ter mais que 3 caracteres e menos que 80',
-                                ),
-                            ),
-                            array(
-                                'name' => 'NotEmpty',
-                                'options' => array('message' => 'O campo E-mail não pode estar vazio')
-                            ),
-                            array(
-                                'name' => 'EmailAddress',
-                                'options' => array('message' => 'O campo E-mail deve conter um e-mail válido')
-                            )
-                        ),
-            )));
-
-
-            $inputFilter->add($factory->createInput(array(
-                        'name' => 'senha',
-                        'required' => true,
-                        'filters' => array(
-                            array('name' => 'StripTags'),
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            array(
-                                'name' => 'StringLength',
-                                'options' => array(
-                                    'encoding' => 'UTF-8',
-                                    'min' => 6,
-                                    'max' => 80,
-                                    'message' => 'O campo Senha deve ter mais que 6 caracteres e menos que 80',
-                                ),
-                            ),
-                            array(
-                                'name' => 'NotEmpty',
-                                'options' => array('message' => 'O campo Senha não pode estar vazio')
-                            ),
-                        ),
-            )));
-
-            $inputFilter->add($factory->createInput(array(
-                        'name' => 'perfis',
-                        'required' => false,
-            )));
-            $this->inputFilter = $inputFilter;
-        }
-
-        return $this->inputFilter;
+    /**
+     * @param string $pessoa
+     */
+    function setPessoa($pessoa) {
+        $this->pessoa = $pessoa;
     }
 
+    /**
+     * @param string $perfil
+     */
+    function setPerfil($perfil) {
+        $this->perfil = $perfil;
+    }
+
+    
 }
+               
 
-?>
+
+
+
