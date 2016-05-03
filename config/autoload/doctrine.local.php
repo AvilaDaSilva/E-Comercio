@@ -9,7 +9,7 @@ return array(
                     'host' => 'localhost',
                     'port' => '5432',
                     'user' => 'postgres',
-                    'password' => 'pa9thu13',
+                    'password' => 'postgres',
                     'dbname' => 'ecommerce',
                 )
             ),

@@ -7,16 +7,16 @@ use Zend\Form\Form;
 class LoginForm extends Form {
 
     public function __construct() {
-        parent::__construct('Login');
+        parent::__construct('LoginForm');
         $this->setAttribute('method', 'POST');
         $this->setAttribute('action', BASE_URL . '/auth/auth/login');
 
         $this->add(array(
-            'name' => 'login',
-            'type' => 'text',
+            'name' => 'email',
+            'type' => 'email',
             'attributes' => array(
                 'class' => 'form-control',
-                'placeholder' => 'Login'
+                'placeholder' => 'E-mail'
             ),
         ));
 

@@ -23,24 +23,32 @@ class Pessoa {
     protected $id;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=false)
      *
      * @var string
      */
     protected $nome;
     
-    /** @ORM\Column(type="datetime", name="data_nascimento") */
+    /** @ORM\Column(type="datetime", name="data_nascimento", nullable=false) */
     protected $data_nascimento;
     
-    /** @ORM\Column(type="integer") */
+    /**
+     * @ORM\OneToOne(targetEntity="Endereco")
+     * @ORM\JoinColumn(name="endereco_id", referencedColumnName="id")
+     */
     protected $endereco;
     
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", length=1, nullable=false)
      *
      * @var string
      */
     protected $sexo;
+    
+    public function getArrayCopy()
+    {
+        return get_object_vars($this);
+    }
     
     /**
      * @return int
@@ -57,7 +65,7 @@ class Pessoa {
     /**
      * @return datetime $data_nascimento
      */
-    function getData_nascimento() {
+    function getDataNascimento() {
         return $this->data_nascimento;
     }
 
@@ -92,7 +100,7 @@ class Pessoa {
     /**
     * @param datetime $data_nascimento
     */
-    function setData_nascimento($data_nascimento) {
+    function setDataNascimento($data_nascimento) {
         $this->data_nascimento = $data_nascimento;
     }
 

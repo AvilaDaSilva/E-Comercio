@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  */
 class Usuario {
-      
+    
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -22,24 +22,28 @@ class Usuario {
      */
     protected $id;    
     
-    /** @ORM\Column(length=140) */
+    /** @ORM\Column(length=140, nullable=false) */
     protected $senha;
     
-    /** @ORM\Column(length=140) */
+    /** @ORM\Column(type="string", length=140, nullable=false) */
     protected $email;
     
      /**
-     * @ORM\OneToOne(targetEntity="pessoa")
+     * @ORM\OneToOne(targetEntity="Pessoa")
      * @ORM\JoinColumn(name="pessoa_id", referencedColumnName="id")
      */
     protected $pessoa;
     
     /**
-     * @ORM\OneToMany(targetEntity="perfil", mappedBy="id")
+     * @ORM\OneToOne(targetEntity="Perfil")
      * @ORM\JoinColumn(name="perfil_id", referencedColumnName="id")
      */
     protected $perfil;
     
+    public function getArrayCopy()
+    {
+        return get_object_vars($this);
+    }
     
     /**
      * @return int $id
@@ -109,7 +113,6 @@ class Usuario {
     function setPerfil($perfil) {
         $this->perfil = $perfil;
     }
-
     
 }
                

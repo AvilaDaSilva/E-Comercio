@@ -68,13 +68,16 @@ return array(
               return new Auth\Service\Auth();  
             },
             'Auth\Service\Usuario' => function(){
-              return new Auth\Service\Usuario();  
+              return new Auth\Service\UsuarioService();  
             },
             'Auth\Service\Pessoa' => function(){
-              return new Auth\Service\Pessoa();  
+              return new Auth\Service\PessoaService();  
             },
             'Auth\Service\Endereco' => function(){
-              return new Auth\Service\Endereco();  
+              return new Auth\Service\EnderecoService();  
+            },
+	    'Core\Acl\Builder' => function(){
+              return new Core\Acl\Builder();  
             },
                     
         ),

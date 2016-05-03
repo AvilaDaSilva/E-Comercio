@@ -15,6 +15,7 @@ if (php_sapi_name() === 'cli-server') {
 }
 
 define("BASE_URL", "");
+define("BASE_DIR", str_replace("/public", '', __DIR__));
 
 // Setup autoloading
 require 'init_autoloader.php';

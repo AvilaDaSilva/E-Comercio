@@ -8,13 +8,10 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table (name = "ecommerce.perfil")
+ * @ORM\Table (name = "ecommerce.uf")
  *
  */
-class Perfil {
-    
-    const ADMIN = 1;
-    const CLIENTE = 2;
+class Uf {
     
      /**
      * @ORM\Id
@@ -26,7 +23,7 @@ class Perfil {
     protected $id;
     
     /** @ORM\Column(length=140, nullable=false) */
-    protected $desc_perfil;
+    protected $desc_uf;
     
     public function getArrayCopy()
     {
@@ -44,7 +41,7 @@ class Perfil {
     * @return string
     */
     function getDescPerfil() {
-        return $this->desc_perfil;
+        return $this->$desc_uf;
     }
 
     /**
@@ -57,10 +54,7 @@ class Perfil {
     /**
     * @param string $desc_perfil
     */
-    function setDescPerfil($desc_perfil) {
-        $this->desc_perfil = $desc_perfil;
+    function setDescPerfil($desc_uf) {
+        $this->$desc_uf = $desc_uf;
     }
-
-    
-    
 }

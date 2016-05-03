@@ -4,16 +4,18 @@ namespace Auth\Service;
 
 use Core\Service\Service;
 use Core\Model\EntityException as EntityException;
+use Auth\Model\Perfil;
+use Auth\Model\Usuario;
 use DateTime;
 
 class UsuarioService extends Service
 {
     public function saveUsuario($dados, $pessoa)
     {
-        $perfil = $this->getObjectManager()->getRepository('X')
-            ->findOne($dados['perfil']);
+        $perfil = $this->getObjectManager()->getRepository('Auth\Model\Perfil')
+            ->findOneBy(['id' => Perfil::CLIENTE]);
         
-        $ver_usuario = $this->getObjectManagar()->getRepository('X')
+        $ver_usuario = $this->getObjectManager()->getRepository('Auth\Model\Usuario')
             ->findOneBy(['email'=> $dados['email']]);
         
         if ($ver_usuario) {
@@ -39,11 +41,11 @@ class UsuarioService extends Service
     
     public function deleteUsuario($id)
     {
-        $usuario = $this->getObjectMandager()->getRepository('X')
+        $usuario = $this->getObjectManager()->getRepository('Auth\Model\Usuario')
             ->findOneById($id);
         
         if (!$usuario)
-            $usuario = $this->getObjectMandager()->getRepository('X')
+            $usuario = $this->getObjectManager()->getRepository('Auth\Model\Usuario')
                 ->findOneBy(["pessoa" => $id]);
         
         if ($usuario) {
@@ -64,11 +66,11 @@ class UsuarioService extends Service
     
     public function updateUsuario($dados, $id)
     {
-        $usuario = $this->getObjectMandager()->getRepository('X')
+        $usuario = $this->getObjectManager()->getRepository('Auth\Model\Usuario')
             ->findOneById($id);
         
         if (!$usuario)
-            $usuario = $this->getObjectMandager()->getRepository('X')
+            $usuario = $this->getObjectManager()->getRepository('Auth\Model\Usuario')
                 ->findOneBy(["pessoa" => $id]);
         
         if ($usuario) {

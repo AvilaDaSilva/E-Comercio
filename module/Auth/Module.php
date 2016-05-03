@@ -83,6 +83,10 @@ class Module
         $actionName = $routeMatch->getParam('action');
         $session = $di->get('Session');
         $authService = $di->get('Auth\Service\Auth');
+        if (!$authService->authorize($moduleName, $controllerName, $actionName)) {
+          $redirect = $event->getTarget()->redirect();
+          return $redirect->toUrl(BASE_URL . '/auth/auth/forbbiden');
+        }
         
         return true;
     }
