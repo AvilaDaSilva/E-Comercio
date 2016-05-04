@@ -1,0 +1,16 @@
+<div class="row">
+
+    <div class="col-md-3">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h5>Usuário</h5>
+            </div>
+            <div class="panel-body">
+                <?php $form->prepare(); ?>
+                <?= $this->form()->openTag($form); ?>
+                <?= $this->formCollection($form); ?>
+                <?= $this->form()->closeTag($form); ?>
+            </div>
+        </div>
+    </div>
+</div>

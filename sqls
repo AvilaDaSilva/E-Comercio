@@ -1,0 +1,41 @@
+insert into ecommerce.uf ("id", "desc_uf") values (1,'Acre');
+insert into ecommerce.uf ("id", "desc_uf") values (2,'Alagoas');
+insert into ecommerce.uf ("id", "desc_uf") values (3,'Amapá');
+insert into ecommerce.uf ("id", "desc_uf") values (4,'Amazonas');
+insert into ecommerce.uf ("id", "desc_uf") values (5,'Bahia');
+insert into ecommerce.uf ("id", "desc_uf") values (6,'Ceará');
+insert into ecommerce.uf ("id", "desc_uf") values (7,'Distrito Federal');
+insert into ecommerce.uf ("id", "desc_uf") values (8,'Espírito Santo');
+insert into ecommerce.uf ("id", "desc_uf") values (9,'Goiás');
+insert into ecommerce.uf ("id", "desc_uf") values (10,'Maranhão');
+insert into ecommerce.uf ("id", "desc_uf") values (11,'Mato Grosso');
+insert into ecommerce.uf ("id", "desc_uf") values (12,'Mato Grosso do Sul');
+insert into ecommerce.uf ("id", "desc_uf") values (13,'Minas Gerais');
+insert into ecommerce.uf ("id", "desc_uf") values (14,'Pará');
+insert into ecommerce.uf ("id", "desc_uf") values (15,'Paraíba');
+insert into ecommerce.uf ("id", "desc_uf") values (16,'Paraná');
+insert into ecommerce.uf ("id", "desc_uf") values (17,'Piauí');
+insert into ecommerce.uf ("id", "desc_uf") values (18,'Rio de Janeiro');
+insert into ecommerce.uf ("id", "desc_uf") values (19,'Rio Grande do Norte');
+insert into ecommerce.uf ("id", "desc_uf") values (20,'Rio Grande do Sul');
+insert into ecommerce.uf ("id", "desc_uf") values (21,'Rondônia');
+insert into ecommerce.uf ("id", "desc_uf") values (22,'Roraima');
+insert into ecommerce.uf ("id", "desc_uf") values (23,'Santa Catarina');
+insert into ecommerce.uf ("id", "desc_uf") values (24,'São Paulo');
+insert into ecommerce.uf ("id", "desc_uf") values (25,'Sergipe');
+insert into ecommerce.uf ("id", "desc_uf") values (26,'Tocantins');
+insert into ecommerce.perfil ("id", "desc_perfil")
+ values (1, 'Administrador');
+insert into ecommerce.perfil ("id", "desc_perfil")
+ values (2, 'Cliente');
+insert into ecommerce.endereco ("id","uf","rua","cidade","bairro","cep","numero","complemento")
+ values (1,23,'ALGUMA','CHAPECO','ALGUM',89812000,123,'ALGUM');
+insert into ecommerce.pessoa ("id","endereco_id","nome","data_nascimento","sexo")
+ values (1,1,'Admin','1996-01-01 00:00:00','M');
+insert into ecommerce.usuario ("id","pessoa_id","perfil_id","senha","email")
+ values (1,1,1,'827ccb0eea8a706c4c34a16891f84e7b','admin@admin.com.br');
+SELECT setval('ecommerce.endereco_id_seq', 2, true);
+SELECT setval('ecommerce.perfil_id_seq', 2, true);
+SELECT setval('ecommerce.pessoa_id_seq', 2, true);
+SELECT setval('ecommerce.uf_id_seq', 27, true);
+SELECT setval('ecommerce.usuario_id_seq', 2, true);
