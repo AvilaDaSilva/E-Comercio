@@ -15,7 +15,7 @@ class LoginForm extends Form {
             'name' => 'email',
             'type' => 'email',
             'attributes' => array(
-                'class' => 'form-control',
+                'class' => 'input-text new-input full-form floatlabel',
                 'placeholder' => 'E-mail'
             ),
         ));
@@ -23,7 +23,7 @@ class LoginForm extends Form {
         $this->add(array(
             'name' => 'senha',
             'attributes' => array(
-                'class' => 'form-control',
+                'class' => 'input-text new-input full-form floatlabel',
                 'type' => 'password',
                 'placeholder' => 'Senha'
             ),
@@ -34,7 +34,7 @@ class LoginForm extends Form {
             'attributes' => array(
                 'type' => 'submit',
                 'value' => 'Entrar',
-                'class' => 'btn btn-success text-uppercase'
+                'class' => 'btn-login'
             ),
                 )
         );
@@ -49,6 +49,7 @@ class LoginForm extends Form {
             ),
             'attributes' => array(
                 'id' => 'checkbox',
+                'class' => 'input-checkbox remember'
             )
         ));
     }
