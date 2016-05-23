@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table (name = "perfil")
  *
  */
-class Usuario {
+class Perfil {
     
      /**
      * @ORM\Id
