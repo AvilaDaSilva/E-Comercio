@@ -1,0 +1,54 @@
+<div class="row">
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h5>Promoções</h5>
+            </div>
+            <div class="panel-body">
+                <a href="<?= BASE_URL ?>/produtos/promocoes/save" class="btn btn-default">
+                    Nova Promoção
+                </a>
+                <table class="table table-hover table-bordered table-striped table-striped">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Descrição</th>
+                            <th>Data Inícial</th>
+                            <th>Data Final</th>
+                            <th>Desconto</th>
+                            <th>Status Promoção</th>
+                            <th>Produtos</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($promocoes as $promocao) {
+                        
+                            if ($promocao->getStatusPromocao() == 1)
+                                $status = 'Ativa';
+                            else
+                                $status = 'Inativa';
+                        ?>
+                        <tr>
+                            <td><?= $promocao->getId(); ?></td>
+                            <td><?= $promocao->getDescPromocao(); ?></td>
+                            <td><?= $promocao->getDataInicial()->format('d-m-Y'); ?></td>
+                            <td><?= $promocao->getDataFinal()->format('d-m-Y'); ?></td>
+                            <td><?= $promocao->getDesconto(); ?> R$</td>
+                            <td><?= $status; ?></td>
+                            <td><?php foreach ($promocao->getProdutos() as $prd) {
+                                    echo $prd->getDescProduto() . '<br>';
+                                }; ?>
+                            </td>
+                            <td>
+                                <a href="<?= BASE_URL?>/produtos/promocoes/save/id/<?= $promocao->getId()?>">ED</a>
+                                <a href="<?= BASE_URL?>/produtos/promocoes/delete/id/<?= $promocao->getId()?>">EX</a>
+                            </td>
+                        </tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+</div>

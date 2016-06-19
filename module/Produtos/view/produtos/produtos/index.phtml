@@ -1,0 +1,62 @@
+<div class="row">
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h5>Produtos</h5>
+            </div>
+            <div class="panel-body">
+                <a href="<?= BASE_URL ?>/produtos/produtos/save" class="btn btn-default">
+                    Novo Produto
+                </a>
+                <a href="<?= BASE_URL ?>/produtos/categorias/index" class="btn btn-default">
+                    Categorias
+                </a>
+                <a href="<?= BASE_URL ?>/produtos/promocoes/index" class="btn btn-default">
+                    Promocoes
+                </a>
+                <?php if (empty($produtos)) { ?>
+                <br>
+                <br>
+                <div>NENHUM DADO ENCONTRADO!</div>
+                <?php } else { ?>
+                <table class="table table-hover table-bordered table-striped table-striped">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Descrição</th>
+                            <th>Categoria</th>
+                            <th>Valor</th>
+                            <th>Avalhação</th>
+                            <th>Detalhes</th>
+                            <th>Imagem</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($produtos as $produto) {
+                            $img = stream_get_contents($produto->getImagem());
+                        ?>
+                        <tr>
+                            <td><?= $produto->getId()?></td>
+                            <td><?= $produto->getDescProduto()?></td>
+                            <td><?= $produto->getCategoria()->getDescCategoria()?></td>
+                            <td><?= $produto->getValor()?></td>
+                            <td><?= $produto->getAvalhacao()?></td>
+                            <td><?= $produto->getDetalhes()?></td>
+                            <td style="width: 50px; height: 50px;">
+                                <img src="data:image/jpg;charset=utf8;base64,<?= $img ?>"/>
+                            </td>
+                            <td>
+                                <a href="<?= BASE_URL?>/produtos/produtos/save/id/<?= $produto->getId()?>">ED</a>
+                                <a href="<?= BASE_URL?>/produtos/produtos/delete/id/<?= $produto->getId()?>">EX</a>
+                                <a href="<?= BASE_URL?>/produtos/estoques/save/id/<?= $produto->getId()?>">EST</a>
+                            </td>
+                        </tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
+                <?php }; ?>
+            </div>
+        </div>
+
+</div>
